@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Stand - CaFood</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            padding-bottom: 80px;
+        }
+        
+        /* Header */
+        .stand-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px 20px 20px;
+            border-radius: 0 0 25px 25px;
+        }
+        
+        .back-btn {
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        
+        .stand-info {
+            text-align: center;
+        }
+        
+        .stand-logo {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .stand-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .stand-desc {
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        
+        .stand-stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-size: 0.9rem;
+        }
+        
+        /* Menu Section */
+        .menu-section {
+            padding: 20px;
+        }
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+        }
+        
+        .menu-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+        
+        .menu-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .menu-image {
+            height: 150px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        
+        .menu-info {
+            padding: 15px;
+        }
+        
+        .menu-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .menu-desc {
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        
+        .menu-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .menu-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .add-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        
+        .add-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .add-btn:active {
+            transform: scale(0.95);
+        }
+        
+        /* Floating Cart Button */
+        .floating-cart {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .floating-cart:hover {
+            transform: scale(1.1);
+        }
+        
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff6b6b;
+            color: white;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 150px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            z-index: 1000;
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateX(-50%) translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stand-header">
+        <div class="back-btn" onclick="history.back()">←</div>
+        <div class="stand-info">
+            <div class="stand-logo" id="standLogo">🍜</div>
+            <div class="stand-name" id="standName">Ramen House</div>
+            <div class="stand-desc" id="standDesc">Authentic Japanese Ramen</div>
+            <div class="stand-stats">
+                <span>⭐ 4.8</span>
+                <span>🕐 15-20 min</span>
+                <span>🚚 Free Delivery</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="menu-section">
+        <div class="menu-grid" id="menuGrid">
+            <!-- Menu items will be loaded here -->
+        </div>
+    </div>
+    
+    <div class="floating-cart" onclick="location.href='keranjang.html'">
+        🛒
+        <div class="cart-badge" id="cartBadge">0</div>
+    </div>
+    
+    <script>
+        // Sample menu data
+        const menuData = {
+            1: [
+                { id: 1, name: "Tonkotsu Ramen", desc: "Pork bone broth with chashu", price: 45000, icon: "🍜", available: true },
+                { id: 2, name: "Shoyu Ramen", desc: "Soy sauce based broth", price: 40000, icon: "🍜", available: true },
+                { id: 3, name: "Miso Ramen", desc: "Rich miso broth", price: 42000, icon: "🍜", available: true },
+                { id: 4, name: "Gyoza", desc: "Japanese dumplings", price: 25000, icon: "🥟", available: true }
+            ],
+            2: [
+                { id: 5, name: "Nasi Campur", desc: "Mixed rice with various sides", price: 35000, icon: "🍚", available: true },
+                { id: 6, name: "Babi Guling", desc: "Suckling pig special", price: 50000, icon: "🐖", available: true },
+                { id: 7, name: "Lawar", desc: "Mixed vegetables with meat", price: 20000, icon: "🥗", available: true }
+            ],
+            3: [
+                { id: 8, name: "Cappuccino", desc: "Rich and creamy", price: 25000, icon: "☕", available: true },
+                { id: 9, name: "Latte", desc: "Smooth espresso with milk", price: 27000, icon: "☕", available: true },
+                { id: 10, name: "Croissant", desc: "Butter pastry", price: 15000, icon: "🥐", available: true }
+            ]
+        };
+        
+        // Get stand ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const standId = urlParams.get('id') || '1';
+        
+        // Load menu items
+        function loadMenu() {
+            const menuItems = menuData[standId] || [];
+            const menuGrid = document.getElementById('menuGrid');
+            
+            menuGrid.innerHTML = menuItems.map(item => `
+                <div class="menu-card">
+                    <div class="menu-image">${item.icon}</div>
+                    <div class="menu-info">
+                        <div class="menu-name">${item.name}</div>
+                        <div class="menu-desc">${item.desc}</div>
+                        <div class="menu-footer">
+                            <div class="menu-price">Rp ${item.price.toLocaleString()}</div>
+                            <button class="add-btn" onclick="addToCart(${item.id}, '${item.name}', ${item.price}, '${item.icon}')">Add</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Add to cart
+        function addToCart(id, name, price, icon) {
+            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            
+            // Check if item already in cart
+            const existingItem = cart.find(item => item.id === id);
+            
+            if(existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: id,
+                    name: name,
+                    price: price,
+                    icon: icon,
+                    quantity: 1,
+                    standId: standId
+                });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartBadge();
+            showToast(`Added ${name} to cart!`);
+        }
+        
+        // Update cart badge
+        function updateCartBadge() {
+            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartBadge').textContent = totalItems;
+        }
+        
+        // Show toast notification
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 2000);
+        }
+        
+        // Initialize
+        loadMenu();
+        updateCartBadge();
+    </script>
+</body>
+</html>

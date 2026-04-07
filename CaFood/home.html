@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>CaFood - Home</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            padding-bottom: 70px;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 0 0 25px 25px;
+            position: relative;
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.5rem;
+            background: rgba(255,255,255,0.2);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .cart-icon:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff6b6b;
+            color: white;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .welcome-text {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        /* Search Bar */
+        .search-bar {
+            background: white;
+            border-radius: 30px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .search-bar span {
+            font-size: 1.1rem;
+        }
+        
+        .search-bar input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            background: transparent;
+        }
+        
+        .search-bar input::placeholder {
+            color: #999;
+        }
+        
+        /* Categories */
+        .categories {
+            padding: 20px;
+            background: white;
+            margin: -15px 15px 0 15px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .section-title a {
+            font-size: 0.8rem;
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .category-list {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            scrollbar-width: thin;
+            padding-bottom: 5px;
+        }
+        
+        .category-list::-webkit-scrollbar {
+            height: 4px;
+        }
+        
+        .category-list::-webkit-scrollbar-track {
+            background: #f0f0f0;
+            border-radius: 10px;
+        }
+        
+        .category-list::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
+        }
+        
+        .category-item {
+            text-align: center;
+            min-width: 70px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .category-item:hover {
+            transform: translateY(-3px);
+        }
+        
+        .category-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea15, #764ba215);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            transition: all 0.3s;
+        }
+        
+        .category-item.active .category-icon {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .category-name {
+            font-size: 0.75rem;
+            color: #666;
+        }
+        
+        .category-item.active .category-name {
+            color: #667eea;
+            font-weight: 500;
+        }
+        
+        /* Stand Container */
+        .stands-container {
+            padding: 20px;
+        }
+        
+        /* Stand Card */
+        .stand-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .stand-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .stand-banner {
+            height: 130px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stand-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(102,126,234,0.3), rgba(118,75,162,0.3));
+        }
+        
+        .stand-logo {
+            position: absolute;
+            bottom: -30px;
+            left: 20px;
+            width: 70px;
+            height: 70px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            z-index: 2;
+            border: 3px solid white;
+        }
+        
+        .stand-info {
+            padding: 20px;
+            padding-top: 35px;
+        }
+        
+        .stand-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .stand-desc {
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        
+        .stand-stats {
+            display: flex;
+            gap: 15px;
+            color: #999;
+            font-size: 0.75rem;
+            flex-wrap: wrap;
+        }
+        
+        .stand-stats span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        /* Menu Preview */
+        .menu-preview {
+            padding: 0 20px 15px 20px;
+            border-top: 1px solid #f0f0f0;
+            margin-top: 5px;
+        }
+        
+        .preview-title {
+            font-size: 0.8rem;
+            color: #999;
+            margin-bottom: 10px;
+            padding-top: 12px;
+        }
+        
+        .preview-items {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+        }
+        
+        .preview-item {
+            text-align: center;
+            min-width: 70px;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+        
+        .preview-item:hover {
+            background: #f0f0f0;
+        }
+        
+        .preview-icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .preview-name {
+            font-size: 0.7rem;
+            color: #666;
+        }
+        
+        .preview-price {
+            font-size: 0.65rem;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #f0f0f0;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0 20px;
+            box-shadow: 0 -2px 15px rgba(0,0,0,0.08);
+            border-radius: 20px 20px 0 0;
+            z-index: 100;
+        }
+        
+        .nav-item {
+            text-align: center;
+            cursor: pointer;
+            color: #999;
+            transition: all 0.3s;
+            flex: 1;
+        }
+        
+        .nav-item.active {
+            color: #667eea;
+        }
+        
+        .nav-icon {
+            font-size: 1.5rem;
+            margin-bottom: 4px;
+        }
+        
+        .nav-label {
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            z-index: 1000;
+            animation: slideUp 0.3s ease-out;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateX(-50%) translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: #999;
+        }
+        
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .stands-container {
+                padding: 15px;
+            }
+            
+            .stand-logo {
+                width: 60px;
+                height: 60px;
+                font-size: 1.6rem;
+                bottom: -25px;
+            }
+            
+            .stand-info {
+                padding-top: 30px;
+            }
+            
+            .stand-name {
+                font-size: 1rem;
+            }
+        }
+        
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 15px rgba(102,126,234,0.4);
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 99;
+        }
+        
+        .fab:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-top">
+            <div class="logo">
+                🍜 <span>CaFood</span>
+            </div>
+            <div class="cart-icon" onclick="location.href='keranjang.html'">
+                🛒
+                <span class="cart-count" id="cartCount">0</span>
+            </div>
+        </div>
+        <div class="welcome-text" id="welcomeText">
+            Where do you want to eat? 🍽️
+        </div>
+        <div class="search-bar">
+            <span>🔍</span>
+            <input type="text" id="searchInput" placeholder="Search stand or menu...">
+        </div>
+    </div>
+    
+    <div class="categories">
+        <div class="section-title">
+            Categories
+            <a href="#">See All →</a>
+        </div>
+        <div class="category-list" id="categoryList">
+            <div class="category-item active" data-category="all">
+                <div class="category-icon">🍽️</div>
+                <div class="category-name">All</div>
+            </div>
+            <div class="category-item" data-category="noodles">
+                <div class="category-icon">🍜</div>
+                <div class="category-name">Noodles</div>
+            </div>
+            <div class="category-item" data-category="rice">
+                <div class="category-icon">🍚</div>
+                <div class="category-name">Rice</div>
+            </div>
+            <div class="category-item" data-category="drinks">
+                <div class="category-icon">🥤</div>
+                <div class="category-name">Drinks</div>
+            </div>
+            <div class="category-item" data-category="dessert">
+                <div class="category-icon">🍰</div>
+                <div class="category-name">Dessert</div>
+            </div>
+            <div class="category-item" data-category="fastfood">
+                <div class="category-icon">🍕</div>
+                <div class="category-name">Fast Food</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="stands-container" id="standsContainer">
+        <div class="section-title">
+            Popular Stands
+            <span style="font-size:0.7rem; color:#999;">🔥 Recommended for you</span>
+        </div>
+        <div id="standsList">
+            <!-- Stands will be loaded here -->
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                Loading delicious food...
+            </div>
+        </div>
+    </div>
+    
+    <div class="fab" onclick="scrollToTop()">
+        ↑
+    </div>
+    
+    <div class="bottom-nav">
+        <div class="nav-item active" data-nav="home">
+            <div class="nav-icon">🏠</div>
+            <div class="nav-label">Home</div>
+        </div>
+        <div class="nav-item" data-nav="orders" onclick="location.href='status-pesanan.html'">
+            <div class="nav-icon">📦</div>
+            <div class="nav-label">Orders</div>
+        </div>
+        <div class="nav-item" data-nav="cart" onclick="location.href='keranjang.html'">
+            <div class="nav-icon">🛒</div>
+            <div class="nav-label">Cart</div>
+        </div>
+        <div class="nav-item" data-nav="queue" onclick="location.href='status-pesanan.html'">
+            <div class="nav-icon">⏱️</div>
+            <div class="nav-label">Queue</div>
+        </div>
+        <div class="nav-item" data-nav="profile" onclick="location.href='#'">
+            <div class="nav-icon">👤</div>
+            <div class="nav-label">Profile</div>
+        </div>
+    </div>
+    
+    <script>
+        // Sample Data - Complete Stands and Menus
+        const standsData = [
+            {
+                id: 1,
+                name: "Ramen House",
+                logo: "🍜",
+                description: "Authentic Japanese Ramen with rich broth",
+                rating: 4.8,
+                time: "15-20 min",
+                delivery: "Free",
+                category: "noodles",
+                isOpen: true,
+                popular: true,
+                menus: [
+                    { id: 1, name: "Tonkotsu Ramen", price: 45000, icon: "🍜", popular: true },
+                    { id: 2, name: "Shoyu Ramen", price: 40000, icon: "🍜", popular: true },
+                    { id: 3, name: "Miso Ramen", price: 42000, icon: "🍜", popular: false },
+                    { id: 4, name: "Gyoza", price: 25000, icon: "🥟", popular: true }
+                ]
+            },
+            {
+                id: 2,
+                name: "Nasi Campur Bali",
+                logo: "🍚",
+                description: "Traditional Balinese Cuisine with rich spices",
+                rating: 4.9,
+                time: "10-15 min",
+                delivery: "Free",
+                category: "rice",
+                isOpen: true,
+                popular: true,
+                menus: [
+                    { id: 5, name: "Nasi Campur", price: 35000, icon: "🍚", popular: true },
+                    { id: 6, name: "Babi Guling", price: 50000, icon: "🐖", popular: true },
+                    { id: 7, name: "Lawar", price: 20000, icon: "🥗", popular: false },
+                    { id: 8, name: "Sate Lilit", price: 30000, icon: "🍢", popular: true }
+                ]
+            },
+            {
+                id: 3,
+                name: "Coffee & Co",
+                logo: "☕",
+                description: "Premium Coffee & Artisan Pastries",
+                rating: 4.7,
+                time: "5-10 min",
+                delivery: "Free",
+                category: "drinks",
+                isOpen: true,
+                popular: true,
+                menus: [
+                    { id: 9, name: "Cappuccino", price: 25000, icon: "☕", popular: true },
+                    { id: 10, name: "Latte", price: 27000, icon: "☕", popular: true },
+                    { id: 11, name: "Croissant", price: 15000, icon: "🥐", popular: true },
+                    { id: 12, name: "Cheesecake", price: 32000, icon: "🍰", popular: false }
+                ]
+            },
+            {
+                id: 4,
+                name: "Sushi Master",
+                logo: "🍣",
+                description: "Fresh Japanese Sushi & Rolls",
+                rating: 4.6,
+                time: "20-25 min",
+                delivery: "Free",
+                category: "fastfood",
+                isOpen: true,
+                popular: false,
+                menus: [
+                    { id: 13, name: "California Roll", price: 45000, icon: "🍣", popular: true },
+                    { id: 14, name: "Nigiri Set", price: 55000, icon: "🍣", popular: true },
+                    { id: 15, name: "Sashimi", price: 65000, icon: "🐟", popular: false }
+                ]
+            },
+            {
+                id: 5,
+                name: "Sweet Dessert",
+                logo: "🍰",
+                description: "Delicious Desserts & Sweet Treats",
+                rating: 4.8,
+                time: "10-15 min",
+                delivery: "Free",
+                category: "dessert",
+                isOpen: true,
+                popular: false,
+                menus: [
+                    { id: 16, name: "Ice Cream", price: 18000, icon: "🍦", popular: true },
+                    { id: 17, name: "Pancake", price: 22000, icon: "🥞", popular: true },
+                    { id: 18, name: "Bubble Tea", price: 20000, icon: "🧋", popular: true }
+                ]
+            }
+        ];
+        
+        let currentCategory = "all";
+        let searchQuery = "";
+        
+        // Load stands on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadStands();
+            updateCartCount();
+            
+            // Set welcome message based on time
+            const hour = new Date().getHours();
+            const welcomeText = document.getElementById('welcomeText');
+            if (hour < 12) welcomeText.innerHTML = "Good Morning! ☀️<br>Where do you want to eat?";
+            else if (hour < 18) welcomeText.innerHTML = "Good Afternoon! 🌤️<br>Where do you want to eat?";
+            else welcomeText.innerHTML = "Good Evening! 🌙<br>Where do you want to eat?";
+            
+            // Search functionality
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                searchQuery = e.target.value.toLowerCase();
+                loadStands();
+            });
+        });
+        
+        // Category click handlers
+        document.querySelectorAll('.category-item').forEach(cat => {
+            cat.addEventListener('click', function() {
+                document.querySelectorAll('.category-item').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                currentCategory = this.dataset.category;
+                loadStands();
+            });
+        });
+        
+        function loadStands() {
+            let filteredStands = [...standsData];
+            
+            // Filter by category
+            if (currentCategory !== "all") {
+                filteredStands = filteredStands.filter(stand => stand.category === currentCategory);
+            }
+            
+            // Filter by search
+            if (searchQuery) {
+                filteredStands = filteredStands.filter(stand => 
+                    stand.name.toLowerCase().includes(searchQuery) ||
+                    stand.description.toLowerCase().includes(searchQuery) ||
+                    stand.menus.some(menu => menu.name.toLowerCase().includes(searchQuery))
+                );
+            }
+            
+            // Sort: popular first
+            filteredStands.sort((a, b) => (b.popular ? 1 : 0) - (a.popular ? 1 : 0));
+            
+            renderStands(filteredStands);
+        }
+        
+        function renderStands(stands) {
+            const container = document.getElementById('standsList');
+            
+            if (stands.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🔍</div>
+                        <div>No stands found</div>
+                        <div style="font-size:0.8rem; margin-top:8px;">Try searching for something else</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = stands.map(stand => `
+                <div class="stand-card" onclick="goToStand(${stand.id})">
+                    <div class="stand-banner">
+                        <div class="stand-logo">${stand.logo}</div>
+                    </div>
+                    <div class="stand-info">
+                        <div class="stand-name">${stand.name}</div>
+                        <div class="stand-desc">${stand.description}</div>
+                        <div class="stand-stats">
+                            <span>⭐ ${stand.rating}</span>
+                            <span>🕐 ${stand.time}</span>
+                            <span>🚚 ${stand.delivery}</span>
+                            ${stand.isOpen ? '<span style="color:#48bb78;">● Open</span>' : '<span style="color:#f56565;">● Closed</span>'}
+                        </div>
+                    </div>
+                    <div class="menu-preview">
+                        <div class="preview-title">Popular Menu</div>
+                        <div class="preview-items">
+                            ${stand.menus.filter(m => m.popular).slice(0, 3).map(menu => `
+                                <div class="preview-item" onclick="event.stopPropagation(); goToMenu(${menu.id}, ${stand.id})">
+                                    <div class="preview-icon">${menu.icon}</div>
+                                    <div class="preview-name">${menu.name}</div>
+                                    <div class="preview-price">Rp ${menu.price.toLocaleString()}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Navigation functions
+        function goToStand(standId) {
+            window.location.href = `menu-stand.html?id=${standId}`;
+        }
+        
+        function goToMenu(menuId, standId) {
+            window.location.href = `detail-menu.html?id=${menuId}&stand=${standId}`;
+        }
+        
+        // Add to cart function (can be called from preview)
+        function quickAddToCart(menu, standId, event) {
+            event.stopPropagation();
+            
+            const cartItem = {
+                id: menu.id,
+                name: menu.name,
+                price: menu.price,
+                icon: menu.icon,
+                quantity: 1,
+                standId: standId,
+                standName: standsData.find(s => s.id === standId)?.name || '',
+                options: {
+                    spice: 'normal',
+                    size: 'regular',
+                    notes: ''
+                }
+            };
+            
+            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const existingIndex = cart.findIndex(item => item.id === menu.id);
+            
+            if (existingIndex !== -1) {
+                cart[existingIndex].quantity += 1;
+            } else {
+                cart.push(cartItem);
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            showToast(`${menu.name} added to cart!`);
+        }
+        
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const cartCount = document.getElementById('cartCount');
+            if (cartCount) {
+                cartCount.textContent = totalItems;
+                cartCount.style.display = totalItems > 0 ? 'flex' : 'none';
+            }
+        }
+        
+        function showToast(message) {
+            // Remove existing toast
+            const existingToast = document.querySelector('.toast');
+            if (existingToast) existingToast.remove();
+            
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 2000);
+        }
+        
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Update cart count when page becomes visible
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) {
+                updateCartCount();
+            }
+        });
+        
+        // Initial cart count
+        updateCartCount();
+        
+        // Add active class to current nav
+        const currentPath = window.location.pathname.split('/').pop();
+        document.querySelectorAll('.nav-item').forEach(nav => {
+            if (currentPath === 'home.html' || currentPath === '' || currentPath === 'index.html') {
+                if (nav.dataset.nav === 'home') nav.classList.add('active');
+                else nav.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

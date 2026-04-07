@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Menu - CaFood</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+        }
+        
+        /* Header Image */
+        .menu-header {
+            position: relative;
+            height: 300px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            overflow: hidden;
+        }
+        
+        .menu-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+        }
+        
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s;
+        }
+        
+        .back-btn:hover {
+            background: rgba(0,0,0,0.7);
+        }
+        
+        /* Menu Content */
+        .menu-content {
+            background: white;
+            border-radius: 30px 30px 0 0;
+            margin-top: -30px;
+            position: relative;
+            z-index: 5;
+            padding: 25px;
+        }
+        
+        .menu-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .stand-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .stand-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .stand-name {
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #ffc107;
+        }
+        
+        .price-section {
+            background: linear-gradient(135deg, #667eea10, #764ba210);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .price-label {
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+        }
+        
+        .price-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .price-value small {
+            font-size: 0.9rem;
+            font-weight: normal;
+            color: #999;
+        }
+        
+        .description {
+            margin-bottom: 25px;
+        }
+        
+        .description h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .description p {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        /* Options */
+        .options-section {
+            margin-bottom: 25px;
+        }
+        
+        .options-title {
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #333;
+        }
+        
+        .option-group {
+            margin-bottom: 15px;
+        }
+        
+        .option-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .option-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .option-btn {
+            padding: 8px 16px;
+            border: 1px solid #e0e0e0;
+            background: white;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.85rem;
+        }
+        
+        .option-btn.selected {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: transparent;
+        }
+        
+        /* Quantity Selector */
+        .quantity-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+        
+        .quantity-label {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .qty-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid #e0e0e0;
+            background: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .qty-btn:hover {
+            background: #f0f0f0;
+        }
+        
+        .quantity-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        /* Note */
+        .note-section {
+            margin-bottom: 25px;
+        }
+        
+        .note-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            font-family: inherit;
+            resize: vertical;
+        }
+        
+        .note-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        /* Add to Cart Button */
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .add-to-cart-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .add-to-cart-btn:active {
+            transform: translateY(0);
+        }
+        
+        /* Recommended Items */
+        .recommended-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .recommended-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .recommended-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+        }
+        
+        .recommended-item {
+            background: white;
+            border: 1px solid #f0f0f0;
+            border-radius: 12px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .recommended-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .rec-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+        
+        .rec-name {
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .rec-price {
+            font-size: 0.8rem;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            z-index: 1000;
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateX(-50%) translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .menu-header {
+                height: 250px;
+            }
+            
+            .menu-content {
+                padding: 20px;
+            }
+            
+            .menu-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="menu-header">
+        <div class="back-btn" onclick="history.back()">←</div>
+        <div class="menu-image" style="display: flex; align-items: center; justify-content: center; font-size: 5rem;">
+            🍜
+        </div>
+    </div>
+    
+    <div class="menu-content" id="menuContent">
+        <!-- Content loaded dynamically -->
+    </div>
+    
+    <script>
+        // Sample menu data
+        const menuDatabase = {
+            1: {
+                id: 1,
+                name: "Tonkotsu Ramen",
+                standId: 1,
+                standName: "Ramen House",
+                standLogo: "🍜",
+                rating: 4.8,
+                price: 45000,
+                description: "Ramen dengan kuah kaldu tulang babi yang kaya rasa, dipadukan dengan chashu yang lembut, telur ajitsuke, dan mie kenyal khas Jepang. Disajikan dengan nori dan daun bawang segar.",
+                ingredients: ["Kaldu Tulang Babi", "Mie Ramen", "Chashu", "Telur Ajitsuke", "Nori", "Daun Bawang"],
+                image: "🍜",
+                popular: true,
+                prepTime: 15
+            },
+            2: {
+                id: 2,
+                name: "Shoyu Ramen",
+                standId: 1,
+                standName: "Ramen House",
+                standLogo: "🍜",
+                rating: 4.7,
+                price: 40000,
+                description: "Ramen dengan kuah berbasis kecap asin yang gurih, dilengkapi dengan chashu, bambu rebung, dan nori.",
+                ingredients: ["Kuah Shoyu", "Mie Ramen", "Chashu", "Menma", "Nori"],
+                image: "🍜",
+                popular: false,
+                prepTime: 12
+            },
+            3: {
+                id: 3,
+                name: "Miso Ramen",
+                standId: 1,
+                standName: "Ramen House",
+                standLogo: "🍜",
+                rating: 4.9,
+                price: 42000,
+                description: "Ramen dengan kuah miso yang kaya dan creamy, memberikan rasa umami yang mendalam.",
+                ingredients: ["Kuah Miso", "Mie Ramen", "Chashu", "Jagung", "Mentega"],
+                image: "🍜",
+                popular: true,
+                prepTime: 15
+            }
+        };
+        
+        // Get menu ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const menuId = parseInt(urlParams.get('id')) || 1;
+        const menu = menuDatabase[menuId];
+        
+        let quantity = 1;
+        let selectedSpice = 'normal';
+        let selectedSize = 'regular';
+        let notes = '';
+        
+        function renderMenu() {
+            const container = document.getElementById('menuContent');
+            
+            container.innerHTML = `
+                <div class="menu-title">${menu.name}</div>
+                
+                <div class="stand-info">
+                    <div class="stand-logo">${menu.standLogo}</div>
+                    <div>
+                        <div class="stand-name">${menu.standName}</div>
+                        <div class="rating">⭐ ${menu.rating} • ${menu.prepTime} mins</div>
+                    </div>
+                </div>
+                
+                <div class="price-section">
+                    <div class="price-label">Price</div>
+                    <div class="price-value">
+                        Rp ${menu.price.toLocaleString()}
+                        <small>/portion</small>
+                    </div>
+                </div>
+                
+                <div class="description">
+                    <h3>Description</h3>
+                    <p>${menu.description}</p>
+                </div>
+                
+                <div class="options-section">
+                    <div class="options-title">Customize your order</div>
+                    
+                    <div class="option-group">
+                        <label class="option-label">Spice Level</label>
+                        <div class="option-buttons" id="spiceOptions">
+                            ${['mild', 'normal', 'hot', 'extra hot'].map(level => `
+                                <button class="option-btn ${selectedSpice === level ? 'selected' : ''}" data-spice="${level}">
+                                    ${level.charAt(0).toUpperCase() + level.slice(1)}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="option-group">
+                        <label class="option-label">Size</label>
+                        <div class="option-buttons" id="sizeOptions">
+                            ${['small', 'regular', 'large'].map(size => `
+                                <button class="option-btn ${selectedSize === size ? 'selected' : ''}" data-size="${size}">
+                                    ${size.charAt(0).toUpperCase() + size.slice(1)} ${size === 'regular' ? '(Recommended)' : ''}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="quantity-section">
+                    <span class="quantity-label">Quantity</span>
+                    <div class="quantity-control">
+                        <button class="qty-btn" id="decreaseQty">-</button>
+                        <span class="quantity-value" id="quantityValue">${quantity}</span>
+                        <button class="qty-btn" id="increaseQty">+</button>
+                    </div>
+                </div>
+                
+                <div class="note-section">
+                    <label class="option-label">Special Instructions (Optional)</label>
+                    <textarea class="note-input" id="noteInput" rows="2" placeholder="e.g., less salt, no onion, extra spicy..."></textarea>
+                </div>
+                
+                <button class="add-to-cart-btn" id="addToCartBtn">
+                    🛒 Add to Cart • Rp ${(menu.price * quantity).toLocaleString()}
+                </button>
+                
+                <div class="recommended-section">
+                    <div class="recommended-title">You might also like</div>
+                    <div class="recommended-grid" id="recommendedGrid">
+                        ${getRecommendedItems()}
+                    </div>
+                </div>
+            `;
+            
+            // Attach event listeners
+            attachEventListeners();
+        }
+        
+        function getRecommendedItems() {
+            const recommended = Object.values(menuDatabase).filter(m => m.id !== menu.id).slice(0, 4);
+            return recommended.map(item => `
+                <div class="recommended-item" onclick="location.href='detail-menu.html?id=${item.id}'">
+                    <div class="rec-icon">${item.image}</div>
+                    <div class="rec-name">${item.name}</div>
+                    <div class="rec-price">Rp ${item.price.toLocaleString()}</div>
+                </div>
+            `).join('');
+        }
+        
+        function attachEventListeners() {
+            // Spice options
+            document.querySelectorAll('[data-spice]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('[data-spice]').forEach(b => b.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedSpice = this.dataset.spice;
+                });
+            });
+            
+            // Size options
+            document.querySelectorAll('[data-size]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('[data-size]').forEach(b => b.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedSize = this.dataset.size;
+                    updatePrice();
+                });
+            });
+            
+            // Quantity
+            document.getElementById('decreaseQty').addEventListener('click', () => {
+                if (quantity > 1) {
+                    quantity--;
+                    document.getElementById('quantityValue').textContent = quantity;
+                    updatePrice();
+                }
+            });
+            
+            document.getElementById('increaseQty').addEventListener('click', () => {
+                quantity++;
+                document.getElementById('quantityValue').textContent = quantity;
+                updatePrice();
+            });
+            
+            // Note
+            document.getElementById('noteInput').addEventListener('input', (e) => {
+                notes = e.target.value;
+            });
+            
+            // Add to cart
+            document.getElementById('addToCartBtn').addEventListener('click', addToCart);
+        }
+        
+        function updatePrice() {
+            let price = menu.price;
+            if (selectedSize === 'large') price = menu.price * 1.3;
+            if (selectedSize === 'small') price = menu.price * 0.7;
+            
+            const total = Math.round(price * quantity);
+            const btn = document.getElementById('addToCartBtn');
+            if (btn) {
+                btn.innerHTML = `🛒 Add to Cart • Rp ${total.toLocaleString()}`;
+            }
+        }
+        
+        function addToCart() {
+            let price = menu.price;
+            if (selectedSize === 'large') price = menu.price * 1.3;
+            if (selectedSize === 'small') price = menu.price * 0.7;
+            price = Math.round(price);
+            
+            const cartItem = {
+                id: menu.id,
+                name: menu.name,
+                price: price,
+                icon: menu.image,
+                quantity: quantity,
+                standId: menu.standId,
+                standName: menu.standName,
+                options: {
+                    spice: selectedSpice,
+                    size: selectedSize,
+                    notes: notes
+                }
+            };
+            
+            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const existingIndex = cart.findIndex(item => item.id === menu.id && item.options?.size === selectedSize);
+            
+            if (existingIndex !== -1) {
+                cart[existingIndex].quantity += quantity;
+            } else {
+                cart.push(cartItem);
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            showToast(`${menu.name} added to cart!`);
+            
+            // Update cart badge
+            updateCartBadge();
+        }
+        
+        function updateCartBadge() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const badges = document.querySelectorAll('.cart-badge, #cartCount');
+            badges.forEach(badge => {
+                if (badge) badge.textContent = totalItems;
+            });
+        }
+        
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2000);
+        }
+        
+        renderMenu();
+    </script>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Status - CaFood</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .status-container {
+            padding: 20px;
+        }
+        
+        .queue-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .queue-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #667eea;
+            margin: 10px 0;
+        }
+        
+        .queue-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .order-number {
+            color: #999;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+        
+        .status-timeline {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .timeline-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .timeline-step:not(:last-child):before {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 50px;
+            width: 2px;
+            height: 40px;
+            background: #e0e0e0;
+        }
+        
+        .step-icon {
+            width: 48px;
+            height: 48px;
+            background: #f0f0f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            margin-right: 15px;
+            z-index: 1;
+        }
+        
+        .timeline-step.completed .step-icon {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .timeline-step.active .step-icon {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .step-info {
+            flex: 1;
+        }
+        
+        .step-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .step-time {
+            font-size: 0.8rem;
+            color: #999;
+        }
+        
+        .estimated-time {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .estimated-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+        
+        .estimated-value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .btn-home {
+            display: block;
+            text-align: center;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 12px;
+            margin-top: 20px;
+            font-weight: bold;
+            border: 1px solid #667eea;
+        }
+        
+        .refresh-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #667eea;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="title">Order Status</div>
+    </div>
+    
+    <div class="status-container" id="statusContainer">
+        <!-- Status content will be loaded here -->
+    </div>
+    
+    <div class="refresh-btn" onclick="loadStatus()">
+        🔄
+    </div>
+    
+    <script>
+        let currentOrder = null;
+        
+        function loadStatus() {
+            currentOrder = JSON.parse(localStorage.getItem('currentOrderStatus') || 'null');
+            
+            if(!currentOrder) {
+                // Check if there are any active orders
+                const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+                const activeOrder = orders.find(o => o.status !== 'completed' && o.status !== 'cancelled');
+                if(activeOrder) {
+                    currentOrder = activeOrder;
+                    localStorage.setItem('currentOrderStatus', JSON.stringify(currentOrder));
+                } else {
+                    window.location.href = 'home.html';
+                    return;
+                }
+            }
+            
+            renderStatus();
+        }
+        
+        function renderStatus() {
+            const container = document.getElementById('statusContainer');
+            const statusSteps = [
+                { id: 'pending', title: 'Order Received', icon: '📝', time: currentOrder.createdAt },
+                { id: 'confirmed', title: 'Confirmed', icon: '✅', time: '' },
+                { id: 'processing', title: 'Preparing', icon: '🍳', time: '' },
+                { id: 'ready', title: 'Ready to Pickup', icon: '🛎️', time: '' },
+                { id: 'completed', title: 'Completed', icon: '🎉', time: '' }
+            ];
+            
+            let currentStepIndex = statusSteps.findIndex(step => step.id === currentOrder.status);
+            if(currentStepIndex === -1) currentStepIndex = 0;
+            
+            container.innerHTML = `
+                <div class="queue-card">
+                    <div class="queue-label">Your Queue Number</div>
+                    <div class="queue-number">#${currentOrder.queueNumber}</div>
+                    <div class="order-number">Order: ${currentOrder.orderNumber}</div>
+                </div>
+                
+                <div class="status-timeline">
+                    ${statusSteps.map((step, index) => `
+                        <div class="timeline-step ${index <= currentStepIndex ? 'completed' : ''} ${index === currentStepIndex ? 'active' : ''}">
+                            <div class="step-icon">${step.icon}</div>
+                            <div class="step-info">
+                                <div class="step-title">${step.title}</div>
+                                <div class="step-time">${step.time ? new Date(step.time).toLocaleTimeString() : ''}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div class="estimated-time">
+                    <div class="estimated-label">Estimated Waiting Time</div>
+                    <div class="estimated-value">${currentOrder.estimatedTime} minutes</div>
+                </div>
+                
+                <a href="home.html" class="btn-home">Back to Home</a>
+            `;
+        }
+        
+        // Auto refresh every 10 seconds
+        loadStatus();
+        setInterval(() => {
+            // In real app, this would fetch from server
+            // For demo, we'll just reload from localStorage
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            const updatedOrder = orders.find(o => o.orderNumber === currentOrder?.orderNumber);
+            if(updatedOrder && updatedOrder.status !== currentOrder?.status) {
+                currentOrder = updatedOrder;
+                localStorage.setItem('currentOrderStatus', JSON.stringify(currentOrder));
+                renderStatus();
+            }
+        }, 10000);
+    </script>
+</body>
+</html>
