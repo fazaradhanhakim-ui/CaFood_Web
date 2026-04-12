@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail Menu - CaFood</title>
+    <title>CaFood • Detail Stand & Menu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,628 +14,764 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: #f5f5f5;
+            font-family: 'Inter', sans-serif;
+            background: #f5f0ff;
+            padding-bottom: 100px;
         }
         
-        /* Header Image */
-        .menu-header {
+        /* Header Stand */
+        .stand-header {
             position: relative;
-            height: 300px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            height: 280px;
+            background: linear-gradient(135deg, #6d28d9, #a855f7);
             overflow: hidden;
         }
         
-        .menu-image {
+        .stand-cover {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.8;
+            opacity: 0.7;
         }
         
         .back-btn {
             position: absolute;
             top: 20px;
             left: 20px;
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             cursor: pointer;
             z-index: 10;
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
         
         .back-btn:hover {
             background: rgba(0,0,0,0.7);
+            transform: scale(1.05);
         }
         
-        /* Menu Content */
-        .menu-content {
+        /* Stand Info */
+        .stand-info-card {
             background: white;
-            border-radius: 30px 30px 0 0;
+            border-radius: 36px 36px 0 0;
             margin-top: -30px;
             position: relative;
             z-index: 5;
-            padding: 25px;
+            padding: 24px 24px 16px 24px;
         }
         
-        .menu-title {
+        .stand-title {
             font-size: 1.8rem;
-            font-weight: bold;
-            color: #333;
+            font-weight: 800;
+            color: #1e1a3a;
             margin-bottom: 8px;
         }
         
-        .stand-info {
+        .stand-meta {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #f0f0f0;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #f0eaff;
         }
         
-        .stand-logo {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 50%;
+        .stand-rating {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #f5f3ff;
+            padding: 6px 12px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #6d28d9;
+        }
+        
+        .stand-time {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #7b6cb0;
+            font-size: 0.8rem;
+        }
+        
+        .stand-desc {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+        
+        /* Menu Section */
+        .menu-section {
+            background: white;
+            padding: 8px 24px 24px 24px;
+        }
+        
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1e1a3a;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .menu-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        
+        .menu-item-card {
+            background: #faf8ff;
+            border-radius: 20px;
+            padding: 16px;
+            border: 1px solid #f0eaff;
+            transition: all 0.2s;
+            display: flex;
+            gap: 16px;
+        }
+        
+        .menu-item-card:hover {
+            border-color: #c4b5fd;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        /* Menu Image */
+        .menu-image-container {
+            width: 100px;
+            height: 100px;
+            flex-shrink: 0;
+            border-radius: 16px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #e2d9ff, #f0eaff);
+        }
+        
+        .menu-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .menu-image-fallback {
+            width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #e2d9ff, #f0eaff);
         }
         
-        .stand-name {
-            font-weight: 600;
-            color: #667eea;
+        .menu-info {
+            flex: 1;
         }
         
-        .rating {
+        .menu-item-header {
             display: flex;
-            align-items: center;
-            gap: 5px;
-            color: #ffc107;
-        }
-        
-        .price-section {
-            background: linear-gradient(135deg, #667eea10, #764ba210);
-            padding: 15px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .price-label {
-            color: #666;
-            font-size: 0.85rem;
-            margin-bottom: 5px;
-        }
-        
-        .price-value {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #667eea;
-        }
-        
-        .price-value small {
-            font-size: 0.9rem;
-            font-weight: normal;
-            color: #999;
-        }
-        
-        .description {
-            margin-bottom: 25px;
-        }
-        
-        .description h3 {
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        
-        .description p {
-            color: #666;
-            line-height: 1.6;
-        }
-        
-        /* Options */
-        .options-section {
-            margin-bottom: 25px;
-        }
-        
-        .options-title {
-            font-weight: bold;
-            margin-bottom: 12px;
-            color: #333;
-        }
-        
-        .option-group {
-            margin-bottom: 15px;
-        }
-        
-        .option-label {
-            font-size: 0.9rem;
-            color: #666;
+            justify-content: space-between;
+            align-items: flex-start;
             margin-bottom: 8px;
-            display: block;
-        }
-        
-        .option-buttons {
-            display: flex;
             flex-wrap: wrap;
-            gap: 10px;
         }
         
-        .option-btn {
-            padding: 8px 16px;
-            border: 1px solid #e0e0e0;
-            background: white;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.85rem;
+        .menu-item-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1e1a3a;
         }
         
-        .option-btn.selected {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border-color: transparent;
+        .menu-item-price {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #6d28d9;
         }
         
-        /* Quantity Selector */
-        .quantity-section {
+        .menu-item-desc {
+            font-size: 0.8rem;
+            color: #7b6cb0;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+        
+        .menu-item-actions {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 25px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 15px;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 8px;
         }
         
-        .quantity-label {
-            font-weight: bold;
-            color: #333;
-        }
-        
-        .quantity-control {
+        .quantity-selector {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
+            background: white;
+            padding: 6px 12px;
+            border-radius: 40px;
+            border: 1px solid #e2d9ff;
         }
         
         .qty-btn {
-            width: 36px;
-            height: 36px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
-            border: 1px solid #e0e0e0;
-            background: white;
-            font-size: 1.2rem;
+            border: none;
+            background: #f0eaff;
             cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
             transition: all 0.2s;
         }
         
         .qty-btn:hover {
-            background: #f0f0f0;
+            background: #6d28d9;
+            color: white;
         }
         
-        .quantity-value {
-            font-size: 1.2rem;
-            font-weight: bold;
-            min-width: 40px;
+        .qty-value {
+            font-weight: 600;
+            min-width: 28px;
             text-align: center;
         }
         
-        /* Note */
-        .note-section {
-            margin-bottom: 25px;
-        }
-        
-        .note-input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #e0e0e0;
-            border-radius: 12px;
-            font-family: inherit;
-            resize: vertical;
-        }
-        
-        .note-input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        /* Add to Cart Button */
-        .add-to-cart-btn {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+        .add-item-btn {
+            background: linear-gradient(135deg, #6d28d9, #a855f7);
             color: white;
             border: none;
-            border-radius: 15px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .add-to-cart-btn:hover {
-            transform: translateY(-2px);
-        }
-        
-        .add-to-cart-btn:active {
-            transform: translateY(0);
-        }
-        
-        /* Recommended Items */
-        .recommended-section {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #f0f0f0;
-        }
-        
-        .recommended-title {
-            font-size: 1.1rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-        
-        .recommended-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 12px;
-        }
-        
-        .recommended-item {
-            background: white;
-            border: 1px solid #f0f0f0;
-            border-radius: 12px;
-            padding: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-        }
-        
-        .recommended-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .rec-icon {
-            font-size: 2rem;
-            margin-bottom: 8px;
-        }
-        
-        .rec-name {
-            font-size: 0.85rem;
-            font-weight: 500;
-            margin-bottom: 5px;
-        }
-        
-        .rec-price {
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 600;
             font-size: 0.8rem;
-            color: #667eea;
-            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
         }
         
-        /* Toast */
+        .add-item-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(109,40,217,0.3);
+        }
+        
+        /* Cart Summary */
+        .cart-summary {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #f0eaff;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            z-index: 100;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+        }
+        
+        .cart-total {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+        
+        .cart-total-label {
+            font-size: 0.8rem;
+            color: #7b6cb0;
+        }
+        
+        .cart-total-value {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #6d28d9;
+        }
+        
+        .cart-items-count {
+            background: #f0eaff;
+            padding: 6px 12px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #6d28d9;
+        }
+        
+        .checkout-btn {
+            background: linear-gradient(135deg, #6d28d9, #a855f7);
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(109,40,217,0.3);
+        }
+        
+        .empty-cart {
+            color: #a29bbf;
+            font-size: 0.8rem;
+        }
+        
         .toast {
             position: fixed;
-            bottom: 30px;
+            bottom: 100px;
             left: 50%;
             transform: translateX(-50%);
-            background: #333;
+            background: #1e1a3a;
             color: white;
-            padding: 12px 24px;
-            border-radius: 30px;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 0.8rem;
             z-index: 1000;
-            animation: slideUp 0.3s ease-out;
+            animation: slideUp 0.3s ease;
         }
         
         @keyframes slideUp {
             from {
-                transform: translateX(-50%) translateY(100px);
                 opacity: 0;
+                transform: translateX(-50%) translateY(20px);
             }
             to {
-                transform: translateX(-50%) translateY(0);
                 opacity: 1;
+                transform: translateX(-50%) translateY(0);
             }
         }
         
-        /* Responsive */
         @media (max-width: 768px) {
-            .menu-header {
-                height: 250px;
-            }
-            
-            .menu-content {
-                padding: 20px;
-            }
-            
-            .menu-title {
-                font-size: 1.5rem;
-            }
+            .stand-header { height: 200px; }
+            .stand-title { font-size: 1.4rem; }
+            .cart-summary { flex-direction: column; text-align: center; }
+            .checkout-btn { width: 100%; }
+            .menu-item-card { flex-direction: column; }
+            .menu-image-container { width: 100%; height: 150px; }
         }
     </style>
 </head>
 <body>
-    <div class="menu-header">
+    <div class="stand-header">
         <div class="back-btn" onclick="history.back()">←</div>
-        <div class="menu-image" style="display: flex; align-items: center; justify-content: center; font-size: 5rem;">
-            🍜
+        <img class="stand-cover" id="standCover" src="" alt="Stand Cover">
+    </div>
+    
+    <div class="stand-info-card" id="standInfo">
+        <!-- Stand info akan diisi JS -->
+    </div>
+    
+    <div class="menu-section">
+        <div class="section-title">
+            <i class="fas fa-utensils" style="color:#6d28d9;"></i> Menu List
+        </div>
+        <div class="menu-list" id="menuList">
+            <!-- Menu items akan diisi JS -->
         </div>
     </div>
     
-    <div class="menu-content" id="menuContent">
-        <!-- Content loaded dynamically -->
+    <div class="cart-summary" id="cartSummary">
+        <!-- Cart summary akan diisi JS -->
     </div>
     
     <script>
-        // Sample menu data
-        const menuDatabase = {
-            1: {
+        // Data Stands & Menus dengan GAMBAR
+        const standsData = [
+            {
                 id: 1,
-                name: "Tonkotsu Ramen",
-                standId: 1,
-                standName: "Ramen House",
-                standLogo: "🍜",
+                name: "Ramen House",
+                description: "Authentic Japanese Ramen with rich Tonkotsu broth, homemade noodles and cozy vibes.",
                 rating: 4.8,
-                price: 45000,
-                description: "Ramen dengan kuah kaldu tulang babi yang kaya rasa, dipadukan dengan chashu yang lembut, telur ajitsuke, dan mie kenyal khas Jepang. Disajikan dengan nori dan daun bawang segar.",
-                ingredients: ["Kaldu Tulang Babi", "Mie Ramen", "Chashu", "Telur Ajitsuke", "Nori", "Daun Bawang"],
-                image: "🍜",
-                popular: true,
-                prepTime: 15
+                deliveryTime: "15-20 min",
+                imageUrl: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&auto=format",
+                menus: [
+                    { 
+                        id: 101, 
+                        name: "Tonkotsu Ramen", 
+                        price: 45000, 
+                        desc: "Pork bone broth with chashu, telur ajitsuke, dan nori. Kuah kaldu tulang babi yang kaya rasa.",
+                        image: "https://images.unsplash.com/photo-1591814468924-caf5d1237d40?w=400&auto=format"
+                    },
+                    { 
+                        id: 102, 
+                        name: "Shoyu Ramen", 
+                        price: 40000, 
+                        desc: "Soy sauce based broth dengan chashu, bambu rebung, dan nori.",
+                        image: "https://images.unsplash.com/photo-1623345805780-8f01f714e765?w=400&auto=format"
+                    },
+                    { 
+                        id: 103, 
+                        name: "Miso Ramen", 
+                        price: 42000, 
+                        desc: "Rich miso broth with corn, butter, and chashu.",
+                        image: "https://images.unsplash.com/photo-1591814468924-caf5d1237d40?w=400&auto=format"
+                    },
+                    { 
+                        id: 104, 
+                        name: "Gyoza (5 pcs)", 
+                        price: 25000, 
+                        desc: "Japanese dumplings with chicken and vegetable filling.",
+                        image: "https://images.unsplash.com/photo-1627626771744-812a8d9c9da2?w=400&auto=format"
+                    }
+                ]
             },
-            2: {
+            {
                 id: 2,
-                name: "Shoyu Ramen",
-                standId: 1,
-                standName: "Ramen House",
-                standLogo: "🍜",
+                name: "Nusantara Rice Bowl",
+                description: "Indonesian heritage rice bowls with sambal matah, fried chicken, and lawar.",
                 rating: 4.7,
-                price: 40000,
-                description: "Ramen dengan kuah berbasis kecap asin yang gurih, dilengkapi dengan chashu, bambu rebung, dan nori.",
-                ingredients: ["Kuah Shoyu", "Mie Ramen", "Chashu", "Menma", "Nori"],
-                image: "🍜",
-                popular: false,
-                prepTime: 12
+                deliveryTime: "20-25 min",
+                imageUrl: "https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=800&auto=format",
+                menus: [
+                    { 
+                        id: 201, 
+                        name: "Nasi Campur Bali", 
+                        price: 38000, 
+                        desc: "Nasi campur khas Bali dengan ayam betutu, sate lilit, lawar, dan sambal matah.",
+                        image: "https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=400&auto=format"
+                    },
+                    { 
+                        id: 202, 
+                        name: "Ayam Betutu Rice", 
+                        price: 42000, 
+                        desc: "Ayam betutu yang dimasak dengan bumbu khas Bali, disajikan dengan nasi hangat.",
+                        image: "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=400&auto=format"
+                    },
+                    { 
+                        id: 203, 
+                        name: "Sambal Goreng Ati", 
+                        price: 19000, 
+                        desc: "Sambal goreng dengan hati ayam dan kentang, pedas dan gurih.",
+                        image: "https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=400&auto=format"
+                    },
+                    { 
+                        id: 204, 
+                        name: "Sate Lilit", 
+                        price: 30000, 
+                        desc: "Sate lilit ikan dengan bumbu Bali.",
+                        image: "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=400&auto=format"
+                    }
+                ]
             },
-            3: {
+            {
                 id: 3,
-                name: "Miso Ramen",
-                standId: 1,
-                standName: "Ramen House",
-                standLogo: "🍜",
+                name: "Kopi Kekinian",
+                description: "Specialty coffee, cold brews, and artisanal drinks with cozy ambiance.",
                 rating: 4.9,
-                price: 42000,
-                description: "Ramen dengan kuah miso yang kaya dan creamy, memberikan rasa umami yang mendalam.",
-                ingredients: ["Kuah Miso", "Mie Ramen", "Chashu", "Jagung", "Mentega"],
-                image: "🍜",
-                popular: true,
-                prepTime: 15
+                deliveryTime: "10-15 min",
+                imageUrl: "https://images.unsplash.com/photo-1507133750040-4a8f57021571?w=800&auto=format",
+                menus: [
+                    { 
+                        id: 301, 
+                        name: "Iced Caramel Latte", 
+                        price: 32000, 
+                        desc: "Espresso dengan susu segar dan sirup caramel, disajikan dingin.",
+                        image: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&auto=format"
+                    },
+                    { 
+                        id: 302, 
+                        name: "Matcha Espresso", 
+                        price: 35000, 
+                        desc: "Perpaduan matcha premium dengan espresso shot.",
+                        image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&auto=format"
+                    },
+                    { 
+                        id: 303, 
+                        name: "Vietnamese Drip", 
+                        price: 30000, 
+                        desc: "Kopi Vietnam tradisional dengan susu kental manis.",
+                        image: "https://images.unsplash.com/photo-1507133750040-4a8f57021571?w=400&auto=format"
+                    },
+                    { 
+                        id: 304, 
+                        name: "Croissant", 
+                        price: 18000, 
+                        desc: "Butter croissant pastry.",
+                        image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&auto=format"
+                    }
+                ]
+            },
+            {
+                id: 4,
+                name: "Sweet Tooth Lab",
+                description: "Decadent cakes, traditional desserts, and fusion sweet treats.",
+                rating: 4.6,
+                deliveryTime: "12-18 min",
+                imageUrl: "https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=800&auto=format",
+                menus: [
+                    { 
+                        id: 401, 
+                        name: "Lava Cake", 
+                        price: 34000, 
+                        desc: "Chocolate lava cake dengan lelehan coklat di dalamnya.",
+                        image: "https://images.unsplash.com/photo-1624353365286-9f5f1a7c8d2f?w=400&auto=format"
+                    },
+                    { 
+                        id: 402, 
+                        name: "Es Campur Istimewa", 
+                        price: 24000, 
+                        desc: "Es campur dengan buah segar, jelly, kolang-kaling.",
+                        image: "https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&auto=format"
+                    },
+                    { 
+                        id: 403, 
+                        name: "Bubur Sumsum", 
+                        price: 18000, 
+                        desc: "Bubur sumsum lembut dengan saus gula merah.",
+                        image: "https://images.unsplash.com/photo-1624353365286-9f5f1a7c8d2f?w=400&auto=format"
+                    }
+                ]
+            },
+            {
+                id: 5,
+                name: "Burger District",
+                description: "Juicy smashed burgers, crispy chicken sandwiches, and loaded cheese fries.",
+                rating: 4.5,
+                deliveryTime: "15-20 min",
+                imageUrl: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=800&auto=format",
+                menus: [
+                    { 
+                        id: 501, 
+                        name: "Double Cheeseburger", 
+                        price: 49000, 
+                        desc: "Double beef patty with melted cheese.",
+                        image: "https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=400&auto=format"
+                    },
+                    { 
+                        id: 502, 
+                        name: "Spicy Chicken Sandwich", 
+                        price: 42000, 
+                        desc: "Crispy spicy chicken with sambal sauce.",
+                        image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&auto=format"
+                    },
+                    { 
+                        id: 503, 
+                        name: "Loaded Fries", 
+                        price: 27000, 
+                        desc: "French fries with cheese, bacon, and sauce.",
+                        image: "https://images.unsplash.com/photo-1585109649139-366815a0d713?w=400&auto=format"
+                    }
+                ]
             }
-        };
+        ];
         
-        // Get menu ID from URL
+        // Ambil standId dari URL
         const urlParams = new URLSearchParams(window.location.search);
-        const menuId = parseInt(urlParams.get('id')) || 1;
-        const menu = menuDatabase[menuId];
+        const standId = parseInt(urlParams.get('id')) || 1;
+        const currentStand = standsData.find(s => s.id === standId);
         
-        let quantity = 1;
-        let selectedSpice = 'normal';
-        let selectedSize = 'regular';
-        let notes = '';
+        // Keranjang untuk stand ini
+        let cart = [];
         
-        function renderMenu() {
-            const container = document.getElementById('menuContent');
-            
-            container.innerHTML = `
-                <div class="menu-title">${menu.name}</div>
-                
-                <div class="stand-info">
-                    <div class="stand-logo">${menu.standLogo}</div>
-                    <div>
-                        <div class="stand-name">${menu.standName}</div>
-                        <div class="rating">⭐ ${menu.rating} • ${menu.prepTime} mins</div>
-                    </div>
-                </div>
-                
-                <div class="price-section">
-                    <div class="price-label">Price</div>
-                    <div class="price-value">
-                        Rp ${menu.price.toLocaleString()}
-                        <small>/portion</small>
-                    </div>
-                </div>
-                
-                <div class="description">
-                    <h3>Description</h3>
-                    <p>${menu.description}</p>
-                </div>
-                
-                <div class="options-section">
-                    <div class="options-title">Customize your order</div>
-                    
-                    <div class="option-group">
-                        <label class="option-label">Spice Level</label>
-                        <div class="option-buttons" id="spiceOptions">
-                            ${['mild', 'normal', 'hot', 'extra hot'].map(level => `
-                                <button class="option-btn ${selectedSpice === level ? 'selected' : ''}" data-spice="${level}">
-                                    ${level.charAt(0).toUpperCase() + level.slice(1)}
-                                </button>
-                            `).join('')}
-                        </div>
-                    </div>
-                    
-                    <div class="option-group">
-                        <label class="option-label">Size</label>
-                        <div class="option-buttons" id="sizeOptions">
-                            ${['small', 'regular', 'large'].map(size => `
-                                <button class="option-btn ${selectedSize === size ? 'selected' : ''}" data-size="${size}">
-                                    ${size.charAt(0).toUpperCase() + size.slice(1)} ${size === 'regular' ? '(Recommended)' : ''}
-                                </button>
-                            `).join('')}
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="quantity-section">
-                    <span class="quantity-label">Quantity</span>
-                    <div class="quantity-control">
-                        <button class="qty-btn" id="decreaseQty">-</button>
-                        <span class="quantity-value" id="quantityValue">${quantity}</span>
-                        <button class="qty-btn" id="increaseQty">+</button>
-                    </div>
-                </div>
-                
-                <div class="note-section">
-                    <label class="option-label">Special Instructions (Optional)</label>
-                    <textarea class="note-input" id="noteInput" rows="2" placeholder="e.g., less salt, no onion, extra spicy..."></textarea>
-                </div>
-                
-                <button class="add-to-cart-btn" id="addToCartBtn">
-                    🛒 Add to Cart • Rp ${(menu.price * quantity).toLocaleString()}
-                </button>
-                
-                <div class="recommended-section">
-                    <div class="recommended-title">You might also like</div>
-                    <div class="recommended-grid" id="recommendedGrid">
-                        ${getRecommendedItems()}
-                    </div>
-                </div>
-            `;
-            
-            // Attach event listeners
-            attachEventListeners();
+        function formatRupiah(price) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price);
         }
         
-        function getRecommendedItems() {
-            const recommended = Object.values(menuDatabase).filter(m => m.id !== menu.id).slice(0, 4);
-            return recommended.map(item => `
-                <div class="recommended-item" onclick="location.href='detail-menu.html?id=${item.id}'">
-                    <div class="rec-icon">${item.image}</div>
-                    <div class="rec-name">${item.name}</div>
-                    <div class="rec-price">Rp ${item.price.toLocaleString()}</div>
+        function renderStandInfo() {
+            const container = document.getElementById('standInfo');
+            const coverImg = document.getElementById('standCover');
+            
+            if (coverImg && currentStand) {
+                coverImg.src = currentStand.imageUrl;
+                coverImg.alt = currentStand.name;
+            }
+            
+            if (container && currentStand) {
+                container.innerHTML = `
+                    <h1 class="stand-title">${currentStand.name}</h1>
+                    <div class="stand-meta">
+                        <span class="stand-rating"><i class="fas fa-star" style="color:#fbbf24;"></i> ${currentStand.rating}</span>
+                        <span class="stand-time"><i class="far fa-clock"></i> ${currentStand.deliveryTime}</span>
+                        <span class="stand-time"><i class="fas fa-motorcycle"></i> Free Delivery</span>
+                    </div>
+                    <p class="stand-desc">${currentStand.description}</p>
+                `;
+            }
+        }
+        
+        function getMenuImageHtml(menu) {
+            if (menu.image) {
+                return `<img class="menu-image" src="${menu.image}" alt="${menu.name}" onerror="this.parentElement.innerHTML='<div class=\'menu-image-fallback\'>🍽️</div>'">`;
+            } else {
+                return `<div class="menu-image-fallback">🍽️</div>`;
+            }
+        }
+        
+        function renderMenus() {
+            const container = document.getElementById('menuList');
+            if (!container || !currentStand) return;
+            
+            container.innerHTML = currentStand.menus.map(menu => `
+                <div class="menu-item-card" data-menu-id="${menu.id}">
+                    <div class="menu-image-container">
+                        ${getMenuImageHtml(menu)}
+                    </div>
+                    <div class="menu-info">
+                        <div class="menu-item-header">
+                            <span class="menu-item-name">${menu.name}</span>
+                            <span class="menu-item-price">${formatRupiah(menu.price)}</span>
+                        </div>
+                        <div class="menu-item-desc">${menu.desc}</div>
+                        <div class="menu-item-actions">
+                            <div class="quantity-selector" data-menu="${menu.id}">
+                                <button class="qty-btn minus-btn" data-id="${menu.id}">-</button>
+                                <span class="qty-value" id="qty-${menu.id}">0</span>
+                                <button class="qty-btn plus-btn" data-id="${menu.id}">+</button>
+                            </div>
+                            <button class="add-item-btn" data-id="${menu.id}" data-name="${menu.name}" data-price="${menu.price}">
+                                <i class="fas fa-plus"></i> Add to Cart
+                            </button>
+                        </div>
+                    </div>
                 </div>
             `).join('');
+            
+            // Update quantity display berdasarkan cart
+            cart.forEach(item => {
+                const qtySpan = document.getElementById(`qty-${item.id}`);
+                if (qtySpan) qtySpan.textContent = item.quantity;
+            });
+            
+            // Event listeners untuk tombol
+            document.querySelectorAll('.minus-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const menuId = parseInt(btn.dataset.id);
+                    updateQuantity(menuId, -1);
+                });
+            });
+            
+            document.querySelectorAll('.plus-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const menuId = parseInt(btn.dataset.id);
+                    updateQuantity(menuId, 1);
+                });
+            });
+            
+            document.querySelectorAll('.add-item-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const menuId = parseInt(btn.dataset.id);
+                    const menuName = btn.dataset.name;
+                    const menuPrice = parseInt(btn.dataset.price);
+                    addToCart(menuId, menuName, menuPrice);
+                });
+            });
         }
         
-        function attachEventListeners() {
-            // Spice options
-            document.querySelectorAll('[data-spice]').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('[data-spice]').forEach(b => b.classList.remove('selected'));
-                    this.classList.add('selected');
-                    selectedSpice = this.dataset.spice;
-                });
-            });
+        function updateQuantity(menuId, change) {
+            const existingItem = cart.find(item => item.id === menuId);
+            const qtySpan = document.getElementById(`qty-${menuId}`);
             
-            // Size options
-            document.querySelectorAll('[data-size]').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('[data-size]').forEach(b => b.classList.remove('selected'));
-                    this.classList.add('selected');
-                    selectedSize = this.dataset.size;
-                    updatePrice();
-                });
-            });
-            
-            // Quantity
-            document.getElementById('decreaseQty').addEventListener('click', () => {
-                if (quantity > 1) {
-                    quantity--;
-                    document.getElementById('quantityValue').textContent = quantity;
-                    updatePrice();
+            if (existingItem) {
+                const newQty = existingItem.quantity + change;
+                if (newQty <= 0) {
+                    cart = cart.filter(item => item.id !== menuId);
+                    if (qtySpan) qtySpan.textContent = 0;
+                } else {
+                    existingItem.quantity = newQty;
+                    if (qtySpan) qtySpan.textContent = newQty;
                 }
-            });
-            
-            document.getElementById('increaseQty').addEventListener('click', () => {
-                quantity++;
-                document.getElementById('quantityValue').textContent = quantity;
-                updatePrice();
-            });
-            
-            // Note
-            document.getElementById('noteInput').addEventListener('input', (e) => {
-                notes = e.target.value;
-            });
-            
-            // Add to cart
-            document.getElementById('addToCartBtn').addEventListener('click', addToCart);
-        }
-        
-        function updatePrice() {
-            let price = menu.price;
-            if (selectedSize === 'large') price = menu.price * 1.3;
-            if (selectedSize === 'small') price = menu.price * 0.7;
-            
-            const total = Math.round(price * quantity);
-            const btn = document.getElementById('addToCartBtn');
-            if (btn) {
-                btn.innerHTML = `🛒 Add to Cart • Rp ${total.toLocaleString()}`;
+            } else if (change > 0) {
+                const menu = currentStand.menus.find(m => m.id === menuId);
+                if (menu) {
+                    cart.push({
+                        id: menu.id,
+                        name: menu.name,
+                        price: menu.price,
+                        quantity: 1,
+                        image: menu.image
+                    });
+                    if (qtySpan) qtySpan.textContent = 1;
+                }
             }
+            
+            renderCartSummary();
         }
         
-        function addToCart() {
-            let price = menu.price;
-            if (selectedSize === 'large') price = menu.price * 1.3;
-            if (selectedSize === 'small') price = menu.price * 0.7;
-            price = Math.round(price);
+        function addToCart(menuId, menuName, menuPrice) {
+            const existingItem = cart.find(item => item.id === menuId);
+            const qtySpan = document.getElementById(`qty-${menuId}`);
             
-            const cartItem = {
-                id: menu.id,
-                name: menu.name,
-                price: price,
-                icon: menu.image,
-                quantity: quantity,
-                standId: menu.standId,
-                standName: menu.standName,
-                options: {
-                    spice: selectedSpice,
-                    size: selectedSize,
-                    notes: notes
-                }
-            };
-            
-            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-            const existingIndex = cart.findIndex(item => item.id === menu.id && item.options?.size === selectedSize);
-            
-            if (existingIndex !== -1) {
-                cart[existingIndex].quantity += quantity;
+            if (existingItem) {
+                existingItem.quantity++;
+                if (qtySpan) qtySpan.textContent = existingItem.quantity;
             } else {
-                cart.push(cartItem);
+                const menu = currentStand.menus.find(m => m.id === menuId);
+                cart.push({
+                    id: menuId,
+                    name: menuName,
+                    price: menuPrice,
+                    quantity: 1,
+                    image: menu ? menu.image : null
+                });
+                if (qtySpan) qtySpan.textContent = 1;
             }
             
-            localStorage.setItem('cart', JSON.stringify(cart));
-            showToast(`${menu.name} added to cart!`);
-            
-            // Update cart badge
-            updateCartBadge();
+            renderCartSummary();
+            showToast(`${menuName} added to cart!`);
         }
         
-        function updateCartBadge() {
-            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        function renderCartSummary() {
+            const container = document.getElementById('cartSummary');
+            if (!container) return;
+            
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            const badges = document.querySelectorAll('.cart-badge, #cartCount');
-            badges.forEach(badge => {
-                if (badge) badge.textContent = totalItems;
-            });
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-cart">🛒 Your cart is empty</div>
+                    <button class="checkout-btn" disabled style="opacity:0.5; cursor:not-allowed;">Checkout</button>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="cart-total">
+                        <span class="cart-total-label">Total:</span>
+                        <span class="cart-total-value">${formatRupiah(totalPrice)}</span>
+                        <span class="cart-items-count">${totalItems} item${totalItems > 1 ? 's' : ''}</span>
+                    </div>
+                    <button class="checkout-btn" id="checkoutBtn">Checkout Now <i class="fas fa-arrow-right"></i></button>
+                `;
+                
+                const checkoutBtn = document.getElementById('checkoutBtn');
+                if (checkoutBtn) {
+                    checkoutBtn.addEventListener('click', () => {
+                        if (cart.length > 0) {
+                            // Simpan ke localStorage
+                            localStorage.setItem('cart', JSON.stringify(cart));
+                            localStorage.setItem('currentStand', JSON.stringify({
+                                id: currentStand.id,
+                                name: currentStand.name
+                            }));
+                            window.location.href = 'checkout.html';
+                        }
+                    });
+                }
+            }
         }
         
         function showToast(message) {
+            const existingToast = document.querySelector('.toast');
+            if (existingToast) existingToast.remove();
+            
             const toast = document.createElement('div');
             toast.className = 'toast';
             toast.textContent = message;
@@ -641,7 +779,32 @@
             setTimeout(() => toast.remove(), 2000);
         }
         
-        renderMenu();
+        function loadCartFromStorage() {
+            const savedCart = localStorage.getItem('cart');
+            const savedStand = localStorage.getItem('currentStand');
+            
+            if (savedCart && savedStand) {
+                const savedStandData = JSON.parse(savedStand);
+                // Hanya load cart jika standnya sama
+                if (savedStandData.id === currentStand.id) {
+                    cart = JSON.parse(savedCart);
+                } else {
+                    cart = [];
+                    localStorage.removeItem('cart');
+                    localStorage.removeItem('currentStand');
+                }
+            }
+        }
+        
+        // Initialize
+        if (currentStand) {
+            loadCartFromStorage();
+            renderStandInfo();
+            renderMenus();
+            renderCartSummary();
+        } else {
+            document.body.innerHTML = '<div style="text-align:center; padding:50px;">Stand tidak ditemukan</div>';
+        }
     </script>
 </body>
 </html>

@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>CaFood Marketplace | Purple • Food Stalls</title>
-    <!-- Font Awesome 6 (ikon pelengkap) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts: Inter + fallback -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <style>
         * {
@@ -22,7 +20,6 @@
             overflow-x: auto;
         }
 
-        /* LANDSCAPE MAKSIMAL: lebar penuh tanpa batasan container sempit */
         .marketplace-full {
             width: 100%;
             min-height: 100vh;
@@ -30,7 +27,6 @@
             background: #f5f0ff;
         }
 
-        /* HERO SECTION - full width gradien ungu */
         .hero-full {
             background: linear-gradient(125deg, #6d28d9 0%, #a855f7 100%);
             border-radius: 36px;
@@ -52,7 +48,6 @@
             padding: 6px 18px;
             border-radius: 60px;
             margin-bottom: 24px;
-            letter-spacing: 0.3px;
         }
 
         .hero-full h1 {
@@ -69,7 +64,6 @@
             margin-bottom: 32px;
         }
 
-        /* search bar besar & modern */
         .search-row {
             max-width: 620px;
             display: flex;
@@ -97,11 +91,6 @@
             font-family: 'Inter', sans-serif;
         }
 
-        .search-row input::placeholder {
-            color: #a29bbf;
-            font-weight: 400;
-        }
-
         .search-purple-btn {
             background: #7c3aed;
             border: none;
@@ -112,15 +101,8 @@
             font-size: 15px;
             cursor: pointer;
             transition: 0.2s;
-            font-family: inherit;
         }
 
-        .search-purple-btn:hover {
-            background: #5b21b6;
-            transform: scale(0.97);
-        }
-
-        /* kategori scroll fleksibel (wrap jika perlu) */
         .category-section {
             margin-bottom: 48px;
         }
@@ -158,7 +140,6 @@
             cursor: pointer;
             transition: all 0.2s;
             border: 1px solid #e2d9ff;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
         }
 
         .cat-item.active {
@@ -168,7 +149,6 @@
             box-shadow: 0 8px 18px rgba(124, 58, 237, 0.2);
         }
 
-        /* GRID LANDSKAP MAKSIMAL: memanfaatkan lebar penuh dengan auto-fit */
         .stands-landscape-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
@@ -177,7 +157,6 @@
             width: 100%;
         }
 
-        /* kartu stand premium */
         .stand-card {
             background: #ffffff;
             border-radius: 32px;
@@ -250,22 +229,6 @@
             margin-bottom: 16px;
         }
 
-        .info-strip span i {
-            margin-right: 6px;
-            width: 16px;
-            color: #a855f7;
-        }
-
-        .free-tag {
-            background: #e9e3ff;
-            padding: 4px 12px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 12px;
-            color: #5b21b6;
-        }
-
-        /* Menu populer di dalam stand */
         .menu-preview {
             margin: 18px 0 20px 0;
             border-top: 1px solid #f0eaff;
@@ -294,6 +257,15 @@
             align-items: center;
             font-size: 14px;
             font-weight: 500;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .menu-item-row:hover {
+            background: #f3efff;
+            transform: translateX(5px);
         }
 
         .menu-name {
@@ -320,7 +292,6 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            font-family: inherit;
             width: 100%;
         }
 
@@ -329,7 +300,6 @@
             color: white;
         }
 
-        /* empty state */
         .empty-state {
             grid-column: 1 / -1;
             text-align: center;
@@ -348,90 +318,42 @@
             font-weight: 500;
         }
 
-        /* Responsif untuk layar ekstra lebar (landscape maksimal) */
-        @media (min-width: 1800px) {
-            .stands-landscape-grid {
-                grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-                gap: 36px;
-            }
-            .hero-full h1 {
-                font-size: 64px;
-            }
-            .marketplace-full {
-                padding: 36px 60px 70px 60px;
-            }
-        }
-
         @media (max-width: 1100px) {
-            .marketplace-full {
-                padding: 20px 24px 50px 24px;
-            }
-            .hero-full {
-                padding: 36px 32px;
-            }
-            .hero-full h1 {
-                font-size: 42px;
-            }
+            .marketplace-full { padding: 20px 24px 50px 24px; }
+            .hero-full { padding: 36px 32px; }
+            .hero-full h1 { font-size: 42px; }
         }
 
         @media (max-width: 780px) {
-            .stands-landscape-grid {
-                grid-template-columns: 1fr;
-            }
-            .hero-full h1 {
-                font-size: 34px;
-            }
-            .search-row {
-                flex-wrap: wrap;
-                background: transparent;
-                padding: 0;
-                gap: 12px;
-            }
-            .search-row input {
-                background: white;
-                border-radius: 80px;
-                padding: 14px 20px;
-            }
-            .search-purple-btn {
-                width: auto;
-                padding: 12px 24px;
-            }
+            .stands-landscape-grid { grid-template-columns: 1fr; }
+            .hero-full h1 { font-size: 34px; }
         }
     </style>
 </head>
 <body>
 <div class="marketplace-full">
-    <!-- Hero dengan gradien ungu dan landscape penuh -->
     <div class="hero-full">
-        <div class="brand-chip">
-            <i class="fas fa-crown"></i> CaFood Marketplace
-        </div>
+        <div class="brand-chip"><i class="fas fa-crown"></i> CaFood Marketplace</div>
         <h1>Good Afternoon! 🌤️<br>Where do you want to eat?</h1>
         <p>Explore authentic food stalls, local favorites, and trending stands — free delivery across all vendors.</p>
         <div class="search-row">
             <i class="fas fa-search"></i>
-            <input type="text" id="globalSearch" placeholder="Search stand or menu (e.g. Ramen, Nasi, Kopi, Dessert) ...">
+            <input type="text" id="globalSearch" placeholder="Search stand or menu...">
             <button class="search-purple-btn" id="searchBtn">Discover</button>
         </div>
     </div>
 
-    <!-- Categories section tanpa emoji, full width -->
     <div class="category-section">
         <div class="section-head">
             <h2><i class="fas fa-tag" style="color:#a855f7;"></i> Categories</h2>
         </div>
-        <div class="category-pills" id="categoryList">
-            <!-- dynamic categories -->
-        </div>
+        <div class="category-pills" id="categoryList"></div>
     </div>
 
-    <!-- Stands grid (menampilkan stand-stand, bukan hanya menu) dengan landscape penuh -->
     <div class="section-head">
         <h2><i class="fas fa-store"></i> Popular Stands · Recommended for you</h2>
     </div>
-    <div class="stands-landscape-grid" id="standsContainer">
-        <!-- JS render daftar stand beserta menu populer di dalamnya -->
-    </div>
+    <div class="stands-landscape-grid" id="standsContainer"></div>
 
     <div class="footer">
         <i class="fas fa-motorcycle"></i> Free delivery on all stands · Real-time order · Purple marketplace
@@ -439,183 +361,67 @@
 </div>
 
 <script>
-    // Data lengkap stand dengan gambar asli Unsplash (foto asli, tanpa emoji)
     const standsData = [
         {
-            id: 1,
-            name: "Ramen House",
-            description: "Authentic Japanese Ramen with rich Tonkotsu broth, homemade noodles and cozy vibes.",
-            rating: 4.8,
-            deliveryTime: "15-20 min",
-            deliveryFee: "Free",
-            category: "Noodles",
-            isOpen: true,
+            id: 1, name: "Ramen House", description: "Authentic Japanese Ramen with rich Tonkotsu broth.",
+            rating: 4.8, deliveryTime: "15-20 min", deliveryFee: "Free", category: "Noodles", isOpen: true,
             imageUrl: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&auto=format",
             menu: [
-                { name: "Tonkotsu Ramen", price: 45000 },
-                { name: "Shoyu Ramen", price: 40000 },
-                { name: "Gyozas (5 pcs)", price: 25000 }
+                { id: 101, name: "Tonkotsu Ramen", price: 45000, desc: "Pork bone broth with chashu" },
+                { id: 102, name: "Shoyu Ramen", price: 40000, desc: "Soy sauce based broth" },
+                { id: 103, name: "Gyoza (5 pcs)", price: 25000, desc: "Japanese dumplings" }
             ]
         },
         {
-            id: 2,
-            name: "Nusantara Rice Bowl",
-            description: "Indonesian heritage rice bowls with sambal matah, fried chicken, and lawar.",
-            rating: 4.7,
-            deliveryTime: "20-25 min",
-            deliveryFee: "Free",
-            category: "Rice",
+            id: 2, name: "Nusantara Rice Bowl", description: "Indonesian heritage rice bowls with sambal matah.",
+            rating: 4.7, deliveryTime: "20-25 min", deliveryFee: "Free", category: "Rice", isOpen: true,
             imageUrl: "https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=800&auto=format",
             menu: [
-                { name: "Nasi Campur Bali", price: 38000 },
-                { name: "Ayam Betutu Rice", price: 42000 },
-                { name: "Sambal Goreng Ati", price: 19000 }
+                { id: 201, name: "Nasi Campur Bali", price: 38000, desc: "Mix rice with Balinese sides" },
+                { id: 202, name: "Ayam Betutu Rice", price: 42000, desc: "Smoked chicken rice" },
+                { id: 203, name: "Sambal Goreng Ati", price: 19000, desc: "Spicy liver sambal" }
             ]
         },
         {
-            id: 3,
-            name: "Kopi Kekinian",
-            description: "Specialty coffee, cold brews, and artisanal drinks with cozy ambiance.",
-            rating: 4.9,
-            deliveryTime: "10-15 min",
-            deliveryFee: "Free",
-            category: "Drinks",
+            id: 3, name: "Kopi Kekinian", description: "Specialty coffee, cold brews, and artisanal drinks.",
+            rating: 4.9, deliveryTime: "10-15 min", deliveryFee: "Free", category: "Drinks", isOpen: true,
             imageUrl: "https://images.unsplash.com/photo-1507133750040-4a8f57021571?w=800&auto=format",
             menu: [
-                { name: "Iced Caramel Latte", price: 32000 },
-                { name: "Matcha Espresso", price: 35000 },
-                { name: "Vietnamese Drip", price: 30000 }
+                { id: 301, name: "Iced Caramel Latte", price: 32000, desc: "Smooth caramel latte" },
+                { id: 302, name: "Matcha Espresso", price: 35000, desc: "Matcha + espresso shot" },
+                { id: 303, name: "Vietnamese Drip", price: 30000, desc: "Strong Vietnamese coffee" }
             ]
         },
         {
-            id: 4,
-            name: "Sweet Tooth Lab",
-            description: "Decadent cakes, traditional desserts, and fusion sweet treats.",
-            rating: 4.6,
-            deliveryTime: "12-18 min",
-            deliveryFee: "Free",
-            category: "Dessert",
+            id: 4, name: "Sweet Tooth Lab", description: "Decadent cakes, traditional desserts, and sweet treats.",
+            rating: 4.6, deliveryTime: "12-18 min", deliveryFee: "Free", category: "Dessert", isOpen: true,
             imageUrl: "https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=800&auto=format",
             menu: [
-                { name: "Lava Cake", price: 34000 },
-                { name: "Es Campur Istimewa", price: 24000 },
-                { name: "Bubur Sumsum", price: 18000 }
+                { id: 401, name: "Lava Cake", price: 34000, desc: "Chocolate lava cake" },
+                { id: 402, name: "Es Campur Istimewa", price: 24000, desc: "Mixed ice dessert" },
+                { id: 403, name: "Bubur Sumsum", price: 18000, desc: "Rice flour porridge" }
             ]
         },
         {
-            id: 5,
-            name: "Burger District",
-            description: "Juicy smashed burgers, crispy chicken sandwiches, and loaded cheese fries.",
-            rating: 4.5,
-            deliveryTime: "15-20 min",
-            deliveryFee: "Free",
-            category: "Fast Food",
+            id: 5, name: "Burger District", description: "Juicy smashed burgers and crispy chicken sandwiches.",
+            rating: 4.5, deliveryTime: "15-20 min", deliveryFee: "Free", category: "Fast Food", isOpen: true,
             imageUrl: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=800&auto=format",
             menu: [
-                { name: "Double Cheeseburger", price: 49000 },
-                { name: "Spicy Chicken Sandwich", price: 42000 },
-                { name: "Loaded Fries", price: 27000 }
-            ]
-        },
-        {
-            id: 6,
-            name: "Mie Gacoan",
-            description: "Legendary noodles with homemade chili oil, level up your appetite.",
-            rating: 4.8,
-            deliveryTime: "18-22 min",
-            deliveryFee: "Free",
-            category: "Noodles",
-            imageUrl: "https://images.unsplash.com/photo-1626137979375-5b595d9b8264?w=800&auto=format",
-            menu: [
-                { name: "Mie Setan Level 7", price: 30000 },
-                { name: "Mie Angel Special", price: 28000 },
-                { name: "Pangsit Goreng", price: 15000 }
-            ]
-        },
-        {
-            id: 7,
-            name: "Sate & Gulai Pak Min",
-            description: "Authentic sate madura, gulai kambing, and lontong sayur.",
-            rating: 4.9,
-            deliveryTime: "20-30 min",
-            deliveryFee: "Free",
-            category: "Rice",
-            imageUrl: "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=800&auto=format",
-            menu: [
-                { name: "Sate Ayam (10 tusuk)", price: 35000 },
-                { name: "Gulai Kambing", price: 55000 },
-                { name: "Lontong Sayur", price: 22000 }
-            ]
-        },
-        {
-            id: 8,
-            name: "Thai Tea & Co",
-            description: "Refreshing Thai tea, lemon honey, and fusion milk tea.",
-            rating: 4.7,
-            deliveryTime: "8-12 min",
-            deliveryFee: "Free",
-            category: "Drinks",
-            imageUrl: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=800&auto=format",
-            menu: [
-                { name: "Original Thai Tea", price: 27000 },
-                { name: "Pink Milk", price: 25000 },
-                { name: "Lemon Honey Tea", price: 22000 }
-            ]
-        },
-        {
-            id: 9,
-            name: "Waffle Factory",
-            description: "Crispy waffles, ice cream toppings, and sweet syrups.",
-            rating: 4.6,
-            deliveryTime: "12-18 min",
-            deliveryFee: "Free",
-            category: "Dessert",
-            imageUrl: "https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=800&auto=format",
-            menu: [
-                { name: "Classic Waffle", price: 25000 },
-                { name: "Choco Waffle", price: 29000 },
-                { name: "Strawberry Dream", price: 32000 }
-            ]
-        },
-        {
-            id: 10,
-            name: "Spicy Chicken House",
-            description: "Korean fried chicken, spicy wings and cheesy sauce.",
-            rating: 4.8,
-            deliveryTime: "18-24 min",
-            deliveryFee: "Free",
-            category: "Fast Food",
-            imageUrl: "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=800&auto=format",
-            menu: [
-                { name: "Original Fried Chicken", price: 38000 },
-                { name: "Gochujang Wings", price: 43000 },
-                { name: "Cheese Balls", price: 22000 }
+                { id: 501, name: "Double Cheeseburger", price: 49000, desc: "Double beef patty" },
+                { id: 502, name: "Spicy Chicken Sandwich", price: 42000, desc: "Crispy spicy chicken" },
+                { id: 503, name: "Loaded Fries", price: 27000, desc: "Cheese + bacon fries" }
             ]
         }
     ];
 
-    // Ekstrak kategori unik + All
     const allCategories = ["All", ...new Set(standsData.map(s => s.category))];
     let activeCategory = "All";
     let searchQuery = "";
 
-    // Helper format Rupiah
     function formatRupiah(price) {
         return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price);
     }
 
-    // Simple escape
-    function escapeText(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
-    }
-
-    // Filter berdasarkan kategori & search (nama stand atau item menu)
     function getFilteredStands() {
         let filtered = [...standsData];
         if (activeCategory !== "All") {
@@ -632,136 +438,104 @@
         return filtered;
     }
 
-    // Render kategori (pill)
     function renderCategories() {
         const container = document.getElementById("categoryList");
         if (!container) return;
         container.innerHTML = allCategories.map(cat => `
-            <div class="cat-item ${activeCategory === cat ? 'active' : ''}" data-category="${cat}">
-                ${cat}
-            </div>
+            <div class="cat-item ${activeCategory === cat ? 'active' : ''}" data-category="${cat}">${cat}</div>
         `).join("");
-
         document.querySelectorAll(".cat-item").forEach(el => {
-            el.addEventListener("click", (e) => {
-                const category = el.getAttribute("data-category");
-                if (category) {
-                    activeCategory = category;
-                    // Reset search saat pindah kategori (opsi UX lebih baik)
-                    // Biarkan search terisi? tapi agar konsisten, kita kosongkan search biar sesuai kategori
-                    const searchInputDom = document.getElementById("globalSearch");
-                    if (searchInputDom) searchInputDom.value = "";
-                    searchQuery = "";
-                    renderCategories();
-                    renderStands();
-                }
+            el.addEventListener("click", () => {
+                activeCategory = el.getAttribute("data-category");
+                const searchInputDom = document.getElementById("globalSearch");
+                if (searchInputDom) searchInputDom.value = "";
+                searchQuery = "";
+                renderCategories();
+                renderStands();
             });
         });
     }
 
-    // Render semua stand dalam bentuk kartu (gambar asli + menu di dalam)
     function renderStands() {
         const container = document.getElementById("standsContainer");
         if (!container) return;
         const filtered = getFilteredStands();
 
         if (filtered.length === 0) {
-            container.innerHTML = `<div class="empty-state">
-                <i class="fas fa-utensils" style="font-size: 52px; opacity: 0.6; margin-bottom: 16px; color:#a78bfa;"></i>
-                <h3>No food stands found</h3>
-                <p>Try another category or search keyword 🍽️</p>
-            </div>`;
+            container.innerHTML = `<div class="empty-state"><i class="fas fa-utensils" style="font-size: 52px;"></i><h3>No food stands found</h3></div>`;
             return;
         }
 
         container.innerHTML = filtered.map(stand => {
-            const starIcon = '<i class="fas fa-star" style="color: #fbbf24; font-size: 12px;"></i>';
-            const ratingHtml = `${starIcon} ${stand.rating}`;
-
-            // render menu (max 3)
             const menuHtml = stand.menu.map(item => `
-                <div class="menu-item-row">
-                    <span class="menu-name">${escapeText(item.name)}</span>
+                <div class="menu-item-row" onclick="goToDetailMenu(${stand.id}, ${item.id})">
+                    <span class="menu-name">${item.name}</span>
                     <span class="menu-price">${formatRupiah(item.price)}</span>
                 </div>
             `).join('');
 
             return `
-                <div class="stand-card" data-stand-id="${stand.id}">
-                    <img class="stand-img" src="${stand.imageUrl}" alt="${escapeText(stand.name)}" loading="lazy" onerror="this.src='https://placehold.co/800x500?text=Food+Image'">
+                <div class="stand-card">
+                    <img class="stand-img" src="${stand.imageUrl}" alt="${stand.name}" loading="lazy">
                     <div class="stand-content">
                         <div class="stand-header">
-                            <h3 class="stand-name">${escapeText(stand.name)}</h3>
-                            <div class="rating">${ratingHtml}</div>
+                            <h3 class="stand-name">${stand.name}</h3>
+                            <div class="rating"><i class="fas fa-star" style="color: #fbbf24;"></i> ${stand.rating}</div>
                         </div>
-                        <div class="desc">${escapeText(stand.description)}</div>
+                        <div class="desc">${stand.description}</div>
                         <div class="info-strip">
                             <span><i class="far fa-clock"></i> ${stand.deliveryTime}</span>
                             <span><i class="fas fa-motorcycle"></i> ${stand.deliveryFee}</span>
                             <span class="free-tag"><i class="fas fa-gem"></i> Free delivery</span>
-                            <span><i class="fas fa-check-circle" style="color:#a855f7;"></i> Open</span>
                         </div>
                         <div class="menu-preview">
-                            <div class="menu-label">
-                                <i class="fas fa-fire" style="color:#f97316;"></i> Popular Menu
-                            </div>
-                            <div class="menu-list-compact">
-                                ${menuHtml}
-                            </div>
+                            <div class="menu-label"><i class="fas fa-fire" style="color:#f97316;"></i> Popular Menu</div>
+                            <div class="menu-list-compact">${menuHtml}</div>
                         </div>
-                        <button class="btn-order" data-id="${stand.id}">
-                            <i class="fas fa-shopping-bag"></i> Order from ${escapeText(stand.name.split(' ')[0])}
+                        <button class="btn-order" onclick="goToStand(${stand.id})">
+                            <i class="fas fa-shopping-bag"></i> Order from ${stand.name.split(' ')[0]}
                         </button>
                     </div>
                 </div>
             `;
         }).join('');
-
-        // event listener tombol order
-        document.querySelectorAll('.btn-order').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const id = btn.getAttribute('data-id');
-                const selected = standsData.find(s => s.id == id);
-                if (selected) {
-                    alert(`🛍️ Start order at "${selected.name}"\n✨ Menu available: ${selected.menu.length} items\n🚚 Free delivery, proceed to checkout.`);
-                }
-            });
-        });
     }
 
-    // Fungsi pencarian
+    // Navigasi ke halaman detail menu dengan parameter standId dan menuId
+    function goToDetailMenu(standId, menuId) {
+        window.location.href = `detail-menu.html?standId=${standId}&menuId=${menuId}`;
+    }
+
+    function goToStand(standId) {
+        // Arahkan ke menu pertama dari stand tersebut
+        const stand = standsData.find(s => s.id === standId);
+        if (stand && stand.menu.length > 0) {
+            window.location.href = `detail-menu.html?standId=${standId}&menuId=${stand.menu[0].id}`;
+        }
+    }
+
     function performSearch() {
         const inputSearch = document.getElementById("globalSearch");
         if (inputSearch) {
             searchQuery = inputSearch.value.trim();
-            // Reset kategori ke All agar pencarian lebih luas
             activeCategory = "All";
-            renderCategories();  // update tampilan pill active = All
+            renderCategories();
             renderStands();
         }
     }
 
-    // Event binding search
     function bindSearchEvents() {
         const searchBtn = document.getElementById("searchBtn");
         const searchField = document.getElementById("globalSearch");
-        if (searchBtn) {
-            searchBtn.addEventListener("click", performSearch);
-        }
-        if (searchField) {
-            searchField.addEventListener("keypress", (e) => {
-                if (e.key === "Enter") performSearch();
-            });
-        }
+        if (searchBtn) searchBtn.addEventListener("click", performSearch);
+        if (searchField) searchField.addEventListener("keypress", (e) => { if (e.key === "Enter") performSearch(); });
     }
 
-    // Inisialisasi penuh
     function init() {
         renderCategories();
         renderStands();
         bindSearchEvents();
     }
-
     init();
 </script>
 </body>
