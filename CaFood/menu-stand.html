@@ -469,9 +469,9 @@
         container.innerHTML = filtered.map(stand => {
             const menuHtml = stand.menu.map(item => `
                 <div class="menu-item-row" onclick="goToDetailMenu(${stand.id}, ${item.id})">
-                    <span class="menu-name">${item.name}</span>
-                    <span class="menu-price">${formatRupiah(item.price)}</span>
-                </div>
+                <span class="menu-name">${item.name}</span>
+                <span class="menu-price">${formatRupiah(item.price)}</span>
+            </div>
             `).join('');
 
             return `
@@ -505,6 +505,7 @@
     function goToDetailMenu(standId, menuId) {
         window.location.href = `detail-menu.html?standId=${standId}&menuId=${menuId}`;
     }
+
 
     function goToStand(standId) {
         // Arahkan ke menu pertama dari stand tersebut

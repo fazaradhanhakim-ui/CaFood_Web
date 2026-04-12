@@ -19,7 +19,6 @@
             padding-bottom: 100px;
         }
         
-        /* Header Stand */
         .stand-header {
             position: relative;
             height: 280px;
@@ -34,6 +33,7 @@
             opacity: 0.7;
         }
         
+        /* Tombol Back di KIRI */
         .back-btn {
             position: absolute;
             top: 20px;
@@ -53,12 +53,48 @@
             transition: all 0.2s;
         }
         
-        .back-btn:hover {
+        /* Tombol Keranjang di KANAN - sudah benar posisinya */
+        .cart-icon-header {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.2s;
+        }
+        
+        /* Hover effect */
+        .cart-icon-header:hover, .back-btn:hover {
             background: rgba(0,0,0,0.7);
             transform: scale(1.05);
         }
         
-        /* Stand Info */
+        .cart-count-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.65rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
         .stand-info-card {
             background: white;
             border-radius: 36px 36px 0 0;
@@ -97,22 +133,6 @@
             color: #6d28d9;
         }
         
-        .stand-time {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #7b6cb0;
-            font-size: 0.8rem;
-        }
-        
-        .stand-desc {
-            color: #666;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            margin-bottom: 8px;
-        }
-        
-        /* Menu Section */
         .menu-section {
             background: white;
             padding: 8px 24px 24px 24px;
@@ -150,7 +170,6 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
         
-        /* Menu Image */
         .menu-image-container {
             width: 100px;
             height: 100px;
@@ -164,16 +183,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-        
-        .menu-image-fallback {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            background: linear-gradient(135deg, #e2d9ff, #f0eaff);
         }
         
         .menu-info {
@@ -263,10 +272,8 @@
         
         .add-item-btn:hover {
             transform: scale(1.02);
-            box-shadow: 0 4px 12px rgba(109,40,217,0.3);
         }
         
-        /* Cart Summary */
         .cart-summary {
             position: fixed;
             bottom: 0;
@@ -288,11 +295,6 @@
             display: flex;
             align-items: baseline;
             gap: 8px;
-        }
-        
-        .cart-total-label {
-            font-size: 0.8rem;
-            color: #7b6cb0;
         }
         
         .cart-total-value {
@@ -319,17 +321,16 @@
             font-weight: 700;
             font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.2s;
         }
         
-        .checkout-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(109,40,217,0.3);
-        }
-        
-        .empty-cart {
-            color: #a29bbf;
-            font-size: 0.8rem;
+        .view-cart-btn {
+            background: white;
+            color: #6d28d9;
+            border: 1px solid #6d28d9;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-weight: 600;
+            cursor: pointer;
         }
         
         .toast {
@@ -359,411 +360,159 @@
         
         @media (max-width: 768px) {
             .stand-header { height: 200px; }
-            .stand-title { font-size: 1.4rem; }
-            .cart-summary { flex-direction: column; text-align: center; }
-            .checkout-btn { width: 100%; }
             .menu-item-card { flex-direction: column; }
             .menu-image-container { width: 100%; height: 150px; }
+            .cart-summary { flex-direction: column; }
+            .checkout-btn, .view-cart-btn { width: 100%; text-align: center; }
         }
     </style>
 </head>
 <body>
     <div class="stand-header">
         <div class="back-btn" onclick="history.back()">←</div>
+        <div class="cart-icon-header" onclick="window.location.href='keranjang.html'">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-count-badge" id="cartCountHeader">0</span>
+        </div>
         <img class="stand-cover" id="standCover" src="" alt="Stand Cover">
     </div>
     
-    <div class="stand-info-card" id="standInfo">
-        <!-- Stand info akan diisi JS -->
-    </div>
+    <div class="stand-info-card" id="standInfo"></div>
     
     <div class="menu-section">
         <div class="section-title">
             <i class="fas fa-utensils" style="color:#6d28d9;"></i> Menu List
         </div>
-        <div class="menu-list" id="menuList">
-            <!-- Menu items akan diisi JS -->
-        </div>
+        <div class="menu-list" id="menuList"></div>
     </div>
     
-    <div class="cart-summary" id="cartSummary">
-        <!-- Cart summary akan diisi JS -->
-    </div>
+    <div class="cart-summary" id="cartSummary"></div>
     
     <script>
-        // Data Stands & Menus dengan GAMBAR
+        // Data Stands
         const standsData = [
             {
-                id: 1,
-                name: "Ramen House",
-                description: "Authentic Japanese Ramen with rich Tonkotsu broth, homemade noodles and cozy vibes.",
-                rating: 4.8,
-                deliveryTime: "15-20 min",
+                id: 1, name: "Ramen House", rating: 4.8, deliveryTime: "15-20 min",
                 imageUrl: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&auto=format",
+                description: "Authentic Japanese Ramen with rich Tonkotsu broth.",
                 menus: [
-                    { 
-                        id: 101, 
-                        name: "Tonkotsu Ramen", 
-                        price: 45000, 
-                        desc: "Pork bone broth with chashu, telur ajitsuke, dan nori. Kuah kaldu tulang babi yang kaya rasa.",
-                        image: "https://images.unsplash.com/photo-1591814468924-caf5d1237d40?w=400&auto=format"
-                    },
-                    { 
-                        id: 102, 
-                        name: "Shoyu Ramen", 
-                        price: 40000, 
-                        desc: "Soy sauce based broth dengan chashu, bambu rebung, dan nori.",
-                        image: "https://images.unsplash.com/photo-1623345805780-8f01f714e765?w=400&auto=format"
-                    },
-                    { 
-                        id: 103, 
-                        name: "Miso Ramen", 
-                        price: 42000, 
-                        desc: "Rich miso broth with corn, butter, and chashu.",
-                        image: "https://images.unsplash.com/photo-1591814468924-caf5d1237d40?w=400&auto=format"
-                    },
-                    { 
-                        id: 104, 
-                        name: "Gyoza (5 pcs)", 
-                        price: 25000, 
-                        desc: "Japanese dumplings with chicken and vegetable filling.",
-                        image: "https://images.unsplash.com/photo-1627626771744-812a8d9c9da2?w=400&auto=format"
-                    }
+                    { id: 101, name: "Tonkotsu Ramen", price: 45000, desc: "Pork bone broth with chashu", image: "https://images.unsplash.com/photo-1591814468924-caf5d1237d40?w=400&auto=format" },
+                    { id: 102, name: "Shoyu Ramen", price: 40000, desc: "Soy sauce based broth", image: "https://images.unsplash.com/photo-1623345805780-8f01f714e765?w=400&auto=format" },
+                    { id: 103, name: "Gyoza", price: 25000, desc: "Japanese dumplings", image: "https://images.unsplash.com/photo-1627626771744-812a8d9c9da2?w=400&auto=format" }
                 ]
             },
             {
-                id: 2,
-                name: "Nusantara Rice Bowl",
-                description: "Indonesian heritage rice bowls with sambal matah, fried chicken, and lawar.",
-                rating: 4.7,
-                deliveryTime: "20-25 min",
+                id: 2, name: "Nusantara Rice Bowl", rating: 4.7, deliveryTime: "20-25 min",
                 imageUrl: "https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=800&auto=format",
+                description: "Indonesian heritage rice bowls.",
                 menus: [
-                    { 
-                        id: 201, 
-                        name: "Nasi Campur Bali", 
-                        price: 38000, 
-                        desc: "Nasi campur khas Bali dengan ayam betutu, sate lilit, lawar, dan sambal matah.",
-                        image: "https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=400&auto=format"
-                    },
-                    { 
-                        id: 202, 
-                        name: "Ayam Betutu Rice", 
-                        price: 42000, 
-                        desc: "Ayam betutu yang dimasak dengan bumbu khas Bali, disajikan dengan nasi hangat.",
-                        image: "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=400&auto=format"
-                    },
-                    { 
-                        id: 203, 
-                        name: "Sambal Goreng Ati", 
-                        price: 19000, 
-                        desc: "Sambal goreng dengan hati ayam dan kentang, pedas dan gurih.",
-                        image: "https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=400&auto=format"
-                    },
-                    { 
-                        id: 204, 
-                        name: "Sate Lilit", 
-                        price: 30000, 
-                        desc: "Sate lilit ikan dengan bumbu Bali.",
-                        image: "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=400&auto=format"
-                    }
-                ]
-            },
-            {
-                id: 3,
-                name: "Kopi Kekinian",
-                description: "Specialty coffee, cold brews, and artisanal drinks with cozy ambiance.",
-                rating: 4.9,
-                deliveryTime: "10-15 min",
-                imageUrl: "https://images.unsplash.com/photo-1507133750040-4a8f57021571?w=800&auto=format",
-                menus: [
-                    { 
-                        id: 301, 
-                        name: "Iced Caramel Latte", 
-                        price: 32000, 
-                        desc: "Espresso dengan susu segar dan sirup caramel, disajikan dingin.",
-                        image: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&auto=format"
-                    },
-                    { 
-                        id: 302, 
-                        name: "Matcha Espresso", 
-                        price: 35000, 
-                        desc: "Perpaduan matcha premium dengan espresso shot.",
-                        image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&auto=format"
-                    },
-                    { 
-                        id: 303, 
-                        name: "Vietnamese Drip", 
-                        price: 30000, 
-                        desc: "Kopi Vietnam tradisional dengan susu kental manis.",
-                        image: "https://images.unsplash.com/photo-1507133750040-4a8f57021571?w=400&auto=format"
-                    },
-                    { 
-                        id: 304, 
-                        name: "Croissant", 
-                        price: 18000, 
-                        desc: "Butter croissant pastry.",
-                        image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&auto=format"
-                    }
-                ]
-            },
-            {
-                id: 4,
-                name: "Sweet Tooth Lab",
-                description: "Decadent cakes, traditional desserts, and fusion sweet treats.",
-                rating: 4.6,
-                deliveryTime: "12-18 min",
-                imageUrl: "https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=800&auto=format",
-                menus: [
-                    { 
-                        id: 401, 
-                        name: "Lava Cake", 
-                        price: 34000, 
-                        desc: "Chocolate lava cake dengan lelehan coklat di dalamnya.",
-                        image: "https://images.unsplash.com/photo-1624353365286-9f5f1a7c8d2f?w=400&auto=format"
-                    },
-                    { 
-                        id: 402, 
-                        name: "Es Campur Istimewa", 
-                        price: 24000, 
-                        desc: "Es campur dengan buah segar, jelly, kolang-kaling.",
-                        image: "https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&auto=format"
-                    },
-                    { 
-                        id: 403, 
-                        name: "Bubur Sumsum", 
-                        price: 18000, 
-                        desc: "Bubur sumsum lembut dengan saus gula merah.",
-                        image: "https://images.unsplash.com/photo-1624353365286-9f5f1a7c8d2f?w=400&auto=format"
-                    }
-                ]
-            },
-            {
-                id: 5,
-                name: "Burger District",
-                description: "Juicy smashed burgers, crispy chicken sandwiches, and loaded cheese fries.",
-                rating: 4.5,
-                deliveryTime: "15-20 min",
-                imageUrl: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=800&auto=format",
-                menus: [
-                    { 
-                        id: 501, 
-                        name: "Double Cheeseburger", 
-                        price: 49000, 
-                        desc: "Double beef patty with melted cheese.",
-                        image: "https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=400&auto=format"
-                    },
-                    { 
-                        id: 502, 
-                        name: "Spicy Chicken Sandwich", 
-                        price: 42000, 
-                        desc: "Crispy spicy chicken with sambal sauce.",
-                        image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&auto=format"
-                    },
-                    { 
-                        id: 503, 
-                        name: "Loaded Fries", 
-                        price: 27000, 
-                        desc: "French fries with cheese, bacon, and sauce.",
-                        image: "https://images.unsplash.com/photo-1585109649139-366815a0d713?w=400&auto=format"
-                    }
+                    { id: 201, name: "Nasi Campur Bali", price: 38000, desc: "Mix rice with Balinese sides", image: "https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=400&auto=format" },
+                    { id: 202, name: "Ayam Betutu", price: 42000, desc: "Smoked chicken rice", image: "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=400&auto=format" }
                 ]
             }
         ];
         
-        // Ambil standId dari URL
         const urlParams = new URLSearchParams(window.location.search);
         const standId = parseInt(urlParams.get('id')) || 1;
         const currentStand = standsData.find(s => s.id === standId);
         
-        // Keranjang untuk stand ini
         let cart = [];
         
         function formatRupiah(price) {
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price);
         }
         
-        function renderStandInfo() {
-            const container = document.getElementById('standInfo');
-            const coverImg = document.getElementById('standCover');
+        function loadCart() {
+            const savedCart = localStorage.getItem('cart');
+            const savedStand = localStorage.getItem('currentStand');
             
-            if (coverImg && currentStand) {
-                coverImg.src = currentStand.imageUrl;
-                coverImg.alt = currentStand.name;
-            }
-            
-            if (container && currentStand) {
-                container.innerHTML = `
-                    <h1 class="stand-title">${currentStand.name}</h1>
-                    <div class="stand-meta">
-                        <span class="stand-rating"><i class="fas fa-star" style="color:#fbbf24;"></i> ${currentStand.rating}</span>
-                        <span class="stand-time"><i class="far fa-clock"></i> ${currentStand.deliveryTime}</span>
-                        <span class="stand-time"><i class="fas fa-motorcycle"></i> Free Delivery</span>
-                    </div>
-                    <p class="stand-desc">${currentStand.description}</p>
-                `;
-            }
-        }
-        
-        function getMenuImageHtml(menu) {
-            if (menu.image) {
-                return `<img class="menu-image" src="${menu.image}" alt="${menu.name}" onerror="this.parentElement.innerHTML='<div class=\'menu-image-fallback\'>🍽️</div>'">`;
-            } else {
-                return `<div class="menu-image-fallback">🍽️</div>`;
-            }
-        }
-        
-        function renderMenus() {
-            const container = document.getElementById('menuList');
-            if (!container || !currentStand) return;
-            
-            container.innerHTML = currentStand.menus.map(menu => `
-                <div class="menu-item-card" data-menu-id="${menu.id}">
-                    <div class="menu-image-container">
-                        ${getMenuImageHtml(menu)}
-                    </div>
-                    <div class="menu-info">
-                        <div class="menu-item-header">
-                            <span class="menu-item-name">${menu.name}</span>
-                            <span class="menu-item-price">${formatRupiah(menu.price)}</span>
-                        </div>
-                        <div class="menu-item-desc">${menu.desc}</div>
-                        <div class="menu-item-actions">
-                            <div class="quantity-selector" data-menu="${menu.id}">
-                                <button class="qty-btn minus-btn" data-id="${menu.id}">-</button>
-                                <span class="qty-value" id="qty-${menu.id}">0</span>
-                                <button class="qty-btn plus-btn" data-id="${menu.id}">+</button>
-                            </div>
-                            <button class="add-item-btn" data-id="${menu.id}" data-name="${menu.name}" data-price="${menu.price}">
-                                <i class="fas fa-plus"></i> Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-            
-            // Update quantity display berdasarkan cart
-            cart.forEach(item => {
-                const qtySpan = document.getElementById(`qty-${item.id}`);
-                if (qtySpan) qtySpan.textContent = item.quantity;
-            });
-            
-            // Event listeners untuk tombol
-            document.querySelectorAll('.minus-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const menuId = parseInt(btn.dataset.id);
-                    updateQuantity(menuId, -1);
-                });
-            });
-            
-            document.querySelectorAll('.plus-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const menuId = parseInt(btn.dataset.id);
-                    updateQuantity(menuId, 1);
-                });
-            });
-            
-            document.querySelectorAll('.add-item-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const menuId = parseInt(btn.dataset.id);
-                    const menuName = btn.dataset.name;
-                    const menuPrice = parseInt(btn.dataset.price);
-                    addToCart(menuId, menuName, menuPrice);
-                });
-            });
-        }
-        
-        function updateQuantity(menuId, change) {
-            const existingItem = cart.find(item => item.id === menuId);
-            const qtySpan = document.getElementById(`qty-${menuId}`);
-            
-            if (existingItem) {
-                const newQty = existingItem.quantity + change;
-                if (newQty <= 0) {
-                    cart = cart.filter(item => item.id !== menuId);
-                    if (qtySpan) qtySpan.textContent = 0;
+            if (savedCart && savedStand) {
+                const savedStandData = JSON.parse(savedStand);
+                if (savedStandData.id === currentStand.id) {
+                    cart = JSON.parse(savedCart);
                 } else {
-                    existingItem.quantity = newQty;
-                    if (qtySpan) qtySpan.textContent = newQty;
-                }
-            } else if (change > 0) {
-                const menu = currentStand.menus.find(m => m.id === menuId);
-                if (menu) {
-                    cart.push({
-                        id: menu.id,
-                        name: menu.name,
-                        price: menu.price,
-                        quantity: 1,
-                        image: menu.image
-                    });
-                    if (qtySpan) qtySpan.textContent = 1;
+                    cart = [];
                 }
             }
-            
-            renderCartSummary();
+            updateCartDisplay();
         }
         
-        function addToCart(menuId, menuName, menuPrice) {
-            const existingItem = cart.find(item => item.id === menuId);
-            const qtySpan = document.getElementById(`qty-${menuId}`);
-            
-            if (existingItem) {
-                existingItem.quantity++;
-                if (qtySpan) qtySpan.textContent = existingItem.quantity;
-            } else {
-                const menu = currentStand.menus.find(m => m.id === menuId);
-                cart.push({
-                    id: menuId,
-                    name: menuName,
-                    price: menuPrice,
-                    quantity: 1,
-                    image: menu ? menu.image : null
-                });
-                if (qtySpan) qtySpan.textContent = 1;
-            }
-            
-            renderCartSummary();
-            showToast(`${menuName} added to cart!`);
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            localStorage.setItem('currentStand', JSON.stringify({
+                id: currentStand.id,
+                name: currentStand.name
+            }));
+            updateCartDisplay();
         }
         
-        function renderCartSummary() {
-            const container = document.getElementById('cartSummary');
-            if (!container) return;
-            
+        function updateCartDisplay() {
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             
-            if (cart.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-cart">🛒 Your cart is empty</div>
-                    <button class="checkout-btn" disabled style="opacity:0.5; cursor:not-allowed;">Checkout</button>
-                `;
+            const headerBadge = document.getElementById('cartCountHeader');
+            if (headerBadge) headerBadge.textContent = totalItems;
+            
+            const summaryContainer = document.getElementById('cartSummary');
+            if (summaryContainer) {
+                if (cart.length === 0) {
+                    summaryContainer.innerHTML = `
+                        <div class="cart-total">
+                            <span class="cart-total-value">Rp 0</span>
+                            <span class="cart-items-count">0 item</span>
+                        </div>
+                        <button class="view-cart-btn" onclick="window.location.href='keranjang.html'">View Cart</button>
+                    `;
+                } else {
+                    summaryContainer.innerHTML = `
+                        <div class="cart-total">
+                            <span class="cart-total-value">${formatRupiah(totalPrice)}</span>
+                            <span class="cart-items-count">${totalItems} item${totalItems > 1 ? 's' : ''}</span>
+                        </div>
+                        <div style="display: flex; gap: 12px;">
+                            <button class="view-cart-btn" onclick="window.location.href='keranjang.html'">View Cart</button>
+                            <button class="checkout-btn" onclick="window.location.href='checkout.html'">Checkout</button>
+                        </div>
+                    `;
+                }
+            }
+        }
+        
+        function addToCart(menu) {
+            const existingItem = cart.find(item => item.id === menu.id);
+            
+            if (existingItem) {
+                existingItem.quantity++;
             } else {
-                container.innerHTML = `
-                    <div class="cart-total">
-                        <span class="cart-total-label">Total:</span>
-                        <span class="cart-total-value">${formatRupiah(totalPrice)}</span>
-                        <span class="cart-items-count">${totalItems} item${totalItems > 1 ? 's' : ''}</span>
-                    </div>
-                    <button class="checkout-btn" id="checkoutBtn">Checkout Now <i class="fas fa-arrow-right"></i></button>
-                `;
+                cart.push({
+                    id: menu.id,
+                    name: menu.name,
+                    price: menu.price,
+                    quantity: 1,
+                    image: menu.image,
+                    options: { size: 'Regular', spice: 'Normal' }
+                });
+            }
+            
+            saveCart();
+            showToast(`${menu.name} added to cart!`);
+        }
+        
+        function updateQuantity(menuId, change) {
+            const item = cart.find(i => i.id === menuId);
+            if (item) {
+                const newQty = item.quantity + change;
+                if (newQty <= 0) {
+                    cart = cart.filter(i => i.id !== menuId);
+                } else {
+                    item.quantity = newQty;
+                }
+                saveCart();
                 
-                const checkoutBtn = document.getElementById('checkoutBtn');
-                if (checkoutBtn) {
-                    checkoutBtn.addEventListener('click', () => {
-                        if (cart.length > 0) {
-                            // Simpan ke localStorage
-                            localStorage.setItem('cart', JSON.stringify(cart));
-                            localStorage.setItem('currentStand', JSON.stringify({
-                                id: currentStand.id,
-                                name: currentStand.name
-                            }));
-                            window.location.href = 'checkout.html';
-                        }
-                    });
+                const qtySpan = document.getElementById(`qty-${menuId}`);
+                if (qtySpan) {
+                    const updatedItem = cart.find(i => i.id === menuId);
+                    qtySpan.textContent = updatedItem ? updatedItem.quantity : 0;
                 }
             }
         }
@@ -774,37 +523,68 @@
             
             const toast = document.createElement('div');
             toast.className = 'toast';
-            toast.textContent = message;
+            toast.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
             document.body.appendChild(toast);
             setTimeout(() => toast.remove(), 2000);
         }
         
-        function loadCartFromStorage() {
-            const savedCart = localStorage.getItem('cart');
-            const savedStand = localStorage.getItem('currentStand');
+        function renderStandInfo() {
+            const container = document.getElementById('standInfo');
+            const coverImg = document.getElementById('standCover');
             
-            if (savedCart && savedStand) {
-                const savedStandData = JSON.parse(savedStand);
-                // Hanya load cart jika standnya sama
-                if (savedStandData.id === currentStand.id) {
-                    cart = JSON.parse(savedCart);
-                } else {
-                    cart = [];
-                    localStorage.removeItem('cart');
-                    localStorage.removeItem('currentStand');
-                }
+            if (coverImg) coverImg.src = currentStand.imageUrl;
+            
+            if (container) {
+                container.innerHTML = `
+                    <h1 class="stand-title">${currentStand.name}</h1>
+                    <div class="stand-meta">
+                        <span class="stand-rating"><i class="fas fa-star"></i> ${currentStand.rating}</span>
+                        <span><i class="far fa-clock"></i> ${currentStand.deliveryTime}</span>
+                        <span><i class="fas fa-motorcycle"></i> Free Delivery</span>
+                    </div>
+                    <p>${currentStand.description}</p>
+                `;
             }
         }
         
-        // Initialize
-        if (currentStand) {
-            loadCartFromStorage();
-            renderStandInfo();
-            renderMenus();
-            renderCartSummary();
-        } else {
-            document.body.innerHTML = '<div style="text-align:center; padding:50px;">Stand tidak ditemukan</div>';
+        function renderMenus() {
+            const container = document.getElementById('menuList');
+            if (!container) return;
+            
+            container.innerHTML = currentStand.menus.map(menu => {
+                const cartItem = cart.find(i => i.id === menu.id);
+                const qty = cartItem ? cartItem.quantity : 0;
+                
+                return `
+                    <div class="menu-item-card">
+                        <div class="menu-image-container">
+                            <img class="menu-image" src="${menu.image}" alt="${menu.name}" onerror="this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;\'>🍽️</div>'">
+                        </div>
+                        <div class="menu-info">
+                            <div class="menu-item-header">
+                                <span class="menu-item-name">${menu.name}</span>
+                                <span class="menu-item-price">${formatRupiah(menu.price)}</span>
+                            </div>
+                            <div class="menu-item-desc">${menu.desc}</div>
+                            <div class="menu-item-actions">
+                                <div class="quantity-selector">
+                                    <button class="qty-btn" onclick="updateQuantity(${menu.id}, -1)">-</button>
+                                    <span class="qty-value" id="qty-${menu.id}">${qty}</span>
+                                    <button class="qty-btn" onclick="updateQuantity(${menu.id}, 1)">+</button>
+                                </div>
+                                <button class="add-item-btn" onclick="addToCart({id: ${menu.id}, name: '${menu.name}', price: ${menu.price}, image: '${menu.image}'})">
+                                    <i class="fas fa-plus"></i> Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
+        
+        renderStandInfo();
+        renderMenus();
+        loadCart();
     </script>
 </body>
 </html>
