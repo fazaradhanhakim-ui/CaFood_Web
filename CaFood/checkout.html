@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - CaFood</title>
+    <title>CaFood • Checkout</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,265 +14,417 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: #f5f5f5;
-            padding-bottom: 80px;
+            font-family: 'Inter', sans-serif;
+            background: #f5f0ff;
+            padding-bottom: 40px;
         }
         
         .header {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 20px;
+            background: white;
+            padding: 16px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #f0eaff;
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
         
         .back-btn {
-            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            background: #f5f3ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            display: inline-block;
-            margin-bottom: 15px;
         }
         
-        .title {
-            font-size: 1.5rem;
-            font-weight: bold;
+        .header-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1e1a3a;
         }
         
         .checkout-container {
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 24px;
         }
         
-        .section {
+        /* Form Section */
+        .form-section {
             background: white;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-radius: 24px;
+            padding: 24px;
+            margin-bottom: 24px;
         }
         
         .section-title {
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: #333;
-            font-size: 1.1rem;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1e1a3a;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #1e1a3a;
+            margin-bottom: 6px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e2d9ff;
+            border-radius: 16px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #6d28d9;
+            box-shadow: 0 0 0 3px rgba(109,40,217,0.1);
+        }
+        
+        /* Payment Methods */
         .payment-methods {
-            display: grid;
-            gap: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
         
         .payment-option {
             display: flex;
             align-items: center;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
+            gap: 12px;
+            padding: 16px;
+            border: 1px solid #e2d9ff;
+            border-radius: 16px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
+        }
+        
+        .payment-option:hover {
+            border-color: #c4b5fd;
+            background: #faf8ff;
         }
         
         .payment-option.selected {
-            border-color: #667eea;
-            background: #f0e6ff;
+            border-color: #6d28d9;
+            background: #f5f3ff;
         }
         
         .payment-icon {
-            font-size: 1.5rem;
-            margin-right: 12px;
+            width: 40px;
+            height: 40px;
+            background: #f0eaff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .payment-info {
+            flex: 1;
         }
         
         .payment-name {
-            flex: 1;
-            font-weight: 500;
+            font-weight: 700;
+            font-size: 0.9rem;
         }
         
         .payment-desc {
-            font-size: 0.8rem;
-            color: #666;
+            font-size: 0.7rem;
+            color: #7b6cb0;
         }
         
+        /* Order Summary */
         .order-summary {
             background: white;
-            border-radius: 15px;
+            border-radius: 24px;
             padding: 20px;
+            height: fit-content;
+            position: sticky;
+            top: 80px;
+        }
+        
+        .order-items {
+            margin-bottom: 16px;
+            max-height: 300px;
+            overflow-y: auto;
         }
         
         .order-item {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0eaff;
         }
         
-        .order-total {
-            font-weight: bold;
-            font-size: 1.2rem;
-            border-top: 1px solid #e0e0e0;
-            padding-top: 10px;
-            margin-top: 10px;
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+        }
+        
+        .summary-row.total {
+            border-top: 1px solid #f0eaff;
+            padding-top: 16px;
+            margin-top: 8px;
+            font-weight: 800;
+            font-size: 1.1rem;
         }
         
         .confirm-btn {
             width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 14px;
+            background: linear-gradient(135deg, #6d28d9, #a855f7);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: 60px;
+            font-weight: 700;
             font-size: 1rem;
-            font-weight: bold;
-            margin-top: 20px;
             cursor: pointer;
-            transition: transform 0.2s;
+            margin-top: 20px;
+            transition: all 0.2s;
         }
         
         .confirm-btn:hover {
             transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(109,40,217,0.3);
         }
         
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #666;
-            font-size: 0.9rem;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-        
-        .form-control:focus {
-            outline: none;
-            border-color: #667eea;
+        @media (max-width: 768px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+                padding: 16px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <div class="back-btn" onclick="history.back()">←</div>
-        <div class="title">Checkout</div>
+        <div class="header-content">
+            <div class="back-btn" onclick="history.back()">
+                <i class="fas fa-arrow-left"></i>
+            </div>
+            <div class="header-title">💳 Checkout</div>
+        </div>
     </div>
     
     <div class="checkout-container" id="checkoutContainer">
-        <!-- Checkout content will be loaded here -->
+        <!-- Content will be loaded here -->
     </div>
     
     <script>
-        let orderData = null;
-        let selectedPayment = null;
+        let cart = [];
+        let currentStand = null;
+        let selectedPayment = 'cash';
         
-        function loadCheckout() {
-            orderData = JSON.parse(localStorage.getItem('currentOrder') || 'null');
+        function formatRupiah(price) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price);
+        }
+        
+        function loadData() {
+            cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            currentStand = JSON.parse(localStorage.getItem('currentStand') || 'null');
             
-            if(!orderData) {
-                window.location.href = 'menu-stand.html';
-                return;
+            if (cart.length === 0) {
+                window.location.href = 'checkout.html';
             }
             
+            renderCheckout();
+        }
+        
+        function renderCheckout() {
             const container = document.getElementById('checkoutContainer');
             
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const deliveryFee = 5000;
+            const tax = Math.round(subtotal * 0.05);
+            const total = subtotal + deliveryFee + tax;
+            
             container.innerHTML = `
-                <div class="section">
-                    <div class="section-title">Delivery Information</div>
-                    <div class="form-group">
-                        <label>Full Name</label>
-                        <input type="text" class="form-control" id="customerName" placeholder="Enter your name">
-                    </div>
-                    <div class="form-group">
-                        <label>Phone Number</label>
-                        <input type="tel" class="form-control" id="customerPhone" placeholder="Enter phone number">
-                    </div>
-                    <div class="form-group">
-                        <label>Table Number (Optional)</label>
-                        <input type="text" class="form-control" id="tableNumber" placeholder="Enter table number">
-                    </div>
-                </div>
-                
-                <div class="section">
-                    <div class="section-title">Payment Method</div>
-                    <div class="payment-methods" id="paymentMethods">
-                        <div class="payment-option" data-method="cash">
-                            <div class="payment-icon">💰</div>
-                            <div class="payment-name">Cash</div>
-                            <div class="payment-desc">Pay at counter</div>
+                <div>
+                    <div class="form-section">
+                        <div class="section-title">
+                            <i class="fas fa-user" style="color:#6d28d9;"></i> Delivery Information
                         </div>
-                        <div class="payment-option" data-method="qris">
-                            <div class="payment-icon">📱</div>
-                            <div class="payment-name">QRIS</div>
-                            <div class="payment-desc">Scan QR code</div>
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" class="form-control" id="customerName" placeholder="Enter your name">
                         </div>
-                        <div class="payment-option" data-method="card">
-                            <div class="payment-icon">💳</div>
-                            <div class="payment-name">Credit/Debit Card</div>
-                            <div class="payment-desc">Visa, Mastercard</div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" class="form-control" id="customerPhone" placeholder="Enter phone number">
+                        </div>
+                        <div class="form-group">
+                            <label>Table Number (Optional)</label>
+                            <input type="text" class="form-control" id="tableNumber" placeholder="Enter table number">
+                        </div>
+                        <div class="form-group">
+                            <label>Notes (Optional)</label>
+                            <textarea class="form-control" id="orderNotes" rows="2" placeholder="Any special requests?"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <div class="section-title">
+                            <i class="fas fa-credit-card" style="color:#6d28d9;"></i> Payment Method
+                        </div>
+                        <div class="payment-methods" id="paymentMethods">
+                            <div class="payment-option ${selectedPayment === 'cash' ? 'selected' : ''}" data-method="cash">
+                                <div class="payment-icon"><i class="fas fa-money-bill"></i></div>
+                                <div class="payment-info">
+                                    <div class="payment-name">Cash</div>
+                                    <div class="payment-desc">Pay at counter</div>
+                                </div>
+                            </div>
+                            <div class="payment-option ${selectedPayment === 'qris' ? 'selected' : ''}" data-method="qris">
+                                <div class="payment-icon"><i class="fas fa-qrcode"></i></div>
+                                <div class="payment-info">
+                                    <div class="payment-name">QRIS</div>
+                                    <div class="payment-desc">Scan QR code with any e-wallet</div>
+                                </div>
+                            </div>
+                            <div class="payment-option ${selectedPayment === 'card' ? 'selected' : ''}" data-method="card">
+                                <div class="payment-icon"><i class="fas fa-credit-card"></i></div>
+                                <div class="payment-info">
+                                    <div class="payment-name">Credit / Debit Card</div>
+                                    <div class="payment-desc">Visa, Mastercard, JCB</div>
+                                </div>
+                            </div>
+                            <div class="payment-option ${selectedPayment === 'transfer' ? 'selected' : ''}" data-method="transfer">
+                                <div class="payment-icon"><i class="fas fa-university"></i></div>
+                                <div class="payment-info">
+                                    <div class="payment-name">Bank Transfer</div>
+                                    <div class="payment-desc">BCA, Mandiri, BRI, BNI</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
                 <div class="order-summary">
                     <div class="section-title">Order Summary</div>
-                    ${orderData.items.map(item => `
-                        <div class="order-item">
-                            <span>${item.quantity}x ${item.name}</span>
-                            <span>Rp ${(item.price * item.quantity).toLocaleString()}</span>
-                        </div>
-                    `).join('')}
-                    <div class="order-item">
+                    <div class="order-items">
+                        ${cart.map(item => `
+                            <div class="order-item">
+                                <span>${item.quantity}x ${item.name}</span>
+                                <span>${formatRupiah(item.price * item.quantity)}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span>${formatRupiah(subtotal)}</span>
+                    </div>
+                    <div class="summary-row">
                         <span>Delivery Fee</span>
-                        <span>Rp 5,000</span>
+                        <span>${formatRupiah(deliveryFee)}</span>
                     </div>
-                    <div class="order-item order-total">
+                    <div class="summary-row">
+                        <span>Tax (5%)</span>
+                        <span>${formatRupiah(tax)}</span>
+                    </div>
+                    <div class="summary-row total">
                         <span>Total</span>
-                        <span>Rp ${orderData.total.toLocaleString()}</span>
+                        <span>${formatRupiah(total)}</span>
                     </div>
-                    <button class="confirm-btn" onclick="confirmOrder()">Confirm Order</button>
+                    <button class="confirm-btn" onclick="confirmOrder()">
+                        Confirm Order <i class="fas fa-check"></i>
+                    </button>
                 </div>
             `;
             
             // Payment method selection
-            document.querySelectorAll('.payment-option').forEach(option => {
-                option.addEventListener('click', function() {
-                    document.querySelectorAll('.payment-option').forEach(opt => opt.classList.remove('selected'));
+            document.querySelectorAll('.payment-option').forEach(opt => {
+                opt.addEventListener('click', function() {
+                    document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
                     this.classList.add('selected');
                     selectedPayment = this.dataset.method;
                 });
             });
         }
         
+        function generateOrderNumber() {
+            return 'ORD-' + Date.now().toString().slice(-8);
+        }
+        
+        function generateQueueNumber() {
+            const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]');
+            const todayOrders = existingOrders.filter(o => {
+                const orderDate = new Date(o.createdAt).toDateString();
+                const today = new Date().toDateString();
+                return orderDate === today;
+            });
+            return todayOrders.length + 1;
+        }
+        
+        function estimatePreparationTime() {
+            // Estimasi berdasarkan jumlah item
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const baseTime = 15;
+            const additionalTime = Math.floor(totalItems / 3) * 5;
+            return Math.min(baseTime + additionalTime, 45);
+        }
+        
         function confirmOrder() {
             const customerName = document.getElementById('customerName').value;
             const customerPhone = document.getElementById('customerPhone').value;
             
-            if(!customerName || !customerPhone) {
+            if (!customerName || !customerPhone) {
                 alert('Please fill in your name and phone number');
                 return;
             }
             
-            if(!selectedPayment) {
-                alert('Please select a payment method');
-                return;
-            }
-            
-            // Generate order number and queue
-            const orderNumber = 'ORD-' + Date.now();
-            const queueNumber = Math.floor(Math.random() * 50) + 1;
-            const estimatedTime = Math.floor(Math.random() * 20) + 15; // 15-35 minutes
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const deliveryFee = 5000;
+            const tax = Math.round(subtotal * 0.05);
+            const total = subtotal + deliveryFee + tax;
+            const estimatedTime = estimatePreparationTime();
+            const queueNumber = generateQueueNumber();
+            const orderNumber = generateOrderNumber();
             
             const order = {
                 orderNumber: orderNumber,
                 queueNumber: queueNumber,
                 customerName: customerName,
                 customerPhone: customerPhone,
-                items: orderData.items,
-                total: orderData.total,
+                tableNumber: document.getElementById('tableNumber').value || '-',
+                notes: document.getElementById('orderNotes').value,
+                standId: currentStand?.id || 1,
+                standName: currentStand?.name || 'Unknown Stand',
+                items: cart,
+                subtotal: subtotal,
+                deliveryFee: deliveryFee,
+                tax: tax,
+                total: total,
                 paymentMethod: selectedPayment,
                 status: 'pending',
                 estimatedTime: estimatedTime,
@@ -282,18 +436,18 @@
             orders.push(order);
             localStorage.setItem('orders', JSON.stringify(orders));
             
+            // Save current order for tracking
+            localStorage.setItem('currentOrder', JSON.stringify(order));
+            
             // Clear cart
             localStorage.removeItem('cart');
-            localStorage.removeItem('currentOrder');
-            
-            // Save current order for status tracking
-            localStorage.setItem('currentOrderStatus', JSON.stringify(order));
+            localStorage.removeItem('currentStand');
             
             // Redirect to status page
             window.location.href = 'status-pesanan.html';
         }
         
-        loadCheckout();
+        loadData();
     </script>
 </body>
 </html>
