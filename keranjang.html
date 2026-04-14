@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Lupa & Reset Password - CaFood</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .reset-container {
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 450px;
+            padding: 35px;
+            animation: slideUp 0.5s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .reset-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .reset-icon {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .reset-title {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .reset-subtitle {
+            color: #666;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .input-wrapper {
+            position: relative;
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.1rem;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+        }
+        
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102,126,234,0.4);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.6;
+            transform: none;
+            cursor: not-allowed;
+        }
+        
+        .btn-secondary {
+            width: 100%;
+            padding: 14px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .back-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Alert Messages */
+        .alert {
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .alert-success {
+            background: #c6f6d5;
+            color: #22543d;
+            border-left: 4px solid #48bb78;
+        }
+        
+        .alert-error {
+            background: #fed7d7;
+            color: #742a2a;
+            border-left: 4px solid #f56565;
+        }
+        
+        .alert-info {
+            background: #bee3f8;
+            color: #2c5282;
+            border-left: 4px solid #4299e1;
+        }
+        
+        /* OTP Section */
+        .otp-section {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .otp-inputs {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 25px 0;
+        }
+        
+        .otp-input {
+            width: 50px;
+            height: 55px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            background: white;
+            transition: all 0.3s;
+        }
+        
+        .otp-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+        }
+        
+        .resend-link {
+            text-align: center;
+            margin: 15px 0;
+        }
+        
+        .resend-link button {
+            background: none;
+            border: none;
+            color: #667eea;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+        
+        .resend-link button:hover:not(:disabled) {
+            text-decoration: underline;
+        }
+        
+        .resend-link button:disabled {
+            color: #999;
+            cursor: not-allowed;
+        }
+        
+        .countdown {
+            color: #999;
+            font-size: 0.8rem;
+        }
+        
+        /* Password Requirements */
+        .password-requirements {
+            margin-top: 12px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            font-size: 0.75rem;
+        }
+        
+        .requirement {
+            color: #999;
+            margin: 6px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .requirement.valid {
+            color: #48bb78;
+        }
+        
+        .requirement.invalid {
+            color: #f56565;
+        }
+        
+        /* Password Toggle */
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #999;
+            font-size: 1.1rem;
+            z-index: 2;
+        }
+        
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Success Animation */
+        .success-animation {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .checkmark {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #48bb78;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            animation: scaleCheck 0.5s ease-out;
+        }
+        
+        @keyframes scaleCheck {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 480px) {
+            .reset-container {
+                padding: 25px 20px;
+            }
+            
+            .otp-input {
+                width: 45px;
+                height: 50px;
+                font-size: 1.3rem;
+            }
+            
+            .reset-title {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reset-container" id="resetContainer">
+        
+        <!-- ==================== STEP 1: REQUEST RESET ==================== -->
+        <div id="step1">
+            <div class="reset-header">
+                <div class="reset-icon">🔐</div>
+                <div class="reset-title">Lupa Password?</div>
+                <div class="reset-subtitle">Masukkan email Anda, kami akan mengirimkan kode verifikasi untuk mereset password</div>
+            </div>
+            
+            <div id="alertMessage1"></div>
+            
+            <form id="requestResetForm">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">📧</span>
+                        <input type="email" class="form-control" id="resetEmail" placeholder="contoh: email@domain.com" required>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-primary" id="sendOtpBtn">
+                    Kirim Kode Verifikasi
+                </button>
+            </form>
+            
+            <div class="back-link">
+                <a href="login.html">← Kembali ke Login</a>
+            </div>
+        </div>
+        
+        <!-- ==================== STEP 2: VERIFY OTP ==================== -->
+        <div id="step2" style="display: none;">
+            <div class="reset-header">
+                <div class="reset-icon">📱</div>
+                <div class="reset-title">Verifikasi Kode</div>
+                <div class="reset-subtitle">Kami telah mengirimkan kode 6 digit ke <strong id="verifyEmail"></strong></div>
+            </div>
+            
+            <div id="alertMessage2"></div>
+            
+            <div class="otp-section">
+                <div class="otp-inputs" id="otpInputs">
+                    <input type="text" class="otp-input" maxlength="1" data-index="0" autofocus>
+                    <input type="text" class="otp-input" maxlength="1" data-index="1">
+                    <input type="text" class="otp-input" maxlength="1" data-index="2">
+                    <input type="text" class="otp-input" maxlength="1" data-index="3">
+                    <input type="text" class="otp-input" maxlength="1" data-index="4">
+                    <input type="text" class="otp-input" maxlength="1" data-index="5">
+                </div>
+                
+                <div class="resend-link">
+                    <span id="countdownText" class="countdown"></span>
+                    <button id="resendBtn" onclick="resendOTP()" style="display: none;">Kirim Ulang Kode</button>
+                </div>
+                
+                <button class="btn-primary" id="verifyOtpBtn" onclick="verifyOTP()">
+                    Verifikasi Kode
+                </button>
+                
+                <button class="btn-secondary" onclick="goToStep1()">
+                    Gunakan Email Lain
+                </button>
+            </div>
+        </div>
+        
+        <!-- ==================== STEP 3: RESET PASSWORD ==================== -->
+        <div id="step3" style="display: none;">
+            <div class="reset-header">
+                <div class="reset-icon">🔑</div>
+                <div class="reset-title">Buat Password Baru</div>
+                <div class="reset-subtitle">Buat password yang kuat dan mudah diingat</div>
+            </div>
+            
+            <div id="alertMessage3"></div>
+            
+            <form id="resetPasswordForm">
+                <div class="form-group">
+                    <label>Password Baru</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" class="form-control" id="newPassword" placeholder="Minimal 8 karakter" required>
+                        <span class="password-toggle" onclick="togglePassword('newPassword')">👁️</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Konfirmasi Password Baru</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" class="form-control" id="confirmPassword" placeholder="Ketik ulang password baru" required>
+                        <span class="password-toggle" onclick="togglePassword('confirmPassword')">👁️</span>
+                    </div>
+                </div>
+                
+                <div class="password-requirements" id="passwordRequirements">
+                    <div class="requirement" id="reqLength">✗ Minimal 8 karakter</div>
+                    <div class="requirement" id="reqUpper">✗ Minimal 1 huruf besar (A-Z)</div>
+                    <div class="requirement" id="reqLower">✗ Minimal 1 huruf kecil (a-z)</div>
+                    <div class="requirement" id="reqNumber">✗ Minimal 1 angka (0-9)</div>
+                    <div class="requirement" id="reqMatch">✗ Password tidak cocok</div>
+                </div>
+                
+                <button type="submit" class="btn-primary" id="resetPasswordBtn" disabled>
+                    Reset Password
+                </button>
+                
+                <button type="button" class="btn-secondary" onclick="goToStep2()">
+                    Kembali
+                </button>
+            </form>
+        </div>
+        
+        <!-- ==================== STEP 4: SUCCESS ==================== -->
+        <div id="step4" style="display: none;">
+            <div class="success-animation">
+                <div class="checkmark">✅</div>
+                <div class="reset-title">Berhasil!</div>
+                <div class="reset-subtitle" style="margin-bottom: 20px;">
+                    Password Anda telah berhasil diubah.
+                </div>
+                <button class="btn-primary" onclick="window.location.href='login.html'">
+                    Login Sekarang
+                </button>
+            </div>
+        </div>
+        
+    </div>
+    
+    <script>
+        // ==================== DATABASE SIMULATION ====================
+        // User database (synchronized with login system)
+        let usersDB = [];
+        
+        function loadUsersFromStorage() {
+            const savedUsers = localStorage.getItem('users');
+            if (savedUsers) {
+                usersDB = JSON.parse(savedUsers);
+            } else {
+                // Default users
+                usersDB = [
+                    { email: "admin@cafood.com", password: "Admin123", name: "Administrator", role: "admin" },
+                    { email: "ramen@cafood.com", password: "Ramen123", name: "Ramen House", role: "stand" },
+                    { email: "bali@cafood.com", password: "Bali123", name: "Bali Food", role: "stand" },
+                    { email: "john@example.com", password: "John123", name: "John Doe", role: "user" }
+                ];
+                localStorage.setItem('users', JSON.stringify(usersDB));
+            }
+        }
+        
+        function saveUsersToStorage() {
+            localStorage.setItem('users', JSON.stringify(usersDB));
+        }
+        
+        // ==================== RESET PASSWORD STATE ====================
+        let currentResetEmail = "";
+        let currentOTP = "";
+        let countdownTimer = null;
+        let timeLeft = 60;
+        
+        // ==================== STEP 1: REQUEST RESET ====================
+        document.getElementById('requestResetForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('resetEmail').value.trim().toLowerCase();
+            
+            if (!email) {
+                showAlert('alertMessage1', 'Masukkan email Anda', 'error');
+                return;
+            }
+            
+            // Check if email exists
+            const userExists = usersDB.some(user => user.email === email);
+            if (!userExists) {
+                showAlert('alertMessage1', 'Email tidak ditemukan. Periksa kembali email Anda.', 'error');
+                return;
+            }
+            
+            // Show loading
+            const btn = document.getElementById('sendOtpBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="spinner"></span> Mengirim...';
+            btn.disabled = true;
+            
+            // Simulate sending OTP
+            setTimeout(() => {
+                // Generate random 6-digit OTP
+                currentOTP = Math.floor(100000 + Math.random() * 900000).toString();
+                currentResetEmail = email;
+                
+                // For demo, show OTP in console and alert
+                console.log(`[DEMO] OTP for ${email}: ${currentOTP}`);
+                showAlert('alertMessage1', `Kode OTP: ${currentOTP} (Demo) - Cek console browser`, 'info');
+                
+                // Proceed to step 2
+                document.getElementById('step1').style.display = 'none';
+                document.getElementById('step2').style.display = 'block';
+                document.getElementById('verifyEmail').innerHTML = email;
+                
+                // Clear previous alerts
+                clearAlert('alertMessage1');
+                clearAlert('alertMessage2');
+                
+                // Reset OTP inputs
+                document.querySelectorAll('.otp-input').forEach(input => input.value = '');
+                document.querySelectorAll('.otp-input')[0].focus();
+                
+                // Start countdown
+                startCountdown();
+                
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }, 1500);
+        });
+        
+        // ==================== STEP 2: OTP VERIFICATION ====================
+        // OTP Input Handling
+        const otpInputs = document.querySelectorAll('.otp-input');
+        otpInputs.forEach((input, index) => {
+            input.addEventListener('input', function(e) {
+                // Only allow numbers
+                this.value = this.value.replace(/[^0-9]/g, '');
+                
+                if (this.value.length === 1 && index < 5) {
+                    otpInputs[index + 1].focus();
+                }
+            });
+            
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace' && !this.value && index > 0) {
+                    otpInputs[index - 1].focus();
+                }
+            });
+            
+            input.addEventListener('paste', function(e) {
+                e.preventDefault();
+                const paste = (e.clipboardData || window.clipboardData).getData('text');
+                const numbers = paste.replace(/[^0-9]/g, '').slice(0, 6);
+                
+                for (let i = 0; i < numbers.length && i < 6; i++) {
+                    otpInputs[i].value = numbers[i];
+                }
+                
+                if (numbers.length === 6) {
+                    verifyOTP();
+                } else if (numbers.length > 0) {
+                    otpInputs[Math.min(numbers.length, 5)].focus();
+                }
+            });
+        });
+        
+        function getOTPValue() {
+            let otp = '';
+            otpInputs.forEach(input => {
+                otp += input.value;
+            });
+            return otp;
+        }
+        
+        function verifyOTP() {
+            const enteredOTP = getOTPValue();
+            
+            if (enteredOTP.length !== 6) {
+                showAlert('alertMessage2', 'Masukkan kode verifikasi 6 digit', 'error');
+                return;
+            }
+            
+            if (enteredOTP !== currentOTP) {
+                showAlert('alertMessage2', 'Kode verifikasi salah. Silakan coba lagi.', 'error');
+                return;
+            }
+            
+            // OTP verified, go to step 3
+            document.getElementById('step2').style.display = 'none';
+            document.getElementById('step3').style.display = 'block';
+            
+            // Clear OTP inputs and stop countdown
+            otpInputs.forEach(input => input.value = '');
+            clearAlert('alertMessage2');
+            if (countdownTimer) clearInterval(countdownTimer);
+            
+            // Reset password form
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+            validatePassword();
+        }
+        
+        function resendOTP() {
+            // Generate new OTP
+            currentOTP = Math.floor(100000 + Math.random() * 900000).toString();
+            console.log(`[DEMO] New OTP for ${currentResetEmail}: ${currentOTP}`);
+            showAlert('alertMessage2', `Kode OTP baru: ${currentOTP} (Demo)`, 'info');
+            
+            // Reset countdown
+            if (countdownTimer) clearInterval(countdownTimer);
+            timeLeft = 60;
+            startCountdown();
+            
+            // Disable resend button temporarily
+            const resendBtn = document.getElementById('resendBtn');
+            resendBtn.style.display = 'none';
+        }
+        
+        function startCountdown() {
+            const resendBtn = document.getElementById('resendBtn');
+            const countdownText = document.getElementById('countdownText');
+            
+            resendBtn.style.display = 'none';
+            countdownTimer = setInterval(() => {
+                timeLeft--;
+                countdownText.innerHTML = `Kirim ulang dalam ${timeLeft} detik`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(countdownTimer);
+                    countdownText.innerHTML = '';
+                    resendBtn.style.display = 'inline-block';
+                    resendBtn.disabled = false;
+                }
+            }, 1000);
+        }
+        
+        // ==================== STEP 3: RESET PASSWORD ====================
+        // Password validation
+        document.getElementById('newPassword').addEventListener('input', validatePassword);
+        document.getElementById('confirmPassword').addEventListener('input', validatePassword);
+        
+        function validatePassword() {
+            const password = document.getElementById('newPassword').value;
+            const confirm = document.getElementById('confirmPassword').value;
+            
+            // Requirements
+            const hasMinLength = password.length >= 8;
+            const hasUpperCase = /[A-Z]/.test(password);
+            const hasLowerCase = /[a-z]/.test(password);
+            const hasNumber = /[0-9]/.test(password);
+            const passwordsMatch = password === confirm && password !== '';
+            
+            // Update requirement displays
+            updateRequirement('reqLength', hasMinLength, '✓ Minimal 8 karakter', '✗ Minimal 8 karakter');
+            updateRequirement('reqUpper', hasUpperCase, '✓ Minimal 1 huruf besar', '✗ Minimal 1 huruf besar');
+            updateRequirement('reqLower', hasLowerCase, '✓ Minimal 1 huruf kecil', '✗ Minimal 1 huruf kecil');
+            updateRequirement('reqNumber', hasNumber, '✓ Minimal 1 angka', '✗ Minimal 1 angka');
+            updateRequirement('reqMatch', passwordsMatch, '✓ Password cocok', '✗ Password tidak cocok');
+            
+            // Enable/disable reset button
+            const isValid = hasMinLength && hasUpperCase && hasLowerCase && hasNumber && passwordsMatch;
+            document.getElementById('resetPasswordBtn').disabled = !isValid;
+            
+            return isValid;
+        }
+        
+        function updateRequirement(elementId, isValid, validText, invalidText) {
+            const element = document.getElementById(elementId);
+            if (isValid) {
+                element.className = 'requirement valid';
+                element.innerHTML = validText;
+            } else {
+                element.className = 'requirement invalid';
+                element.innerHTML = invalidText;
+            }
+        }
+        
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const type = field.type === 'password' ? 'text' : 'password';
+            field.type = type;
+        }
+        
+        // Reset Password Submit
+        document.getElementById('resetPasswordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!validatePassword()) return;
+            
+            const newPassword = document.getElementById('newPassword').value;
+            
+            // Update password in database
+            const userIndex = usersDB.findIndex(user => user.email === currentResetEmail);
+            if (userIndex !== -1) {
+                usersDB[userIndex].password = newPassword;
+                saveUsersToStorage();
+                console.log(`Password updated for ${currentResetEmail}`);
+            }
+            
+            // Also update any pending orders or current session
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            if (currentUser && currentUser.email === currentResetEmail) {
+                currentUser.password = newPassword;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            }
+            
+            // Show success
+            document.getElementById('step3').style.display = 'none';
+            document.getElementById('step4').style.display = 'block';
+        });
+        
+        // ==================== NAVIGATION FUNCTIONS ====================
+        function goToStep1() {
+            document.getElementById('step2').style.display = 'none';
+            document.getElementById('step1').style.display = 'block';
+            clearAlert('alertMessage1');
+            clearAlert('alertMessage2');
+            if (countdownTimer) clearInterval(countdownTimer);
+            document.getElementById('resetEmail').value = '';
+        }
+        
+        function goToStep2() {
+            document.getElementById('step3').style.display = 'none';
+            document.getElementById('step2').style.display = 'block';
+            clearAlert('alertMessage2');
+            clearAlert('alertMessage3');
+        }
+        
+        // ==================== HELPER FUNCTIONS ====================
+        function showAlert(containerId, message, type) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            const alertClass = type === 'success' ? 'alert-success' : (type === 'error' ? 'alert-error' : 'alert-info');
+            const icon = type === 'success' ? '✅' : (type === 'error' ? '⚠️' : 'ℹ️');
+            
+            container.innerHTML = `<div class="alert ${alertClass}">${icon} ${message}</div>`;
+            
+            // Auto hide after 5 seconds for non-error messages
+            if (type !== 'error') {
+                setTimeout(() => {
+                    if (container.innerHTML === `<div class="alert ${alertClass}">${icon} ${message}</div>`) {
+                        clearAlert(containerId);
+                    }
+                }, 5000);
+            }
+        }
+        
+        function clearAlert(containerId) {
+            const container = document.getElementById(containerId);
+            if (container) container.innerHTML = '';
+        }
+        
+        // ==================== INITIALIZATION ====================
+        function init() {
+            loadUsersFromStorage();
+            
+            // Add enter key support for OTP
+            document.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && document.getElementById('step2').style.display === 'block') {
+                    verifyOTP();
+                }
+            });
+        }
+        
+        init();
+    </script>
+</body>
+</html>
