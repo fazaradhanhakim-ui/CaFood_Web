@@ -255,6 +255,106 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+        
+        .admin-login-wrapper {
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .admin-login-btn {
+            background: transparent;
+            border: 1px solid #e0e0e0;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            color: #667eea;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .admin-login-btn:hover {
+            background: rgba(102,126,234,0.1);
+            border-color: #667eea;
+        }
+        
+        .admin-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .admin-modal.active {
+            display: flex;
+        }
+        
+        .admin-modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 350px;
+            animation: slideUp 0.3s ease-out;
+            text-align: center;
+        }
+        
+        .admin-modal-content h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .admin-modal-content p {
+            color: #666;
+            font-size: 0.8rem;
+            margin-bottom: 20px;
+        }
+        
+        .admin-modal-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .admin-modal-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .admin-modal-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close-modal {
+            float: right;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #999;
+            margin-top: -10px;
+        }
+        
+        .close-modal:hover {
+            color: #333;
+        }
     </style>
 </head>
 <body>
@@ -283,9 +383,8 @@
                 </div>
                 
                 <div class="role-selector">
-                    <div class="role-btn active" data-role="user">👤 User</div>
-                    <div class="role-btn" data-role="stand">🏪 Stand</div>
-                    <div class="role-btn" data-role="admin">👑 Admin</div>
+                    <div class="role-btn active" data-role="user">👤 Customer</div>
+                    <div class="role-btn" data-role="stand">🏪 Stand Owner</div>
                 </div>
                 
                 <div class="forgot-link">
@@ -295,14 +394,30 @@
                 <button type="submit" class="btn-login" id="loginBtn">Login</button>
             </form>
             
+            <div class="admin-login-wrapper">
+                <button type="button" class="admin-login-btn" onclick="showAdminModal()">
+                Admin access
+                </button>
+            </div>
+            
             <div class="register-link">
-                Don't have an account? <a href="register.html" id="registerLink">Register here</a>
+                Don't have an account? <a href="register.html">Register here</a>
             </div>
         </div>
     </div>
     
+    <div id="adminModal" class="admin-modal">
+        <div class="admin-modal-content">
+            <span class="close-modal" onclick="closeAdminModal()">&times;</span>
+            <h3>Admin access</h3>
+            <p>Enter your admin credentials</p>
+            <input type="email" id="adminEmail" class="admin-modal-input" placeholder="Email" value="admin@cafood.com">
+            <input type="password" id="adminPassword" class="admin-modal-input" placeholder="Password" value="admin123">
+            <button class="admin-modal-btn" onclick="handleAdminLogin()">Login as Admin</button>
+        </div>
+    </div>
+    
     <script>
-        // Toggle password visibility
         function togglePassword() {
             const passwordInput = document.getElementById('password');
             const toggleBtn = document.querySelector('.toggle-password');
@@ -315,7 +430,6 @@
             }
         }
         
-        // Role selector
         let selectedRole = 'user';
         
         document.querySelectorAll('.role-btn').forEach(btn => {
@@ -326,7 +440,6 @@
             });
         });
         
-        // Show toast notification
         function showToast(message, type = 'success') {
             const existingToast = document.querySelector('.toast');
             if (existingToast) existingToast.remove();
@@ -341,14 +454,12 @@
             }, 3000);
         }
         
-        // Validate form
         function validateForm() {
             let isValid = true;
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             
-            // Email validation
             if (!email) {
                 document.getElementById('emailError').style.display = 'block';
                 document.getElementById('email').classList.add('error');
@@ -363,7 +474,6 @@
                 document.getElementById('email').classList.remove('error');
             }
             
-            // Password validation
             if (!password) {
                 document.getElementById('passwordError').style.display = 'block';
                 document.getElementById('password').classList.add('error');
@@ -376,93 +486,147 @@
             return isValid;
         }
         
-        // Initialize demo users if not exist
-        function initDemoUsers() {
-            let users = JSON.parse(localStorage.getItem('users') || '[]');
+        // INITIALIZE ALL DATA (TANPA BTOA UNTUK PASSWORD)
+        function initAllData() {
+            // Cek apakah data sudah ada
+            let users = localStorage.getItem('users');
             
-            if (users.length === 0) {
-                users = [
+            if (!users) {
+                // Buat data baru dengan password PLAIN TEXT (biar gampang)
+                const newUsers = [
                     {
                         id: 1,
-                        fullName: "John Doe",
+                        name: "John Doe",
                         email: "john@example.com",
-                        phone: "08123456789",
-                        password: btoa("password123"),
+                        password: "password123",
                         role: "user",
-                        isActive: true,
+                        status: "active",
                         createdAt: new Date().toISOString()
                     },
                     {
                         id: 2,
-                        fullName: "Ramen House Owner",
+                        name: "Ramen House Owner",
                         email: "ramen@cafood.com",
-                        phone: "08123456780",
-                        password: btoa("password123"),
+                        password: "password123",
                         role: "stand",
                         standName: "Ramen House",
-                        isActive: true,
+                        status: "active",
                         createdAt: new Date().toISOString()
                     },
                     {
                         id: 3,
-                        fullName: "Administrator",
+                        name: "Administrator",
                         email: "admin@cafood.com",
-                        phone: "08123456781",
-                        password: btoa("password123"),
+                        password: "admin123",
                         role: "admin",
-                        isActive: true,
+                        status: "active",
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        id: 4,
+                        name: "Najwa",
+                        email: "najwa@gmail.com",
+                        password: "password123",
+                        role: "user",
+                        status: "active",
                         createdAt: new Date().toISOString()
                     }
                 ];
-                localStorage.setItem('users', JSON.stringify(users));
-                
-                // Also create stand entry for ramen house
-                let stands = JSON.parse(localStorage.getItem('stands') || '[]');
-                if (stands.length === 0) {
-                    stands = [
-                        {
-                            id: 1,
-                            userId: 2,
-                            standName: "Ramen House",
-                            logo: "🍜",
-                            description: "Authentic Japanese Ramen with rich broth",
-                            isOpen: true,
-                            rating: 4.8,
-                            createdAt: new Date().toISOString()
-                        },
-                        {
-                            id: 2,
-                            userId: null,
-                            standName: "Nasi Campur Bali",
-                            logo: "🍚",
-                            description: "Traditional Balinese Cuisine",
-                            isOpen: true,
-                            rating: 4.9,
-                            createdAt: new Date().toISOString()
-                        },
-                        {
-                            id: 3,
-                            userId: null,
-                            standName: "Coffee & Co",
-                            logo: "☕",
-                            description: "Premium Coffee & Pastries",
-                            isOpen: true,
-                            rating: 4.7,
-                            createdAt: new Date().toISOString()
-                        }
-                    ];
-                    localStorage.setItem('stands', JSON.stringify(stands));
-                }
+                localStorage.setItem('users', JSON.stringify(newUsers));
+                console.log("✅ Users data created:", newUsers);
             }
+            
+            // STANDS DATA
+            let stands = localStorage.getItem('stands');
+            if (!stands) {
+                const newStands = [
+                    { id: 1, name: "Ramen House", logo: "🍜", description: "Authentic Japanese Ramen", status: "active", totalSales: 12500000, orders: 342 },
+                    { id: 2, name: "Nasi Campur Bali", logo: "🍚", description: "Traditional Balinese Cuisine", status: "active", totalSales: 8900000, orders: 245 },
+                    { id: 3, name: "Coffee & Co", logo: "☕", description: "Premium Coffee & Pastries", status: "active", totalSales: 5600000, orders: 178 }
+                ];
+                localStorage.setItem('stands', JSON.stringify(newStands));
+            }
+            
+            // ORDERS DATA
+            let orders = localStorage.getItem('orders');
+            if (!orders) {
+                const newOrders = [
+                    { id: 1, orderNumber: "ORD-001", customer: "John Doe", stand: "Ramen House", total: 115000, status: "completed", date: new Date().toISOString().split('T')[0] },
+                    { id: 2, orderNumber: "ORD-002", customer: "Najwa", stand: "Nasi Campur Bali", total: 82000, status: "processing", date: new Date().toISOString().split('T')[0] },
+                    { id: 3, orderNumber: "ORD-003", customer: "Mike Johnson", stand: "Coffee & Co", total: 45000, status: "pending", date: new Date().toISOString().split('T')[0] }
+                ];
+                localStorage.setItem('orders', JSON.stringify(newOrders));
+            }
+            
+            // PROMOTIONS DATA
+            let promos = localStorage.getItem('promotions');
+            if (!promos) {
+                const newPromos = [
+                    { id: 1, name: "New Year Promo", type: "percentage", value: 20, endDate: "2025-12-31" },
+                    { id: 2, name: "Weekend Special", type: "nominal", value: 20000, endDate: "2025-12-31" }
+                ];
+                localStorage.setItem('promotions', JSON.stringify(newPromos));
+            }
+            
+            return JSON.parse(localStorage.getItem('users'));
         }
         
-        // Login handler
+        function showAdminModal() {
+            document.getElementById('adminModal').classList.add('active');
+        }
+        
+        function closeAdminModal() {
+            document.getElementById('adminModal').classList.remove('active');
+        }
+        
+        // ADMIN LOGIN - PALING SIMPLE
+        function handleAdminLogin() {
+            const email = document.getElementById('adminEmail').value.trim();
+            const password = document.getElementById('adminPassword').value;
+            const loginBtn = document.querySelector('.admin-modal-btn');
+            
+            loginBtn.innerHTML = '<span class="spinner"></span> Verifying...';
+            loginBtn.disabled = true;
+            
+            // Init data
+            const users = initAllData();
+            
+            setTimeout(() => {
+                // Cari admin - BANDINGKAN LANGSUNG (tanpa decode)
+                const admin = users.find(u => u.email === email && u.password === password && u.role === 'admin');
+                
+                console.log("Admin login - Email:", email);
+                console.log("Admin login - Found:", admin);
+                
+                if (admin) {
+                    const adminData = {
+                        id: admin.id,
+                        name: admin.name,
+                        email: admin.email,
+                        role: 'admin',
+                        loginTime: new Date().toISOString()
+                    };
+                    localStorage.setItem('currentUser', JSON.stringify(adminData));
+                    
+                    showToast(`Welcome Admin, ${admin.name}!`, 'success');
+                    closeAdminModal();
+                    
+                    setTimeout(() => {
+                        window.location.href = 'dashboard-admin.html';
+                    }, 500);
+                } else {
+                    showToast('Invalid admin credentials! Use email: admin@cafood.com, password: admin123', 'error');
+                    loginBtn.innerHTML = 'Login as Admin';
+                    loginBtn.disabled = false;
+                }
+            }, 500);
+        }
+        
+        // USER/STAND LOGIN
         document.getElementById('loginForm').addEventListener('submit', (e) => {
             e.preventDefault();
             
-            if (!validateForm()) {
-                return;
-            }
+            if (!validateForm()) return;
             
             const loginBtn = document.getElementById('loginBtn');
             const originalText = loginBtn.innerHTML;
@@ -472,19 +636,16 @@
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
             
-            // Initialize demo users first time
-            initDemoUsers();
+            const users = initAllData();
             
-            // Simulate network delay
             setTimeout(() => {
-                const users = JSON.parse(localStorage.getItem('users') || '[]');
-                const user = users.find(u => u.email === email && atob(u.password) === password);
+                // Cari user - BANDINGKAN LANGSUNG
+                const user = users.find(u => u.email === email && u.password === password);
                 
                 if (user && user.role === selectedRole) {
-                    // Login success
                     const userData = {
                         id: user.id,
-                        name: user.fullName,
+                        name: user.name,
                         email: user.email,
                         role: user.role,
                         standName: user.standName || null,
@@ -492,26 +653,16 @@
                     };
                     localStorage.setItem('currentUser', JSON.stringify(userData));
                     
-                    showToast(`Welcome back, ${user.fullName}!`, 'success');
+                    showToast(`Welcome back, ${user.name}!`, 'success');
                     
-                    // Redirect based on role
                     setTimeout(() => {
-                        switch(user.role) {
-                            case 'user':
-                                window.location.href = 'menu-stand.html';
-                                break;
-                            case 'stand':
-                                window.location.href = 'dashboard-stand.html';
-                                break;
-                            case 'admin':
-                                window.location.href = 'dashboard-admin.html';
-                                break;
-                            default:
-                                window.location.href = 'menu-stand.html';
+                        if (user.role === 'user') {
+                            window.location.href = 'home.html';
+                        } else if (user.role === 'stand') {
+                            window.location.href = 'dashboard-stand.html';
                         }
                     }, 1000);
                 } else {
-                    // Login failed
                     let errorMsg = 'Invalid email or password';
                     if (user && user.role !== selectedRole) {
                         errorMsg = `This account is registered as ${user.role}. Please select the correct role.`;
@@ -520,10 +671,9 @@
                     loginBtn.innerHTML = originalText;
                     loginBtn.disabled = false;
                 }
-            }, 1000);
+            }, 500);
         });
         
-        // Real-time validation
         document.getElementById('email').addEventListener('input', function() {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (this.value && !emailRegex.test(this.value)) {
@@ -543,8 +693,18 @@
             }
         });
         
-        // Initialize on page load
-        initDemoUsers();
+        window.onclick = function(event) {
+            const modal = document.getElementById('adminModal');
+            if (event.target === modal) {
+                closeAdminModal();
+            }
+        }
+        
+        // INIT
+        initAllData();
+        
+        // Debug
+        console.log("Available users:", JSON.parse(localStorage.getItem('users')));
     </script>
 </body>
 </html>

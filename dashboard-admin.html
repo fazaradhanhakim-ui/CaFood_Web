@@ -229,6 +229,9 @@
         
         .status-active { background: #c6f6d5; color: #22543d; }
         .status-inactive { background: #fed7d7; color: #742a2a; }
+        .status-pending { background: #fefcbf; color: #975a16; }
+        .status-processing { background: #bee3f8; color: #2c5282; }
+        .status-completed { background: #c6f6d5; color: #22543d; }
         
         .action-btn {
             padding: 5px 10px;
@@ -359,7 +362,6 @@
     
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <div class="sidebar-logo">👑</div>
             <div class="sidebar-title">CaFood Admin</div>
             <div class="sidebar-subtitle">Management Panel</div>
         </div>
@@ -393,10 +395,9 @@
     
     <div class="main-content">
         <div class="admin-header">
-            <div class="header-title">Admin Dashboard</div>
+            <div class="header-title" id="adminName">Admin Dashboard</div>
             <div class="admin-info">
-                <div class="admin-avatar">👑</div>
-                <span>Admin</span>
+                <span id="adminEmail">Admin</span>
                 <button class="logout-btn" onclick="logout()">Logout</button>
             </div>
         </div>
@@ -591,33 +592,89 @@
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Sample Data
-        let stands = [
-            { id: 1, name: "Ramen House", logo: "🍜", description: "Authentic Japanese Ramen", status: "active", totalSales: 12500000, orders: 342 },
-            { id: 2, name: "Nasi Campur Bali", logo: "🍚", description: "Traditional Balinese Cuisine", status: "active", totalSales: 8900000, orders: 245 },
-            { id: 3, name: "Coffee & Co", logo: "☕", description: "Premium Coffee & Pastries", status: "active", totalSales: 5600000, orders: 178 }
-        ];
+        // ========== SESSION CHECK ==========
+        let currentAdmin = null;
         
-        let users = [
-            { id: 1, name: "John Doe", email: "john@example.com", role: "user", status: "active", orders: 12 },
-            { id: 2, name: "Ramen House", email: "ramen@cafood.com", role: "stand", status: "active", orders: 342 },
-            { id: 3, name: "Jane Smith", email: "jane@example.com", role: "user", status: "active", orders: 8 }
-        ];
+        function checkAdminSession() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser || currentUser.role !== 'admin') {
+                alert("You are not logged in as admin! Redirecting to login page...");
+                window.location.href = 'login.html';
+                return null;
+            }
+            return currentUser;
+        }
         
-        let orders = [
-            { id: 1, orderNumber: "ORD-001", customer: "John Doe", stand: "Ramen House", total: 115000, status: "completed", date: "2024-01-15" },
-            { id: 2, orderNumber: "ORD-002", customer: "Jane Smith", stand: "Nasi Campur Bali", total: 82000, status: "processing", date: "2024-01-15" },
-            { id: 3, orderNumber: "ORD-003", customer: "Mike Johnson", stand: "Coffee & Co", total: 45000, status: "pending", date: "2024-01-15" }
-        ];
+        // ========== GET DATA FROM LOCALSTORAGE ==========
+        function getStands() {
+            return JSON.parse(localStorage.getItem('stands') || '[]');
+        }
         
-        let promos = [
-            { id: 1, name: "New Year Promo", type: "percentage", value: 20, endDate: "2024-02-01" },
-            { id: 2, name: "Weekend Special", type: "nominal", value: 20000, endDate: "2024-01-31" }
-        ];
+        function getUsers() {
+            return JSON.parse(localStorage.getItem('users') || '[]');
+        }
+        
+        function getOrders() {
+            return JSON.parse(localStorage.getItem('orders') || '[]');
+        }
+        
+        function getPromos() {
+            return JSON.parse(localStorage.getItem('promotions') || '[]');
+        }
+        
+        function saveStands(stands) {
+            localStorage.setItem('stands', JSON.stringify(stands));
+        }
+        
+        function saveUsers(users) {
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+        
+        function saveOrders(orders) {
+            localStorage.setItem('orders', JSON.stringify(orders));
+        }
+        
+        function savePromos(promos) {
+            localStorage.setItem('promotions', JSON.stringify(promos));
+        }
+        
+        // ========== INITIALIZE DEMO DATA ==========
+        function initDemoData() {
+            let users = getUsers();
+            if (users.length === 0) {
+                users = [
+                    { id: 1, name: "John Doe", email: "john@example.com", password: btoa("password123"), role: "user", status: "active", orders: 12, createdAt: new Date().toISOString() },
+                    { id: 2, name: "Ramen House", email: "ramen@cafood.com", password: btoa("password123"), role: "stand", status: "active", orders: 342, standName: "Ramen House", createdAt: new Date().toISOString() },
+                    { id: 3, name: "Jane Smith", email: "jane@example.com", password: btoa("password123"), role: "user", status: "active", orders: 8, createdAt: new Date().toISOString() },
+                    { id: 4, name: "Administrator", email: "admin@cafood.com", password: btoa("admin123"), role: "admin", status: "active", orders: 0, createdAt: new Date().toISOString() }
+                ];
+                saveUsers(users);
+            }
+            
+            let stands = getStands();
+            if (stands.length === 0) {
+                stands = [
+                    { id: 1, name: "Ramen House", logo: "🍜", description: "Authentic Japanese Ramen", status: "active", totalSales: 12500000, orders: 342, ownerEmail: "ramen@cafood.com" },
+                    { id: 2, name: "Nasi Campur Bali", logo: "🍚", description: "Traditional Balinese Cuisine", status: "active", totalSales: 8900000, orders: 245, ownerEmail: null },
+                    { id: 3, name: "Coffee & Co", logo: "☕", description: "Premium Coffee & Pastries", status: "active", totalSales: 5600000, orders: 178, ownerEmail: null }
+                ];
+                saveStands(stands);
+            }
+            
+            let orders = getOrders();
+            if (orders.length === 0) {
+                orders = [
+                    { id: 1, orderNumber: "ORD-001", customer: "John Doe", stand: "Ramen House", total: 115000, status: "completed", date: new Date().toISOString().split('T')[0] },
+                    { id: 2, orderNumber: "ORD-002", customer: "Jane Smith", stand: "Nasi Campur Bali", total: 82000, status: "processing", date: new Date().toISOString().split('T')[0] },
+                    { id: 3, orderNumber: "ORD-003", customer: "Mike Johnson", stand: "Coffee & Co", total: 45000, status: "pending", date: new Date().toISOString().split('T')[0] }
+                ];
+                saveOrders(orders);
+            }
+        }
         
         let salesChart = null;
         
-        // Tab switching
+        // ========== TAB SWITCHING ==========
         document.querySelectorAll('.menu-item').forEach(item => {
             item.addEventListener('click', function() {
                 document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
@@ -631,7 +688,6 @@
                 document.getElementById('promosTab').style.display = tab === 'promos' ? 'block' : 'none';
                 document.getElementById('reportsTab').style.display = tab === 'reports' ? 'block' : 'none';
                 
-                // Load data for tab
                 if (tab === 'dashboard') loadDashboard();
                 if (tab === 'stands') renderStands();
                 if (tab === 'users') renderUsers();
@@ -641,45 +697,24 @@
             });
         });
         
+        // ========== DASHBOARD ==========
         function loadDashboard() {
-            // Stats
+            const stands = getStands();
+            const users = getUsers();
+            const orders = getOrders();
+            
             const totalRevenue = orders.reduce((sum, o) => sum + o.total, 0);
             const totalOrders = orders.length;
             const activeStands = stands.filter(s => s.status === 'active').length;
             const totalUsers = users.length;
             
             document.getElementById('statsGrid').innerHTML = `
-                <div class="stat-card">
-                    <div class="stat-info">
-                        <h3>Total Revenue</h3>
-                        <div class="stat-number">Rp ${totalRevenue.toLocaleString()}</div>
-                    </div>
-                    <div class="stat-icon">💰</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-info">
-                        <h3>Total Orders</h3>
-                        <div class="stat-number">${totalOrders}</div>
-                    </div>
-                    <div class="stat-icon">📦</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-info">
-                        <h3>Active Stands</h3>
-                        <div class="stat-number">${activeStands}</div>
-                    </div>
-                    <div class="stat-icon">🏪</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-info">
-                        <h3>Total Users</h3>
-                        <div class="stat-number">${totalUsers}</div>
-                    </div>
-                    <div class="stat-icon">👥</div>
-                </div>
+                <div class="stat-card"><div class="stat-info"><h3>Total Revenue</h3><div class="stat-number">Rp ${totalRevenue.toLocaleString()}</div></div><div class="stat-icon">💰</div></div>
+                <div class="stat-card"><div class="stat-info"><h3>Total Orders</h3><div class="stat-number">${totalOrders}</div></div><div class="stat-icon">📦</div></div>
+                <div class="stat-card"><div class="stat-info"><h3>Active Stands</h3><div class="stat-number">${activeStands}</div></div><div class="stat-icon">🏪</div></div>
+                <div class="stat-card"><div class="stat-info"><h3>Total Users</h3><div class="stat-number">${totalUsers}</div></div><div class="stat-icon">👥</div></div>
             `;
             
-            // Chart
             const ctx = document.getElementById('salesChart').getContext('2d');
             if (salesChart) salesChart.destroy();
             salesChart = new Chart(ctx, {
@@ -695,161 +730,41 @@
                         fill: true
                     }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true
-                }
+                options: { responsive: true, maintainAspectRatio: true }
             });
             
-            // Recent orders
             renderRecentOrders();
         }
         
         function renderRecentOrders() {
+            const orders = getOrders();
             const recentOrders = orders.slice(0, 5);
             document.getElementById('recentOrdersTable').innerHTML = `
-                <table>
-                    <thead>
-                        <tr><th>Order #</th><th>Customer</th><th>Stand</th><th>Total</th><th>Status</th><th>Date</th></tr>
-                    </thead>
-                    <tbody>
-                        ${recentOrders.map(order => `
-                            <tr>
-                                <td>${order.orderNumber}</td>
-                                <td>${order.customer}</td>
-                                <td>${order.stand}</td>
-                                <td>Rp ${order.total.toLocaleString()}</td>
-                                <td><span class="status-badge status-${order.status}">${order.status}</span></td>
-                                <td>${order.date}</td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
+                <table><thead><tr><th>Order #</th><th>Customer</th><th>Stand</th><th>Total</th><th>Status</th><th>Date</th></tr></thead>
+                <tbody>${recentOrders.map(order => `
+                    <tr><td>${order.orderNumber}</td><td>${order.customer}</td><td>${order.stand}</td>
+                    <td>Rp ${order.total.toLocaleString()}</td>
+                    <td><span class="status-badge status-${order.status}">${order.status}</span></td>
+                    <td>${order.date}</td>
+                `).join('')}</tbody></table>
             `;
         }
         
+        // ========== STANDS MANAGEMENT ==========
         function renderStands() {
+            const stands = getStands();
             document.getElementById('standsTable').innerHTML = `
-                <table>
-                    <thead><tr><th>Logo</th><th>Name</th><th>Description</th><th>Total Sales</th><th>Orders</th><th>Status</th><th>Actions</th></tr></thead>
-                    <tbody>
-                        ${stands.map(stand => `
-                            <tr>
-                                <td style="font-size:1.5rem">${stand.logo}</td>
-                                <td><strong>${stand.name}</strong></td>
-                                <td>${stand.description}</td>
-                                <td>Rp ${stand.totalSales.toLocaleString()}</td>
-                                <td>${stand.orders}</td>
-                                <td><span class="status-badge status-${stand.status}">${stand.status}</span></td>
-                                <td>
-                                    <button class="action-btn btn-edit" onclick="editStand(${stand.id})">Edit</button>
-                                    <button class="action-btn btn-delete" onclick="deleteStand(${stand.id})">Delete</button>
-                                </td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
+                <table><thead><tr><th>Logo</th><th>Name</th><th>Description</th><th>Total Sales</th><th>Orders</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody>${stands.map(stand => `
+                    <tr><td style="font-size:1.5rem">${stand.logo}</td><td><strong>${stand.name}</strong></td>
+                    <td>${stand.description}</td><td>Rp ${stand.totalSales.toLocaleString()}</td><td>${stand.orders}</td>
+                    <td><span class="status-badge status-${stand.status}">${stand.status}</span></td>
+                    <td><button class="action-btn btn-edit" onclick="editStand(${stand.id})">Edit</button>
+                    <button class="action-btn btn-delete" onclick="deleteStand(${stand.id})">Delete</button></td>
+                `).join('')}</tbody></table>
             `;
         }
         
-        function renderUsers() {
-            document.getElementById('usersTable').innerHTML = `
-                <table>
-                    <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Orders</th><th>Status</th><th>Actions</th></tr></thead>
-                    <tbody>
-                        ${users.map(user => `
-                            <tr>
-                                <td><strong>${user.name}</strong></td>
-                                <td>${user.email}</td>
-                                <td><span class="status-badge">${user.role}</span></td>
-                                <td>${user.orders}</td>
-                                <td><span class="status-badge status-${user.status}">${user.status}</span></td>
-                                <td>
-                                    <button class="action-btn btn-edit" onclick="editUser(${user.id})">Edit</button>
-                                    <button class="action-btn btn-delete" onclick="deleteUser(${user.id})">Delete</button>
-                                </td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            `;
-        }
-        
-        function renderAllOrders() {
-            document.getElementById('allOrdersTable').innerHTML = `
-                <table>
-                    <thead><tr><th>Order #</th><th>Customer</th><th>Stand</th><th>Total</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
-                    <tbody>
-                        ${orders.map(order => `
-                            <tr>
-                                <td>${order.orderNumber}</td>
-                                <td>${order.customer}</td>
-                                <td>${order.stand}</td>
-                                <td>Rp ${order.total.toLocaleString()}</td>
-                                <td><span class="status-badge status-${order.status}">${order.status}</span></td>
-                                <td>${order.date}</td>
-                                <td>
-                                    <select onchange="updateOrderStatus(${order.id}, this.value)" class="form-control" style="width:120px">
-                                        <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
-                                        <option value="confirmed" ${order.status === 'confirmed' ? 'selected' : ''}>Confirmed</option>
-                                        <option value="processing" ${order.status === 'processing' ? 'selected' : ''}>Processing</option>
-                                        <option value="ready" ${order.status === 'ready' ? 'selected' : ''}>Ready</option>
-                                        <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>Completed</option>
-                                    </select>
-                                </td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            `;
-        }
-        
-        function renderPromos() {
-            document.getElementById('promosTable').innerHTML = `
-                <table>
-                    <thead><tr><th>Name</th><th>Discount Type</th><th>Value</th><th>Valid Until</th><th>Actions</th></tr></thead>
-                    <tbody>
-                        ${promos.map(promo => `
-                            <tr>
-                                <td><strong>${promo.name}</strong></td>
-                                <td>${promo.type === 'percentage' ? 'Percentage' : 'Nominal'}</td>
-                                <td>${promo.type === 'percentage' ? promo.value + '%' : 'Rp ' + promo.value.toLocaleString()}</td>
-                                <td>${promo.endDate}</td>
-                                <td>
-                                    <button class="action-btn btn-edit" onclick="editPromo(${promo.id})">Edit</button>
-                                    <button class="action-btn btn-delete" onclick="deletePromo(${promo.id})">Delete</button>
-                                </td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            `;
-        }
-        
-        function loadReport() {
-            const date = document.getElementById('reportDate').value || new Date().toISOString().split('T')[0];
-            const reportData = orders.filter(o => o.date === date);
-            
-            const totalSales = reportData.reduce((sum, o) => sum + o.total, 0);
-            document.getElementById('reportStats').innerHTML = `
-                <div class="stat-card"><div class="stat-info"><h3>Daily Sales</h3><div class="stat-number">Rp ${totalSales.toLocaleString()}</div></div><div class="stat-icon">💰</div></div>
-                <div class="stat-card"><div class="stat-info"><h3>Total Orders</h3><div class="stat-number">${reportData.length}</div></div><div class="stat-icon">📦</div></div>
-            `;
-            
-            document.getElementById('reportTable').innerHTML = `
-                <table>
-                    <thead><tr><th>Order #</th><th>Stand</th><th>Total</th><th>Status</th></tr></thead>
-                    <tbody>
-                        ${reportData.map(order => `
-                            <tr><td>${order.orderNumber}</td><td>${order.stand}</td><td>Rp ${order.total.toLocaleString()}</td><td>${order.status}</td></tr>
-                        `).join('')}
-                        ${reportData.length === 0 ? '<tr><td colspan="4" style="text-align:center">No orders for this date</td></tr>' : ''}
-                    </tbody>
-                </table>
-            `;
-        }
-        
-        // CRUD Operations
         function openStandModal(stand = null) {
             if (stand) {
                 document.getElementById('standId').value = stand.id;
@@ -865,16 +780,59 @@
         }
         
         function editStand(id) {
+            const stands = getStands();
             const stand = stands.find(s => s.id === id);
             if (stand) openStandModal(stand);
         }
         
         function deleteStand(id) {
             if (confirm('Delete this stand?')) {
+                let stands = getStands();
                 stands = stands.filter(s => s.id !== id);
+                saveStands(stands);
                 renderStands();
                 loadDashboard();
             }
+        }
+        
+        document.getElementById('standForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            let stands = getStands();
+            const id = document.getElementById('standId').value;
+            const stand = {
+                id: id ? parseInt(id) : Date.now(),
+                name: document.getElementById('standName').value,
+                logo: document.getElementById('standLogo').value,
+                description: document.getElementById('standDesc').value,
+                status: document.getElementById('standStatus').value,
+                totalSales: 0,
+                orders: 0
+            };
+            if (id) {
+                const index = stands.findIndex(s => s.id === parseInt(id));
+                stands[index] = stand;
+            } else {
+                stands.push(stand);
+            }
+            saveStands(stands);
+            closeModal('standModal');
+            renderStands();
+            loadDashboard();
+        });
+        
+        // ========== USERS MANAGEMENT ==========
+        function renderUsers() {
+            const users = getUsers();
+            document.getElementById('usersTable').innerHTML = `
+                <table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody>${users.map(user => `
+                    <tr><td><strong>${user.name}</strong></td><td>${user.email}</td>
+                    <td><span class="status-badge">${user.role}</span></td>
+                    <td><span class="status-badge status-${user.status}">${user.status}</span></td>
+                    <td><button class="action-btn btn-edit" onclick="editUser(${user.id})">Edit</button>
+                    <button class="action-btn btn-delete" onclick="deleteUser(${user.id})">Delete</button></td>
+                `).join('')}</tbody></table>
+            `;
         }
         
         function openUserModal(user = null) {
@@ -891,16 +849,97 @@
         }
         
         function editUser(id) {
+            const users = getUsers();
             const user = users.find(u => u.id === id);
             if (user) openUserModal(user);
         }
         
         function deleteUser(id) {
             if (confirm('Delete this user?')) {
+                let users = getUsers();
                 users = users.filter(u => u.id !== id);
+                saveUsers(users);
                 renderUsers();
                 loadDashboard();
             }
+        }
+        
+        document.getElementById('userForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            let users = getUsers();
+            const id = document.getElementById('userId').value;
+            const user = {
+                id: id ? parseInt(id) : Date.now(),
+                name: document.getElementById('userName').value,
+                email: document.getElementById('userEmail').value,
+                role: document.getElementById('userRole').value,
+                status: 'active',
+                orders: 0,
+                password: btoa("password123"),
+                createdAt: new Date().toISOString()
+            };
+            if (id) {
+                const index = users.findIndex(u => u.id === parseInt(id));
+                users[index] = user;
+            } else {
+                users.push(user);
+            }
+            saveUsers(users);
+            closeModal('userModal');
+            renderUsers();
+            loadDashboard();
+        });
+        
+        // ========== ORDERS MANAGEMENT ==========
+        function renderAllOrders() {
+            const orders = getOrders();
+            document.getElementById('allOrdersTable').innerHTML = `
+                <table><thead><tr><th>Order #</th><th>Customer</th><th>Stand</th><th>Total</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+                <tbody>${orders.map(order => `
+                    <tr><td>${order.orderNumber}</td><td>${order.customer}</td><td>${order.stand}</td>
+                    <td>Rp ${order.total.toLocaleString()}</td>
+                    <td><span class="status-badge status-${order.status}">${order.status}</span></td>
+                    <td>${order.date}</td>
+                    <td><select onchange="updateOrderStatus(${order.id}, this.value)" class="form-control" style="width:110px">
+                        <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
+                        <option value="processing" ${order.status === 'processing' ? 'selected' : ''}>Processing</option>
+                        <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>Completed</option>
+                    </select></td>
+                `).join('')}</tbody></table>
+            `;
+        }
+        
+        function updateOrderStatus(orderId, status) {
+            let orders = getOrders();
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                order.status = status;
+                saveOrders(orders);
+                renderAllOrders();
+                loadDashboard();
+            }
+        }
+        
+        // ========== PROMOS MANAGEMENT ==========
+        function renderPromos() {
+            let promos = getPromos();
+            if (promos.length === 0) {
+                promos = [
+                    { id: 1, name: "New Year Promo", type: "percentage", value: 20, endDate: "2025-12-31" },
+                    { id: 2, name: "Weekend Special", type: "nominal", value: 20000, endDate: "2025-12-31" }
+                ];
+                savePromos(promos);
+            }
+            document.getElementById('promosTable').innerHTML = `
+                <td><thead><tr><th>Name</th><th>Discount Type</th><th>Value</th><th>Valid Until</th><th>Actions</th></tr></thead>
+                <tbody>${promos.map(promo => `
+                    <tr><td><strong>${promo.name}</strong></td><td>${promo.type === 'percentage' ? 'Percentage' : 'Nominal'}</td>
+                    <td>${promo.type === 'percentage' ? promo.value + '%' : 'Rp ' + promo.value.toLocaleString()}</td>
+                    <td>${promo.endDate}</td>
+                    <td><button class="action-btn btn-edit" onclick="editPromo(${promo.id})">Edit</button>
+                    <button class="action-btn btn-delete" onclick="deletePromo(${promo.id})">Delete</button></td>
+                `).join('')}</tbody></table>
+            `;
         }
         
         function openPromoModal(promo = null) {
@@ -918,86 +957,26 @@
         }
         
         function editPromo(id) {
+            let promos = getPromos();
             const promo = promos.find(p => p.id === id);
             if (promo) openPromoModal(promo);
         }
         
         function deletePromo(id) {
             if (confirm('Delete this promo?')) {
+                let promos = getPromos();
                 promos = promos.filter(p => p.id !== id);
+                savePromos(promos);
                 renderPromos();
             }
         }
         
-        function updateOrderStatus(orderId, status) {
-            const order = orders.find(o => o.id === orderId);
-            if (order) {
-                order.status = status;
-                renderAllOrders();
-                loadDashboard();
-            }
-        }
-        
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-        
-        function logout() {
-            localStorage.clear();
-            window.location.href = 'login.html';
-        }
-        
-        // Form submissions
-        document.getElementById('standForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const id = document.getElementById('standId').value;
-            const stand = {
-                id: id ? parseInt(id) : stands.length + 1,
-                name: document.getElementById('standName').value,
-                logo: document.getElementById('standLogo').value,
-                description: document.getElementById('standDesc').value,
-                status: document.getElementById('standStatus').value,
-                totalSales: 0,
-                orders: 0
-            };
-            if (id) {
-                const index = stands.findIndex(s => s.id === parseInt(id));
-                stands[index] = stand;
-            } else {
-                stands.push(stand);
-            }
-            closeModal('standModal');
-            renderStands();
-            loadDashboard();
-        });
-        
-        document.getElementById('userForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const id = document.getElementById('userId').value;
-            const user = {
-                id: id ? parseInt(id) : users.length + 1,
-                name: document.getElementById('userName').value,
-                email: document.getElementById('userEmail').value,
-                role: document.getElementById('userRole').value,
-                status: 'active',
-                orders: 0
-            };
-            if (id) {
-                const index = users.findIndex(u => u.id === parseInt(id));
-                users[index] = user;
-            } else {
-                users.push(user);
-            }
-            closeModal('userModal');
-            renderUsers();
-            loadDashboard();
-        });
-        
         document.getElementById('promoForm').addEventListener('submit', (e) => {
             e.preventDefault();
+            let promos = getPromos();
             const id = document.getElementById('promoId').value;
             const promo = {
-                id: id ? parseInt(id) : promos.length + 1,
+                id: id ? parseInt(id) : Date.now(),
                 name: document.getElementById('promoName').value,
                 type: document.getElementById('promoType').value,
                 value: parseInt(document.getElementById('promoValue').value),
@@ -1009,17 +988,54 @@
             } else {
                 promos.push(promo);
             }
+            savePromos(promos);
             closeModal('promoModal');
             renderPromos();
         });
+        
+        // ========== REPORTS ==========
+        function loadReport() {
+            const orders = getOrders();
+            const date = document.getElementById('reportDate').value || new Date().toISOString().split('T')[0];
+            const reportData = orders.filter(o => o.date === date);
+            const totalSales = reportData.reduce((sum, o) => sum + o.total, 0);
+            
+            document.getElementById('reportStats').innerHTML = `
+                <div class="stat-card"><div class="stat-info"><h3>Daily Sales</h3><div class="stat-number">Rp ${totalSales.toLocaleString()}</div></div><div class="stat-icon">💰</div></div>
+                <div class="stat-card"><div class="stat-info"><h3>Total Orders</h3><div class="stat-number">${reportData.length}</div></div><div class="stat-icon">📦</div></div>
+            `;
+            
+            document.getElementById('reportTable').innerHTML = `
+                <table><thead><tr><th>Order #</th><th>Stand</th><th>Total</th><th>Status</th></tr></thead>
+                <tbody>${reportData.map(order => `
+                    <tr><td>${order.orderNumber}</td><td>${order.stand}</td><td>Rp ${order.total.toLocaleString()}</td><td>${order.status}</td>
+                `).join('')}</tbody></table>
+            `;
+        }
+        
+        // ========== UTILITIES ==========
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        }
         
         // Mobile menu toggle
         document.getElementById('menuToggle')?.addEventListener('click', () => {
             document.getElementById('sidebar').classList.toggle('open');
         });
         
-        // Initialize
-        loadDashboard();
+        // ========== INITIALIZE ==========
+        currentAdmin = checkAdminSession();
+        if (currentAdmin) {
+            document.getElementById('adminName').innerHTML = `👑 ${currentAdmin.name}`;
+            document.getElementById('adminEmail').innerHTML = currentAdmin.email;
+            initDemoData();
+            loadDashboard();
+        }
     </script>
 </body>
 </html>
