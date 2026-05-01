@@ -2,8 +2,10 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stand Dashboard - CaFood</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>CaFood • Dashboard Stand</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,8 +14,9 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: #f5f5f5;
+            font-family: 'Inter', sans-serif;
+            background: #f8f9fa;
+            padding-bottom: 40px;
         }
         
         .header {
@@ -22,69 +25,75 @@
             padding: 20px;
         }
         
-        .stand-info {
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 15px;
         }
         
-        .stand-logo {
-            width: 50px;
-            height: 50px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 700;
         }
         
-        .stand-name {
-            font-size: 1.2rem;
-            font-weight: bold;
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 30px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.8rem;
         }
         
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            padding: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
         }
         
         .stat-card {
             background: white;
-            border-radius: 15px;
-            padding: 15px;
+            border-radius: 20px;
+            padding: 20px;
             text-align: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
         
         .stat-value {
-            font-size: 1.8rem;
-            font-weight: bold;
+            font-size: 2rem;
+            font-weight: 800;
             color: #667eea;
         }
         
         .stat-label {
-            color: #666;
+            color: #64748b;
             font-size: 0.8rem;
-            margin-top: 5px;
+            margin-top: 8px;
         }
         
         .tabs {
             display: flex;
+            gap: 8px;
+            max-width: 1200px;
+            margin: 0 auto 20px;
             padding: 0 20px;
-            gap: 10px;
-            border-bottom: 2px solid #e0e0e0;
+            border-bottom: 1px solid #e2e8f0;
         }
         
         .tab {
-            padding: 12px 20px;
-            cursor: pointer;
-            border: none;
+            padding: 10px 20px;
             background: none;
-            font-weight: 500;
-            color: #666;
+            border: none;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s;
         }
         
         .tab.active {
@@ -93,79 +102,87 @@
         }
         
         .orders-container, .menu-container {
-            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
         
         .order-card {
             background: white;
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 15px;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
         
         .order-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #f0f0f0;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e9ecef;
         }
         
         .order-number {
-            font-weight: bold;
+            font-weight: 700;
             color: #667eea;
         }
         
         .order-status {
             padding: 4px 12px;
             border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
+            font-size: 0.7rem;
+            font-weight: 600;
         }
         
-        .status-pending { background: #fff3cd; color: #856404; }
-        .status-confirmed { background: #cce5ff; color: #004085; }
-        .status-processing { background: #d1ecf1; color: #0c5460; }
-        .status-ready { background: #d4edda; color: #155724; }
+        .status-pending { background: #fef3c7; color: #d97706; }
+        .status-confirmed { background: #dbeafe; color: #2563eb; }
+        .status-processing { background: #e0e7ff; color: #4338ca; }
+        .status-ready { background: #d1fae5; color: #059669; }
+        .status-completed { background: #e5e7eb; color: #374151; }
         
         .order-items {
-            margin: 10px 0;
+            margin: 12px 0;
         }
         
         .order-item {
             display: flex;
             justify-content: space-between;
-            font-size: 0.9rem;
-            margin-bottom: 5px;
+            font-size: 0.85rem;
+            padding: 6px 0;
         }
         
         .order-actions {
             display: flex;
             gap: 10px;
-            margin-top: 10px;
+            margin-top: 12px;
         }
         
         .btn-status {
-            padding: 6px 12px;
+            padding: 8px 20px;
             border: none;
-            border-radius: 8px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
             cursor: pointer;
-            font-size: 0.8rem;
         }
         
-        .btn-confirm { background: #28a745; color: white; }
-        .btn-process { background: #17a2b8; color: white; }
-        .btn-ready { background: #ffc107; color: #333; }
+        .btn-confirm { background: #059669; color: white; }
+        .btn-process { background: #2563eb; color: white; }
+        .btn-ready { background: #d97706; color: white; }
+        .btn-complete { background: #6b7280; color: white; }
         
         .menu-item {
             background: white;
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 10px;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
         }
         
         .menu-info {
@@ -173,149 +190,193 @@
         }
         
         .menu-name {
-            font-weight: bold;
-            margin-bottom: 5px;
+            font-weight: 700;
+            margin-bottom: 4px;
         }
         
         .menu-price {
+            font-size: 0.85rem;
             color: #667eea;
-            font-size: 0.9rem;
+            font-weight: 600;
         }
         
         .stock-control {
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-        
-        .stock-value {
-            font-weight: bold;
-            min-width: 40px;
-            text-align: center;
+            gap: 12px;
         }
         
         .stock-btn {
-            width: 30px;
-            height: 30px;
-            border: 1px solid #ddd;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1px solid #e2e8f0;
             background: white;
-            border-radius: 8px;
             cursor: pointer;
+        }
+        
+        .stock-value {
+            font-weight: 600;
+            min-width: 40px;
+            text-align: center;
         }
         
         .edit-btn {
             background: #667eea;
             color: white;
             border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
+            padding: 6px 16px;
+            border-radius: 30px;
             cursor: pointer;
+            font-size: 0.7rem;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e2e8f0;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 12px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .menu-item { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <div class="stand-info">
-            <div class="stand-logo">🍜</div>
-            <div class="stand-name">Ramen House Dashboard</div>
+        <div class="header-content">
+            <div class="logo">🏪 Stand Dashboard</div>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
         </div>
     </div>
     
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-value" id="pendingOrders">0</div>
-            <div class="stat-label">Pending Orders</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-value" id="processingOrders">0</div>
-            <div class="stat-label">Processing</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-value" id="todaySales">0</div>
-            <div class="stat-label">Today's Sales</div>
-        </div>
+    <div class="stats-grid" id="statsGrid">
+        <div class="stat-card"><div class="stat-value" id="pendingCount">0</div><div class="stat-label">Pending Orders</div></div>
+        <div class="stat-card"><div class="stat-value" id="processingCount">0</div><div class="stat-label">Processing</div></div>
+        <div class="stat-card"><div class="stat-value" id="todaySales">Rp 0</div><div class="stat-label">Today's Sales</div></div>
+        <div class="stat-card"><div class="stat-value" id="totalOrders">0</div><div class="stat-label">Total Orders</div></div>
     </div>
     
     <div class="tabs">
-        <button class="tab active" onclick="showTab('orders')">Orders</button>
-        <button class="tab" onclick="showTab('menu')">Menu Management</button>
+        <button class="tab active" onclick="showTab('orders')">📦 Orders</button>
+        <button class="tab" onclick="showTab('menu')">🍽️ Menu Management</button>
     </div>
     
-    <div id="ordersPanel" class="orders-container"></div>
-    <div id="menuPanel" class="menu-container" style="display: none;"></div>
+    <div id="ordersPanel" class="orders-container">
+        <div class="loading"><div class="spinner"></div>Loading orders...</div>
+    </div>
     
-    <script>
-        // Sample orders data
-        let orders = [
-            {
-                id: 1,
-                orderNumber: 'ORD-001',
-                customerName: 'John Doe',
-                items: [
-                    { name: 'Tonkotsu Ramen', quantity: 2, price: 45000 },
-                    { name: 'Gyoza', quantity: 1, price: 25000 }
-                ],
-                total: 115000,
-                status: 'pending',
-                createdAt: new Date().toISOString()
-            },
-            {
-                id: 2,
-                orderNumber: 'ORD-002',
-                customerName: 'Jane Smith',
-                items: [
-                    { name: 'Shoyu Ramen', quantity: 1, price: 40000 },
-                    { name: 'Miso Ramen', quantity: 1, price: 42000 }
-                ],
-                total: 82000,
-                status: 'confirmed',
-                createdAt: new Date().toISOString()
+    <div id="menuPanel" class="menu-container" style="display: none;">
+        <div class="loading"><div class="spinner"></div>Loading menus...</div>
+    </div>
+    
+    <script type="module">
+        import { db, collection, getDocs, query, where, updateDoc, doc, addDoc, deleteDoc } from './js/firebase-config.js';
+        
+        let currentStand = null;
+        let orders = [];
+        let menus = [];
+        
+        function formatRupiah(price) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price);
+        }
+        
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        }
+        
+        async function loadStand() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            if (!currentUser || currentUser.role !== 'stand') {
+                window.location.href = 'login.html';
+                return;
             }
-        ];
+            currentStand = currentUser;
+        }
         
-        let menuItems = [
-            { id: 1, name: 'Tonkotsu Ramen', price: 45000, stock: 50 },
-            { id: 2, name: 'Shoyu Ramen', price: 40000, stock: 45 },
-            { id: 3, name: 'Miso Ramen', price: 42000, stock: 40 },
-            { id: 4, name: 'Gyoza', price: 25000, stock: 30 }
-        ];
-        
-        function showTab(tab) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            if(tab === 'orders') {
-                document.querySelector('.tab:first-child').classList.add('active');
-                document.getElementById('ordersPanel').style.display = 'block';
-                document.getElementById('menuPanel').style.display = 'none';
+        async function loadOrders() {
+            try {
+                const ordersRef = collection(db, "orders");
+                const q = query(ordersRef, where("standId", "==", currentStand.standId));
+                const snapshot = await getDocs(q);
+                orders = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 renderOrders();
-            } else {
-                document.querySelector('.tab:last-child').classList.add('active');
-                document.getElementById('ordersPanel').style.display = 'none';
-                document.getElementById('menuPanel').style.display = 'block';
-                renderMenu();
+                updateStats();
+            } catch (error) {
+                console.error("Error loading orders:", error);
             }
+        }
+        
+        async function loadMenus() {
+            try {
+                const menusRef = collection(db, "menus");
+                const q = query(menusRef, where("standId", "==", currentStand.standId));
+                const snapshot = await getDocs(q);
+                menus = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                renderMenus();
+            } catch (error) {
+                console.error("Error loading menus:", error);
+            }
+        }
+        
+        function updateStats() {
+            const pending = orders.filter(o => o.status === 'pending').length;
+            const processing = orders.filter(o => o.status === 'processing').length;
+            const today = new Date().toISOString().split('T')[0];
+            const todayOrders = orders.filter(o => o.createdAt?.split('T')[0] === today && o.status === 'completed');
+            const todaySales = todayOrders.reduce((sum, o) => sum + (o.total || 0), 0);
+            
+            document.getElementById('pendingCount').textContent = pending;
+            document.getElementById('processingCount').textContent = processing;
+            document.getElementById('todaySales').textContent = formatRupiah(todaySales);
+            document.getElementById('totalOrders').textContent = orders.length;
         }
         
         function renderOrders() {
             const container = document.getElementById('ordersPanel');
-            const pendingCount = orders.filter(o => o.status === 'pending').length;
-            const processingCount = orders.filter(o => o.status === 'processing').length;
             
-            document.getElementById('pendingOrders').textContent = pendingCount;
-            document.getElementById('processingOrders').textContent = processingCount;
+            if (orders.length === 0) {
+                container.innerHTML = '<div class="loading">No orders yet</div>';
+                return;
+            }
             
             container.innerHTML = orders.map(order => `
                 <div class="order-card">
                     <div class="order-header">
-                        <div class="order-number">${order.orderNumber}</div>
-                        <div class="order-status status-${order.status}">${order.status.toUpperCase()}</div>
+                        <div class="order-number">${order.orderNumber || 'ORD-XXXX'}</div>
+                        <div class="order-status status-${order.status}">${getStatusLabel(order.status)}</div>
                     </div>
                     <div class="order-items">
-                        ${order.items.map(item => `
+                        <div class="order-item"><span>Customer</span><span>${order.customerName || '-'}</span></div>
+                        <div class="order-item"><span>Meja</span><span>${order.tableNumber || '-'}</span></div>
+                        ${(order.items || []).map(item => `
                             <div class="order-item">
                                 <span>${item.quantity}x ${item.name}</span>
-                                <span>Rp ${(item.price * item.quantity).toLocaleString()}</span>
+                                <span>${formatRupiah(item.price * item.quantity)}</span>
                             </div>
                         `).join('')}
+                        <div class="order-item" style="font-weight:700; margin-top:8px; padding-top:8px; border-top:1px solid #e9ecef;">
+                            <span>Total</span>
+                            <span>${formatRupiah(order.total || 0)}</span>
+                        </div>
                     </div>
                     <div class="order-actions">
                         ${getActionButtons(order)}
@@ -324,63 +385,211 @@
             `).join('');
         }
         
+        function getStatusLabel(status) {
+            const labels = {
+                'pending': 'Menunggu',
+                'confirmed': 'Dikonfirmasi',
+                'processing': 'Diproses',
+                'ready': 'Siap Diambil',
+                'completed': 'Selesai'
+            };
+            return labels[status] || status;
+        }
+        
         function getActionButtons(order) {
             switch(order.status) {
                 case 'pending':
-                    return `<button class="btn-status btn-confirm" onclick="updateOrderStatus(${order.id}, 'confirmed')">Confirm Order</button>`;
+                    return `<button class="btn-status btn-confirm" onclick="updateOrderStatus('${order.id}', 'confirmed')">✓ Konfirmasi</button>`;
                 case 'confirmed':
-                    return `<button class="btn-status btn-process" onclick="updateOrderStatus(${order.id}, 'processing')">Start Processing</button>`;
+                    return `<button class="btn-status btn-process" onclick="updateOrderStatus('${order.id}', 'processing')">🔪 Proses</button>`;
                 case 'processing':
-                    return `<button class="btn-status btn-ready" onclick="updateOrderStatus(${order.id}, 'ready')">Mark as Ready</button>`;
+                    return `<button class="btn-status btn-ready" onclick="updateOrderStatus('${order.id}', 'ready')">✅ Siap Diambil</button>`;
+                case 'ready':
+                    return `<button class="btn-status btn-complete" onclick="updateOrderStatus('${order.id}', 'completed')">🎉 Selesai</button>`;
                 default:
                     return '';
             }
         }
         
-        function updateOrderStatus(orderId, newStatus) {
-            const order = orders.find(o => o.id === orderId);
-            if(order) {
-                order.status = newStatus;
+        window.updateOrderStatus = async function(orderId, newStatus) {
+            try {
+                const orderRef = doc(db, "orders", orderId);
+                await updateDoc(orderRef, {
+                    status: newStatus,
+                    updatedAt: new Date().toISOString()
+                });
+                
+                // Update local array
+                const orderIndex = orders.findIndex(o => o.id === orderId);
+                if (orderIndex !== -1) {
+                    orders[orderIndex].status = newStatus;
+                    if (newStatus === 'confirmed' && !orders[orderIndex].estimatedTime) {
+                        orders[orderIndex].estimatedTime = 15;
+                        await updateDoc(orderRef, { estimatedTime: 15 });
+                    }
+                }
+                
                 renderOrders();
+                updateStats();
+                showToast(`Order status updated to ${getStatusLabel(newStatus)}`);
+            } catch (error) {
+                console.error("Error updating order:", error);
+                showToast("Failed to update status");
             }
-        }
+        };
         
-        function renderMenu() {
+        function renderMenus() {
             const container = document.getElementById('menuPanel');
-            container.innerHTML = menuItems.map(item => `
+            
+            if (menus.length === 0) {
+                container.innerHTML = `
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <div>No menus found</div>
+                        <button onclick="addNewMenu()" style="margin-top:16px; padding:8px 20px; background:#667eea; color:white; border:none; border-radius:30px; cursor:pointer;">+ Add Menu</button>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = menus.map(menu => `
                 <div class="menu-item">
                     <div class="menu-info">
-                        <div class="menu-name">${item.name}</div>
-                        <div class="menu-price">Rp ${item.price.toLocaleString()}</div>
+                        <div class="menu-name">${menu.name}</div>
+                        <div class="menu-price">${formatRupiah(menu.price)}</div>
                     </div>
                     <div class="stock-control">
-                        <button class="stock-btn" onclick="updateStock(${item.id}, -1)">-</button>
-                        <span class="stock-value">${item.stock}</span>
-                        <button class="stock-btn" onclick="updateStock(${item.id}, 1)">+</button>
-                        <button class="edit-btn" onclick="editMenu(${item.id})">Edit</button>
+                        <button class="stock-btn" onclick="updateStock('${menu.id}', -1)">-</button>
+                        <span class="stock-value">${menu.stock || 0}</span>
+                        <button class="stock-btn" onclick="updateStock('${menu.id}', 1)">+</button>
+                        <button class="edit-btn" onclick="editMenu('${menu.id}')">Edit</button>
+                        <button class="edit-btn" style="background:#ef4444;" onclick="deleteMenu('${menu.id}')">Delete</button>
                     </div>
                 </div>
             `).join('');
+            
+            container.innerHTML += `<div style="margin-top:20px; text-align:center;"><button class="edit-btn" style="padding:10px 24px;" onclick="addNewMenu()">+ Add New Menu</button></div>`;
         }
         
-        function updateStock(itemId, change) {
-            const item = menuItems.find(i => i.id === itemId);
-            if(item) {
-                item.stock = Math.max(0, item.stock + change);
-                renderMenu();
+        window.updateStock = async function(menuId, change) {
+            const menu = menus.find(m => m.id === menuId);
+            if (menu) {
+                const newStock = Math.max(0, (menu.stock || 0) + change);
+                try {
+                    const menuRef = doc(db, "menus", menuId);
+                    await updateDoc(menuRef, { stock: newStock });
+                    menu.stock = newStock;
+                    renderMenus();
+                } catch (error) {
+                    console.error("Error updating stock:", error);
+                }
+            }
+        };
+        
+        window.editMenu = async function(menuId) {
+            const menu = menus.find(m => m.id === menuId);
+            if (!menu) return;
+            
+            const newName = prompt("Edit menu name:", menu.name);
+            const newPrice = prompt("Edit price:", menu.price);
+            
+            if (newName && newPrice) {
+                try {
+                    const menuRef = doc(db, "menus", menuId);
+                    await updateDoc(menuRef, {
+                        name: newName,
+                        price: parseInt(newPrice)
+                    });
+                    menu.name = newName;
+                    menu.price = parseInt(newPrice);
+                    renderMenus();
+                    showToast("Menu updated!");
+                } catch (error) {
+                    console.error("Error updating menu:", error);
+                }
+            }
+        };
+        
+        window.deleteMenu = async function(menuId) {
+            if (confirm("Delete this menu?")) {
+                try {
+                    const menuRef = doc(db, "menus", menuId);
+                    await deleteDoc(menuRef);
+                    menus = menus.filter(m => m.id !== menuId);
+                    renderMenus();
+                    showToast("Menu deleted!");
+                } catch (error) {
+                    console.error("Error deleting menu:", error);
+                }
+            }
+        };
+        
+        window.addNewMenu = function() {
+            const name = prompt("Menu name:");
+            if (!name) return;
+            
+            const price = prompt("Price:");
+            if (!price) return;
+            
+            const category = prompt("Category (Makanan/Minuman/Snack/Dessert):", "Makanan");
+            
+            addNewMenuToFirebase(name, parseInt(price), category);
+        };
+        
+        async function addNewMenuToFirebase(name, price, category) {
+            try {
+                const menusRef = collection(db, "menus");
+                const newMenu = {
+                    standId: currentStand.standId,
+                    name: name,
+                    price: price,
+                    category: category || "Makanan",
+                    stock: 0,
+                    isAvailable: true,
+                    createdAt: new Date().toISOString()
+                };
+                const docRef = await addDoc(menusRef, newMenu);
+                menus.push({ id: docRef.id, ...newMenu });
+                renderMenus();
+                showToast("Menu added!");
+            } catch (error) {
+                console.error("Error adding menu:", error);
             }
         }
         
-        function editMenu(itemId) {
-            const item = menuItems.find(i => i.id === itemId);
-            const newPrice = prompt('Enter new price:', item.price);
-            if(newPrice && !isNaN(newPrice)) {
-                item.price = parseInt(newPrice);
-                renderMenu();
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            toast.style.cssText = 'position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background:#1a1a2e; color:white; padding:10px 20px; border-radius:30px; font-size:0.8rem; z-index:1000;';
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2000);
+        }
+        
+        window.showTab = function(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            if (tab === 'orders') {
+                document.querySelector('.tab:first-child').classList.add('active');
+                document.getElementById('ordersPanel').style.display = 'block';
+                document.getElementById('menuPanel').style.display = 'none';
+                renderOrders();
+            } else {
+                document.querySelector('.tab:last-child').classList.add('active');
+                document.getElementById('ordersPanel').style.display = 'none';
+                document.getElementById('menuPanel').style.display = 'block';
+                renderMenus();
+            }
+        };
+        
+        async function init() {
+            await loadStand();
+            if (currentStand) {
+                await loadOrders();
+                await loadMenus();
             }
         }
         
-        renderOrders();
+        init();
     </script>
 </body>
 </html>

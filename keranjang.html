@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CaFood • Keranjang Belanja</title>
+    <title>CaFood • Keranjang</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <style>
@@ -15,90 +15,74 @@
         
         body {
             font-family: 'Inter', sans-serif;
-            background: #f5f0ff;
+            background: #f8f9fa;
             padding-bottom: 100px;
         }
         
-        /* Header */
         .header {
             background: white;
             padding: 16px 20px;
             position: sticky;
             top: 0;
             z-index: 100;
-            border-bottom: 1px solid #f0eaff;
+            border-bottom: 1px solid #e9ecef;
         }
         
         .header-content {
             display: flex;
             align-items: center;
             gap: 16px;
-            max-width: 1200px;
+            max-width: 600px;
             margin: 0 auto;
         }
         
         .back-btn {
-            width: 40px;
-            height: 40px;
-            background: #f5f3ff;
+            width: 36px;
+            height: 36px;
+            background: #f1f5f9;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .back-btn:hover {
-            background: #e2d9ff;
         }
         
         .header-title {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             font-weight: 700;
-            color: #1e1a3a;
+            color: #1a1a2e;
         }
         
-        /* Cart Container */
         .cart-container {
-            max-width: 1200px;
+            max-width: 600px;
             margin: 0 auto;
             padding: 20px;
-            display: grid;
-            grid-template-columns: 1fr 380px;
-            gap: 24px;
         }
         
-        /* Cart Items */
-        .cart-items-section {
+        .cart-items {
             background: white;
-            border-radius: 24px;
-            padding: 20px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-        }
-        
-        .section-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #1e1a3a;
+            border-radius: 20px;
+            overflow: hidden;
             margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #f0eaff;
         }
         
         .cart-item {
             display: flex;
-            gap: 16px;
-            padding: 16px 0;
-            border-bottom: 1px solid #f0eaff;
+            gap: 14px;
+            padding: 16px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .cart-item:last-child {
+            border-bottom: none;
         }
         
         .cart-item-image {
-            width: 80px;
-            height: 80px;
-            border-radius: 16px;
+            width: 70px;
+            height: 70px;
+            border-radius: 12px;
             overflow: hidden;
-            background: #f5f3ff;
+            background: #e2e8f0;
             flex-shrink: 0;
         }
         
@@ -108,35 +92,20 @@
             object-fit: cover;
         }
         
-        .cart-item-image .emoji-fallback {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-        }
-        
         .cart-item-details {
             flex: 1;
         }
         
         .cart-item-name {
             font-weight: 700;
-            color: #1e1a3a;
+            color: #1a1a2e;
             margin-bottom: 4px;
         }
         
         .cart-item-price {
             font-size: 0.85rem;
-            color: #6d28d9;
             font-weight: 600;
-            margin-bottom: 8px;
-        }
-        
-        .cart-item-options {
-            font-size: 0.7rem;
-            color: #7b6cb0;
+            color: #667eea;
             margin-bottom: 8px;
         }
         
@@ -146,145 +115,116 @@
             gap: 16px;
         }
         
-        .quantity-control {
+        .qty-selector {
             display: flex;
             align-items: center;
-            gap: 12px;
-            background: #f5f3ff;
-            padding: 6px 12px;
-            border-radius: 40px;
+            gap: 10px;
+            background: #f1f5f9;
+            padding: 4px 10px;
+            border-radius: 30px;
         }
         
         .qty-btn {
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             border: none;
             background: white;
             cursor: pointer;
             font-weight: bold;
-            transition: all 0.2s;
-        }
-        
-        .qty-btn:hover {
-            background: #6d28d9;
-            color: white;
         }
         
         .qty-value {
+            font-size: 0.85rem;
             font-weight: 600;
-            min-width: 28px;
+            min-width: 24px;
             text-align: center;
         }
         
-        .remove-item {
+        .remove-btn {
             color: #ef4444;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             cursor: pointer;
             background: none;
             border: none;
-            font-weight: 500;
         }
         
         .item-subtotal {
             text-align: right;
-            min-width: 100px;
+            min-width: 80px;
         }
         
         .item-subtotal-label {
-            font-size: 0.7rem;
-            color: #7b6cb0;
+            font-size: 0.65rem;
+            color: #64748b;
         }
         
         .item-subtotal-value {
-            font-weight: 800;
-            color: #6d28d9;
-            font-size: 1rem;
+            font-weight: 700;
+            color: #1a1a2e;
         }
         
-        /* Cart Summary */
-        .cart-summary-section {
+        .cart-summary {
             background: white;
-            border-radius: 24px;
+            border-radius: 20px;
             padding: 20px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-            height: fit-content;
-            position: sticky;
-            top: 80px;
         }
         
         .summary-row {
             display: flex;
             justify-content: space-between;
             margin-bottom: 12px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
         
         .summary-row.total {
-            border-top: 1px solid #f0eaff;
-            padding-top: 16px;
+            border-top: 1px solid #e9ecef;
+            padding-top: 12px;
             margin-top: 8px;
-            font-weight: 800;
-            font-size: 1.2rem;
-            color: #1e1a3a;
+            font-weight: 700;
+            font-size: 1rem;
         }
         
         .checkout-btn {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, #6d28d9, #a855f7);
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             border: none;
-            border-radius: 60px;
+            border-radius: 30px;
             font-weight: 700;
             font-size: 1rem;
             cursor: pointer;
             margin-top: 20px;
-            transition: all 0.2s;
-        }
-        
-        .checkout-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(109,40,217,0.3);
         }
         
         .empty-cart {
             text-align: center;
             padding: 60px 20px;
-            color: #7b6cb0;
+            color: #64748b;
         }
         
         .empty-cart i {
             font-size: 4rem;
-            margin-bottom: 16px;
             opacity: 0.5;
+            margin-bottom: 16px;
         }
         
         .shop-now-btn {
             display: inline-block;
             margin-top: 16px;
             padding: 10px 24px;
-            background: linear-gradient(135deg, #6d28d9, #a855f7);
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
-            border-radius: 40px;
+            border-radius: 30px;
             text-decoration: none;
             font-weight: 600;
         }
         
         @media (max-width: 768px) {
-            .cart-container {
-                grid-template-columns: 1fr;
-                padding: 16px;
-            }
-            
-            .cart-item {
-                flex-wrap: wrap;
-            }
-            
-            .item-subtotal {
-                text-align: left;
-                margin-top: 8px;
-            }
+            .cart-container { padding: 16px; }
+            .cart-item { flex-wrap: wrap; }
+            .item-subtotal { text-align: left; margin-top: 8px; }
         }
     </style>
 </head>
@@ -299,10 +239,14 @@
     </div>
     
     <div class="cart-container" id="cartContainer">
-        <!-- Cart content will be loaded here -->
+        <div class="empty-cart">
+            <i class="fas fa-shopping-cart"></i>
+            <div>Your cart is empty</div>
+            <a href="index.html" class="shop-now-btn">Browse Restaurants</a>
+        </div>
     </div>
     
-    <script>
+    <script type="module">
         let cart = [];
         let currentStand = null;
         
@@ -323,9 +267,8 @@
                 container.innerHTML = `
                     <div class="empty-cart">
                         <i class="fas fa-shopping-cart"></i>
-                        <h3>Your cart is empty</h3>
-                        <p>Add some delicious food from our stands</p>
-                        <a href="menu-stand.html" class="shop-now-btn">Browse Stands</a>
+                        <div>Your cart is empty</div>
+                        <a href="index.html" class="shop-now-btn">Browse Restaurants</a>
                     </div>
                 `;
                 return;
@@ -337,43 +280,35 @@
             const total = subtotal + deliveryFee + tax;
             
             container.innerHTML = `
-                <div class="cart-items-section">
-                    <div class="section-title">
-                        <i class="fas fa-store" style="color:#6d28d9;"></i> ${currentStand ? currentStand.name : 'Your Order'}
-                    </div>
-                    <div id="cartItemsList">
-                        ${cart.map((item, index) => `
-                            <div class="cart-item" data-index="${index}">
-                                <div class="cart-item-image">
-                                    ${item.image ? 
-                                        `<img src="${item.image}" alt="${item.name}" onerror="this.parentElement.innerHTML='<div class=\'emoji-fallback\'>🍽️</div>'">` : 
-                                        `<div class="emoji-fallback">🍽️</div>`
-                                    }
-                                </div>
-                                <div class="cart-item-details">
-                                    <div class="cart-item-name">${item.name}</div>
-                                    <div class="cart-item-price">${formatRupiah(item.price)}</div>
-                                    ${item.options ? `<div class="cart-item-options">${item.options.size || 'Regular'} • Spice: ${item.options.spice || 'Normal'}</div>` : ''}
-                                    <div class="cart-item-actions">
-                                        <div class="quantity-control">
-                                            <button class="qty-btn" onclick="updateQuantity(${index}, -1)">-</button>
-                                            <span class="qty-value">${item.quantity}</span>
-                                            <button class="qty-btn" onclick="updateQuantity(${index}, 1)">+</button>
-                                        </div>
-                                        <button class="remove-item" onclick="removeItem(${index})">Remove</button>
+                <div class="cart-items">
+                    ${cart.map((item, index) => `
+                        <div class="cart-item">
+                            <div class="cart-item-image">
+                                <img src="${item.image || 'https://via.placeholder.com/70'}" 
+                                     alt="${item.name}"
+                                     onerror="this.src='https://via.placeholder.com/70'">
+                            </div>
+                            <div class="cart-item-details">
+                                <div class="cart-item-name">${item.name}</div>
+                                <div class="cart-item-price">${formatRupiah(item.price)}</div>
+                                <div class="cart-item-actions">
+                                    <div class="qty-selector">
+                                        <button class="qty-btn" onclick="updateQuantity(${index}, -1)">-</button>
+                                        <span class="qty-value">${item.quantity}</span>
+                                        <button class="qty-btn" onclick="updateQuantity(${index}, 1)">+</button>
                                     </div>
-                                </div>
-                                <div class="item-subtotal">
-                                    <div class="item-subtotal-label">Subtotal</div>
-                                    <div class="item-subtotal-value">${formatRupiah(item.price * item.quantity)}</div>
+                                    <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
                                 </div>
                             </div>
-                        `).join('')}
-                    </div>
+                            <div class="item-subtotal">
+                                <div class="item-subtotal-label">Subtotal</div>
+                                <div class="item-subtotal-value">${formatRupiah(item.price * item.quantity)}</div>
+                            </div>
+                        </div>
+                    `).join('')}
                 </div>
                 
-                <div class="cart-summary-section">
-                    <div class="section-title">Order Summary</div>
+                <div class="cart-summary">
                     <div class="summary-row">
                         <span>Subtotal</span>
                         <span>${formatRupiah(subtotal)}</span>
@@ -397,7 +332,7 @@
             `;
         }
         
-        function updateQuantity(index, change) {
+        window.updateQuantity = function(index, change) {
             const newQty = cart[index].quantity + change;
             if (newQty <= 0) {
                 cart.splice(index, 1);
@@ -405,23 +340,26 @@
                 cart[index].quantity = newQty;
             }
             localStorage.setItem('cart', JSON.stringify(cart));
+            if (cart.length === 0) {
+                localStorage.removeItem('currentStand');
+            }
             renderCart();
-        }
+        };
         
-        function removeItem(index) {
+        window.removeItem = function(index) {
             cart.splice(index, 1);
             localStorage.setItem('cart', JSON.stringify(cart));
             if (cart.length === 0) {
                 localStorage.removeItem('currentStand');
             }
             renderCart();
-        }
+        };
         
-        function goToCheckout() {
+        window.goToCheckout = function() {
             if (cart.length > 0) {
                 window.location.href = 'checkout.html';
             }
-        }
+        };
         
         loadCart();
     </script>
