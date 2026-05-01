@@ -2,245 +2,147 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
     <title>Login - CaFood</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', sans-serif;
+            background: white;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             padding: 20px;
         }
-        
         .login-container {
-            background: white;
-            border-radius: 25px;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.3);
             width: 100%;
-            max-width: 420px;
+            max-width: 450px;
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
             overflow: hidden;
-            animation: slideUp 0.5s ease-out;
         }
-        
-        @keyframes slideUp {
-            from {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+        .header {
+            padding: 32px 32px 0 32px;
+            text-align: center;  /* Diubah menjadi center */
         }
-        
-        .login-header {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 35px 30px;
-            text-align: center;
-        }
-        
-        .login-logo {
-            font-size: 3.5rem;
-            margin-bottom: 10px;
-        }
-        
-        .login-title {
-            font-size: 1.8rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        
-        .login-subtitle {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-        
-        .login-body {
-            padding: 30px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #6d28d9, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 8px;
-            color: #333;
-            font-weight: 500;
-            font-size: 0.9rem;
         }
-        
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-        
-        .form-control:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
-        }
-        
-        .form-control.error {
-            border-color: #f56565;
-        }
-        
-        .error-message {
-            color: #f56565;
-            font-size: 0.75rem;
-            margin-top: 5px;
-            display: none;
-        }
-        
-        .input-icon {
-            position: relative;
-        }
-        
-        .input-icon .form-control {
-            padding-right: 45px;
-        }
-        
-        .toggle-password {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #999;
-            font-size: 1.1rem;
-        }
-        
-        .role-selector {
+        .header h1 { font-size: 1.6rem; font-weight: 700; color: #1e1a3a; margin-bottom: 8px; }
+        .header p { color: #7b6cb0; font-size: 0.9rem; }
+        .tab-container { padding: 0 32px; margin-top: 24px; }
+        .tab-header {
             display: flex;
-            gap: 12px;
-            margin-bottom: 25px;
+            gap: 8px;
+            background: #f5f3ff;
+            padding: 4px;
+            border-radius: 40px;
+            margin-bottom: 28px;
         }
-        
-        .role-btn {
+        .tab-btn {
             flex: 1;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            background: white;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
             text-align: center;
-            font-weight: 500;
+            padding: 12px 0;
+            font-weight: 600;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #6d28d9;
         }
-        
-        .role-btn.active {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-color: transparent;
-            color: white;
-        }
-        
-        .forgot-link {
-            text-align: right;
-            margin-bottom: 25px;
-        }
-        
-        .forgot-link a {
-            color: #667eea;
-            text-decoration: none;
-            font-size: 0.85rem;
-        }
-        
-        .btn-login {
+        .tab-btn.active { background: white; color: #6d28d9; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .form-panel { display: none; }
+        .form-panel.active { display: block; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 0.8rem; font-weight: 600; color: #1e1a3a; margin-bottom: 8px; }
+        .input-icon { position: relative; display: flex; align-items: center; }
+        .input-icon i { position: absolute; left: 16px; color: #c4b5fd; font-size: 1rem; }
+        .input-icon input {
             width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 14px 16px 14px 48px;
+            border: 1.5px solid #e2d9ff;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+            background: #faf8ff;
+        }
+        .input-icon input:focus {
+            outline: none;
+            border-color: #6d28d9;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(109,40,217,0.1);
+        }
+        .input-icon input.error { border-color: #f56565; }
+        .error-message { color: #f56565; font-size: 0.7rem; margin-top: 6px; display: none; }
+        .btn-primary {
+            width: 100%;
+            background: linear-gradient(135deg, #6d28d9, #a855f7);
             color: white;
             border: none;
-            border-radius: 12px;
+            padding: 14px;
+            border-radius: 40px;
             font-size: 1rem;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s;
+            margin-top: 12px;
+            transition: all 0.2s;
         }
-        
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+        .btn-primary:hover { transform: scale(1.02); box-shadow: 0 8px 20px rgba(109,40,217,0.3); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .btn-secondary {
+            width: 100%;
+            background: white;
+            color: #1e1a3a;
+            border: 1.5px solid #e2d9ff;
+            padding: 14px;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 12px;
         }
-        
-        .btn-login:active {
-            transform: translateY(0);
-        }
-        
-        .btn-login:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .register-link {
-            text-align: center;
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 1px solid #f0f0f0;
-            color: #666;
-            font-size: 0.9rem;
-        }
-        
-        .register-link a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        
-        .register-link a:hover {
-            text-decoration: underline;
-        }
-        
+        .btn-secondary:hover { background: #faf8ff; border-color: #6d28d9; }
+        .separator { display: flex; align-items: center; text-align: center; margin: 24px 0; }
+        .separator::before, .separator::after { content: ''; flex: 1; border-bottom: 1px solid #e2d9ff; }
+        .separator span { padding: 0 16px; color: #7b6cb0; font-size: 0.8rem; }
+        .link { text-align: center; margin-top: 24px; font-size: 0.85rem; color: #7b6cb0; }
+        .link a { color: #6d28d9; text-decoration: none; font-weight: 700; }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
+        .forgot-link { font-size: 0.8rem; color: #6d28d9; cursor: pointer; }
         .toast {
             position: fixed;
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: #333;
+            background: #1e1a3a;
             color: white;
             padding: 12px 24px;
             border-radius: 50px;
             z-index: 1000;
+            font-size: 0.85rem;
             animation: slideDown 0.3s ease-out;
-            font-size: 0.9rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-        
-        .toast.success {
-            background: #48bb78;
-        }
-        
-        .toast.error {
-            background: #f56565;
-        }
-        
+        .toast.success { background: #10b981; }
+        .toast.error { background: #ef4444; }
         @keyframes slideDown {
-            from {
-                transform: translateX(-50%) translateY(-100px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(-50%) translateY(0);
-                opacity: 1;
-            }
+            from { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }
         }
-        
         .spinner {
             display: inline-block;
             width: 18px;
@@ -251,286 +153,420 @@
             animation: spin 0.8s linear infinite;
             margin-right: 8px;
         }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @media (max-width: 480px) {
+            .login-container { border-radius: 24px; }
+            .header { padding: 24px 24px 0 24px; }
+            .tab-container { padding: 0 24px; }
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-header">
-            <div class="login-logo">🍜</div>
-            <div class="login-title">CaFood</div>
-            <div class="login-subtitle">Welcome back! Please login to your account</div>
+<div class="login-container">
+    <div class="header">
+        <div class="logo">CaFood</div>
+        <h1>Selamat Datang di CaFood!</h1>
+        <p>Aplikasi pemesanan makanan dan minuman</p>
+    </div>
+
+    <div class="tab-container">
+        <div class="tab-header">
+            <div class="tab-btn active" data-tab="email">Email</div>
+            <div class="tab-btn" data-tab="phone">Nomor HP</div>
         </div>
-        
-        <div class="login-body">
-            <form id="loginForm">
+
+        <!-- Panel Email -->
+        <div id="emailPanel" class="form-panel active">
+            <form id="emailLoginForm">
                 <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" class="form-control" id="email" placeholder="Enter your email" autocomplete="email">
-                    <div class="error-message" id="emailError">Please enter a valid email address</div>
+                    <label>Email</label>
+                    <div class="input-icon">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" placeholder="Masukkan email Anda" autocomplete="email">
+                    </div>
+                    <div class="error-message" id="emailError">Email tidak valid</div>
                 </div>
-                
                 <div class="form-group">
                     <label>Password</label>
                     <div class="input-icon">
-                        <input type="password" class="form-control" id="password" placeholder="Enter your password" autocomplete="current-password">
-                        <span class="toggle-password" onclick="togglePassword()">👁️</span>
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" placeholder="Masukkan password Anda" autocomplete="current-password">
+                        <i class="fas fa-eye-slash" id="togglePasswordEmail" style="left: auto; right: 16px; cursor: pointer;"></i>
                     </div>
-                    <div class="error-message" id="passwordError">Please enter your password</div>
+                    <div class="error-message" id="passwordError">Password harus diisi</div>
                 </div>
-                
-                <div class="role-selector">
-                    <div class="role-btn active" data-role="Customer">👤 Customer </div>
-                    <div class="role-btn" data-role="Stand Owner">🏪 Stand Owner</div>
+                <div class="flex-between">
+                    <div></div>
+                    <div class="forgot-link" id="forgotPasswordBtn">Lupa password?</div>
                 </div>
-                
-                <div class="forgot-link">
-                    <a href="forgot-password.html">Forgot Password?</a>
-                </div>
-                
-                <button type="submit" class="btn-login" id="loginBtn">Login</button>
+                <button type="submit" class="btn-primary" id="emailLoginBtn">Masuk</button>
             </form>
-            
-            <div class="register-link">
-                Don't have an account? <a href="register.html" id="registerLink">Register here</a>
-            </div>
+        </div>
+
+        <!-- Panel Phone -->
+        <div id="phonePanel" class="form-panel">
+            <form id="phoneLoginForm">
+                <div class="form-group">
+                    <label>Nomor Telepon</label>
+                    <div class="input-icon">
+                        <i class="fas fa-phone-alt"></i>
+                        <input type="tel" id="phoneNumber" placeholder="08123456789" autocomplete="tel">
+                    </div>
+                    <div class="error-message" id="phoneError">Masukkan nomor telepon yang valid</div>
+                </div>
+                <button type="button" class="btn-primary" id="sendOtpBtn">Kirim OTP</button>
+                <div class="form-group" style="margin-top: 20px;">
+                    <label>Kode OTP</label>
+                    <div class="input-icon">
+                        <i class="fas fa-key"></i>
+                        <input type="text" id="otpCode" placeholder="6 digit kode" autocomplete="off">
+                    </div>
+                    <div class="error-message" id="otpError">Kode OTP salah</div>
+                </div>
+                <button type="button" class="btn-primary" id="verifyOtpBtn" disabled>Verifikasi & Masuk</button>
+            </form>
+        </div>
+
+        <div class="separator"><span>atau</span></div>
+        <button class="btn-secondary" id="googleLoginBtn">
+            <i class="fab fa-google"></i> Lanjutkan dengan Google
+        </button>
+        <div class="link">
+            Belum punya akun? <a href="register.html" id="signUpLink">Daftar Sekarang</a>
         </div>
     </div>
-    
-    <script>
-        // Toggle password visibility
-        function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            const toggleBtn = document.querySelector('.toggle-password');
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleBtn.textContent = '🙈';
+</div>
+
+<script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+    import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup, RecaptchaVerifier, signInWithPhoneNumber } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+    import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+
+    // ==================== KONFIGURASI FIREBASE (ASLI) ====================
+    const firebaseConfig = {
+        apiKey: "AIzaSyC9R1o7m4-seOsdy_MOH9GfwMgFlHHoNvg",
+        authDomain: "cafood-f7f8a.firebaseapp.com",
+        projectId: "cafood-f7f8a",
+        storageBucket: "cafood-f7f8a.firebasestorage.app",
+        messagingSenderId: "584252854200",
+        appId: "1:584252854200:web:e915f49751a5aa34fb094d",
+        measurementId: "G-6H1XRLY0KB"
+    };
+    // ====================================================================
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Simpan ke window untuk debugging (opsional)
+    window.auth = auth;
+    window.db = db;
+
+    // DOM elements
+    const emailPanel = document.getElementById('emailPanel');
+    const phonePanel = document.getElementById('phonePanel');
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const emailForm = document.getElementById('emailLoginForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const emailError = document.getElementById('emailError');
+    const passwordError = document.getElementById('passwordError');
+    const togglePasswordEmail = document.getElementById('togglePasswordEmail');
+    const forgotBtn = document.getElementById('forgotPasswordBtn');
+    const emailLoginBtn = document.getElementById('emailLoginBtn');
+    const phoneNumberInput = document.getElementById('phoneNumber');
+    const sendOtpBtn = document.getElementById('sendOtpBtn');
+    const otpCodeInput = document.getElementById('otpCode');
+    const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+    const phoneError = document.getElementById('phoneError');
+    const otpError = document.getElementById('otpError');
+    const googleBtn = document.getElementById('googleLoginBtn');
+
+    let recaptchaVerifier = null;
+    let confirmationResult = null;
+    let currentPhoneNumber = '';
+
+    // Helper functions
+    function showToast(message, type = 'success') {
+        const existing = document.querySelector('.toast');
+        if (existing) existing.remove();
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+
+    async function checkUserInFirestore(uid, email, displayName, phoneNumber = null) {
+        try {
+            const userDocRef = doc(db, 'users', uid);
+            const docSnap = await getDoc(userDocRef);
+            let role = 'customer';
+            let name = displayName || email.split('@')[0];
+            let standId = null;
+            let standName = null;
+
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                if (data.role) role = data.role;
+                if (data.nama) name = data.nama;
+                if (data.standId) standId = data.standId;
+                if (data.standName) standName = data.standName;
             } else {
-                passwordInput.type = 'password';
-                toggleBtn.textContent = '👁️';
+                // Buat dokumen baru jika belum ada (misal login via Google atau phone)
+                await setDoc(userDocRef, {
+                    nama: name,
+                    email: email,
+                    noTelepon: phoneNumber || '',
+                    role: 'customer',
+                    createdAt: new Date()
+                });
             }
+            // Simpan session
+            const sessionData = {
+                uid: uid,
+                name: name,
+                email: email,
+                role: role,
+                standId: standId,
+                standName: standName,
+                loginTime: new Date().toISOString()
+            };
+            localStorage.setItem('currentUser', JSON.stringify(sessionData));
+            return role;
+        } catch (err) {
+            console.error('Firestore error:', err);
+            // Fallback
+            localStorage.setItem('currentUser', JSON.stringify({
+                uid: uid,
+                name: displayName || email.split('@')[0],
+                email: email,
+                role: 'customer',
+                loginTime: new Date().toISOString()
+            }));
+            return 'customer';
         }
-        
-        // Role selector
-        let selectedRole = 'user';
-        
-        document.querySelectorAll('.role-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                selectedRole = this.dataset.role;
+    }
+
+    function redirectBasedOnRole(role) {
+        switch(role) {
+            case 'admin': window.location.href = 'dashboard-admin.html'; break;
+            case 'operator': window.location.href = 'dashboard-stand.html'; break;
+            default: window.location.href = 'index.html';
+        }
+    }
+
+    // Tab switching
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tab = btn.dataset.tab;
+            tabBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            if (tab === 'email') {
+                emailPanel.classList.add('active');
+                phonePanel.classList.remove('active');
+            } else {
+                emailPanel.classList.remove('active');
+                phonePanel.classList.add('active');
+                initRecaptcha();
+            }
+        });
+    });
+
+    // Toggle password visibility
+    if (togglePasswordEmail) {
+        togglePasswordEmail.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            togglePasswordEmail.classList.toggle('fa-eye');
+            togglePasswordEmail.classList.toggle('fa-eye-slash');
+        });
+    }
+
+    // Email login
+    emailForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        let isValid = true;
+        if (!email || !emailRegex.test(email)) {
+            emailError.style.display = 'block';
+            emailInput.classList.add('error');
+            isValid = false;
+        } else {
+            emailError.style.display = 'none';
+            emailInput.classList.remove('error');
+        }
+        if (!password || password.length < 6) {
+            passwordError.textContent = password ? 'Password minimal 6 karakter' : 'Password harus diisi';
+            passwordError.style.display = 'block';
+            passwordInput.classList.add('error');
+            isValid = false;
+        } else {
+            passwordError.style.display = 'none';
+            passwordInput.classList.remove('error');
+        }
+        if (!isValid) return;
+
+        emailLoginBtn.disabled = true;
+        emailLoginBtn.innerHTML = '<span class="spinner"></span> Memproses...';
+        try {
+            const userCred = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCred.user;
+            const role = await checkUserInFirestore(user.uid, user.email, user.displayName);
+            showToast(`Selamat datang, ${user.email}`, 'success');
+            setTimeout(() => redirectBasedOnRole(role), 1000);
+        } catch (error) {
+            let msg = 'Login gagal: ';
+            switch (error.code) {
+                case 'auth/user-not-found': msg += 'Email tidak terdaftar.'; break;
+                case 'auth/wrong-password': msg += 'Password salah.'; break;
+                case 'auth/invalid-email': msg += 'Email tidak valid.'; break;
+                default: msg += error.message;
+            }
+            showToast(msg, 'error');
+            emailLoginBtn.disabled = false;
+            emailLoginBtn.innerHTML = 'Masuk';
+        }
+    });
+
+    // Forgot password
+    forgotBtn.addEventListener('click', async () => {
+        const email = emailInput.value.trim();
+        if (!email) {
+            showToast('Masukkan email Anda terlebih dahulu', 'error');
+            return;
+        }
+        try {
+            await sendPasswordResetEmail(auth, email);
+            showToast('Email reset password telah dikirim', 'success');
+        } catch (error) {
+            showToast('Gagal mengirim email reset: ' + error.message, 'error');
+        }
+    });
+
+    // Phone OTP
+    function initRecaptcha() {
+        if (!recaptchaVerifier) {
+            recaptchaVerifier = new RecaptchaVerifier(auth, 'sendOtpBtn', {
+                size: 'invisible',
+                callback: () => {}
             });
-        });
-        
-        // Show toast notification
-        function showToast(message, type = 'success') {
-            const existingToast = document.querySelector('.toast');
-            if (existingToast) existingToast.remove();
-            
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.remove();
-            }, 3000);
         }
-        
-        // Validate form
-        function validateForm() {
-            let isValid = true;
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value;
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            
-            // Email validation
-            if (!email) {
-                document.getElementById('emailError').style.display = 'block';
-                document.getElementById('email').classList.add('error');
-                isValid = false;
-            } else if (!emailRegex.test(email)) {
-                document.getElementById('emailError').textContent = 'Please enter a valid email address';
-                document.getElementById('emailError').style.display = 'block';
-                document.getElementById('email').classList.add('error');
-                isValid = false;
-            } else {
-                document.getElementById('emailError').style.display = 'none';
-                document.getElementById('email').classList.remove('error');
-            }
-            
-            // Password validation
-            if (!password) {
-                document.getElementById('passwordError').style.display = 'block';
-                document.getElementById('password').classList.add('error');
-                isValid = false;
-            } else {
-                document.getElementById('passwordError').style.display = 'none';
-                document.getElementById('password').classList.remove('error');
-            }
-            
-            return isValid;
+    }
+
+    sendOtpBtn.addEventListener('click', async () => {
+        let phone = phoneNumberInput.value.trim();
+        if (!phone) {
+            phoneError.style.display = 'block';
+            phoneNumberInput.classList.add('error');
+            return;
         }
-        
-        // Initialize demo users if not exist
-        function initDemoUsers() {
-            let users = JSON.parse(localStorage.getItem('users') || '[]');
-            
-            if (users.length === 0) {
-                users = [
-                    {
-                        id: 1,
-                        fullName: "John Doe",
-                        email: "john@example.com",
-                        phone: "08123456789",
-                        password: btoa("password123"),
-                        role: "user",
-                        isActive: true,
-                        createdAt: new Date().toISOString()
-                    },
-                    {
-                        id: 2,
-                        fullName: "Ramen House Owner",
-                        email: "ramen@cafood.com",
-                        phone: "08123456780",
-                        password: btoa("password123"),
-                        role: "stand",
-                        standName: "Ramen House",
-                        isActive: true,
-                        createdAt: new Date().toISOString()
-                    }
-                ];
-                localStorage.setItem('users', JSON.stringify(users));
-                
-                // Also create stand entry for ramen house
-                let stands = JSON.parse(localStorage.getItem('stands') || '[]');
-                if (stands.length === 0) {
-                    stands = [
-                        {
-                            id: 1,
-                            userId: 2,
-                            standName: "Ramen House",
-                            logo: "🍜",
-                            description: "Authentic Japanese Ramen with rich broth",
-                            isOpen: true,
-                            rating: 4.8,
-                            createdAt: new Date().toISOString()
-                        },
-                        {
-                            id: 2,
-                            userId: null,
-                            standName: "Nasi Campur Bali",
-                            logo: "🍚",
-                            description: "Traditional Balinese Cuisine",
-                            isOpen: true,
-                            rating: 4.9,
-                            createdAt: new Date().toISOString()
-                        },
-                        {
-                            id: 3,
-                            userId: null,
-                            standName: "Coffee & Co",
-                            logo: "☕",
-                            description: "Premium Coffee & Pastries",
-                            isOpen: true,
-                            rating: 4.7,
-                            createdAt: new Date().toISOString()
-                        }
-                    ];
-                    localStorage.setItem('stands', JSON.stringify(stands));
-                }
-            }
+        if (!phone.startsWith('+')) {
+            if (phone.startsWith('0')) phone = '+62' + phone.substring(1);
+            else phone = '+62' + phone;
         }
-        
-        // Login handler
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            if (!validateForm()) {
-                return;
-            }
-            
-            const loginBtn = document.getElementById('loginBtn');
-            const originalText = loginBtn.innerHTML;
-            loginBtn.innerHTML = '<span class="spinner"></span> Logging in...';
-            loginBtn.disabled = true;
-            
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value;
-            
-            // Initialize demo users first time
-            initDemoUsers();
-            
-            // Simulate network delay
-            setTimeout(() => {
-                const users = JSON.parse(localStorage.getItem('users') || '[]');
-                const user = users.find(u => u.email === email && atob(u.password) === password);
-                
-                if (user && user.role === selectedRole) {
-                    // Login success
-                    const userData = {
-                        id: user.id,
-                        name: user.fullName,
-                        email: user.email,
-                        role: user.role,
-                        standName: user.standName || null,
-                        loginTime: new Date().toISOString()
-                    };
-                    localStorage.setItem('currentUser', JSON.stringify(userData));
-                    
-                    showToast(`Welcome back, ${user.fullName}!`, 'success');
-                    
-                    // Redirect based on role
-                    setTimeout(() => {
-                        switch(user.role) {
-                            case 'user':
-                                window.location.href = 'menu-stand.html';
-                                break;
-                            case 'stand':
-                                window.location.href = 'dashboard-stand.html';
-                                break;
-                            default:
-                                window.location.href = 'menu-stand.html';
-                        }
-                    }, 1000);
-                } else {
-                    // Login failed
-                    let errorMsg = 'Invalid email or password';
-                    if (user && user.role !== selectedRole) {
-                        errorMsg = `This account is registered as ${user.role}. Please select the correct role.`;
-                    }
-                    showToast(errorMsg, 'error');
-                    loginBtn.innerHTML = originalText;
-                    loginBtn.disabled = false;
-                }
-            }, 1000);
-        });
-        
-        // Real-time validation
-        document.getElementById('email').addEventListener('input', function() {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (this.value && !emailRegex.test(this.value)) {
-                document.getElementById('emailError').textContent = 'Please enter a valid email address';
-                document.getElementById('emailError').style.display = 'block';
-                this.classList.add('error');
+        currentPhoneNumber = phone;
+        phoneError.style.display = 'none';
+        phoneNumberInput.classList.remove('error');
+        sendOtpBtn.disabled = true;
+        sendOtpBtn.innerHTML = '<span class="spinner"></span> Mengirim...';
+        try {
+            initRecaptcha();
+            const appVerifier = recaptchaVerifier;
+            const confirmation = await signInWithPhoneNumber(auth, phone, appVerifier);
+            confirmationResult = confirmation;
+            showToast('Kode OTP telah dikirim', 'success');
+            verifyOtpBtn.disabled = false;
+            sendOtpBtn.innerHTML = 'Kirim Ulang OTP';
+            sendOtpBtn.disabled = false;
+        } catch (error) {
+            console.error(error);
+            showToast('Gagal mengirim OTP: ' + error.message, 'error');
+            sendOtpBtn.innerHTML = 'Kirim OTP';
+            sendOtpBtn.disabled = false;
+        }
+    });
+
+    verifyOtpBtn.addEventListener('click', async () => {
+        const otp = otpCodeInput.value.trim();
+        if (!otp || otp.length < 6) {
+            otpError.style.display = 'block';
+            return;
+        }
+        otpError.style.display = 'none';
+        verifyOtpBtn.disabled = true;
+        verifyOtpBtn.innerHTML = '<span class="spinner"></span> Verifikasi...';
+        try {
+            const credential = await confirmationResult.confirm(otp);
+            const user = credential.user;
+            const role = await checkUserInFirestore(user.uid, user.email, user.displayName, currentPhoneNumber);
+            showToast('Login berhasil', 'success');
+            setTimeout(() => redirectBasedOnRole(role), 1000);
+        } catch (error) {
+            otpError.style.display = 'block';
+            otpError.textContent = 'Kode OTP salah atau expired';
+            verifyOtpBtn.disabled = false;
+            verifyOtpBtn.innerHTML = 'Verifikasi & Masuk';
+        }
+    });
+
+    // Google login
+    googleBtn.addEventListener('click', async () => {
+        googleBtn.disabled = true;
+        googleBtn.innerHTML = '<span class="spinner"></span> Memproses...';
+        try {
+            const provider = new GoogleAuthProvider();
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+            const role = await checkUserInFirestore(user.uid, user.email, user.displayName);
+            showToast(`Selamat datang, ${user.displayName || user.email}`, 'success');
+            setTimeout(() => redirectBasedOnRole(role), 1000);
+        } catch (error) {
+            if (error.code === 'auth/popup-blocked') {
+                showToast('Popup diblokir browser. Izinkan popup untuk website ini.', 'error');
             } else {
-                document.getElementById('emailError').style.display = 'none';
-                this.classList.remove('error');
+                showToast('Google Sign-In gagal: ' + error.message, 'error');
             }
-        });
-        
-        document.getElementById('password').addEventListener('input', function() {
-            if (this.value) {
-                document.getElementById('passwordError').style.display = 'none';
-                this.classList.remove('error');
-            }
-        });
-        
-        // Initialize on page load
-        initDemoUsers();
-    </script>
+            googleBtn.disabled = false;
+            googleBtn.innerHTML = '<i class="fab fa-google"></i> Lanjutkan dengan Google';
+        }
+    });
+
+    // Real-time validation
+    emailInput.addEventListener('input', () => {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (emailInput.value.trim() && regex.test(emailInput.value.trim())) {
+            emailError.style.display = 'none';
+            emailInput.classList.remove('error');
+        } else if (emailInput.value.trim()) {
+            emailError.style.display = 'block';
+            emailInput.classList.add('error');
+        }
+    });
+    passwordInput.addEventListener('input', () => {
+        if (passwordInput.value.length >= 6) {
+            passwordError.style.display = 'none';
+            passwordInput.classList.remove('error');
+        } else if (passwordInput.value) {
+            passwordError.textContent = 'Password minimal 6 karakter';
+            passwordError.style.display = 'block';
+            passwordInput.classList.add('error');
+        }
+    });
+    phoneNumberInput.addEventListener('input', () => {
+        if (phoneNumberInput.value.trim()) {
+            phoneError.style.display = 'none';
+            phoneNumberInput.classList.remove('error');
+        }
+    });
+    otpCodeInput.addEventListener('input', () => {
+        if (otpCodeInput.value.trim().length >= 6) {
+            otpError.style.display = 'none';
+        }
+    });
+</script>
 </body>
 </html>
