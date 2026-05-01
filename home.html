@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>CaFood • Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8f9fa;
+            padding-bottom: 80px;
+        }
+        
+        /* Header */
+        .header {
+            background: white;
+            padding: 16px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+        
+        .logo-text {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+        
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            width: 42px;
+            height: 42px;
+            background: #f1f5f9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .cart-icon:hover {
+            background: #e2e8f0;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 32px 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-align: center;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        .hero-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .hero-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 24px;
+        }
+        
+        /* Search Bar */
+        .search-bar {
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .search-bar input {
+            width: 100%;
+            padding: 14px 16px 14px 48px;
+            border: none;
+            background: white;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .search-bar input:focus {
+            outline: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .search-bar i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+        
+        /* Categories */
+        .categories-section {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 16px;
+        }
+        
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1a1a2e;
+        }
+        
+        .category-list {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+        
+        .category-list::-webkit-scrollbar {
+            height: 3px;
+        }
+        
+        .category-item {
+            text-align: center;
+            cursor: pointer;
+            min-width: 70px;
+        }
+        
+        .category-circle {
+            width: 65px;
+            height: 65px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin-bottom: 8px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s;
+        }
+        
+        .category-item.active .category-circle {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-color: transparent;
+        }
+        
+        .category-item.active .category-circle span {
+            filter: brightness(0) invert(1);
+        }
+        
+        .category-name {
+            font-size: 0.7rem;
+            color: #64748b;
+        }
+        
+        .category-item.active .category-name {
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        /* Stands Grid */
+        .stands-section {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .stand-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+        
+        /* Stand Card */
+        .stand-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid #e9ecef;
+        }
+        
+        .stand-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+        
+        .stand-image {
+            height: 160px;
+            overflow: hidden;
+        }
+        
+        .stand-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        
+        .stand-card:hover .stand-image img {
+            transform: scale(1.05);
+        }
+        
+        .stand-info {
+            padding: 16px;
+        }
+        
+        .stand-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 4px;
+        }
+        
+        .stand-desc {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        
+        .stand-meta {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.7rem;
+            color: #64748b;
+        }
+        
+        .rating {
+            color: #f59e0b;
+        }
+        
+        .status-open {
+            color: #10b981;
+        }
+        
+        .status-closed {
+            color: #ef4444;
+        }
+        
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #94a3b8;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #f1f5f9;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 12px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            color: #94a3b8;
+        }
+        
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 16px 20px;
+            border-top: 1px solid #e9ecef;
+            z-index: 100;
+        }
+        
+        .nav-item {
+            text-align: center;
+            cursor: pointer;
+            color: #94a3b8;
+            transition: all 0.2s;
+        }
+        
+        .nav-item.active {
+            color: #667eea;
+        }
+        
+        .nav-icon {
+            font-size: 1.3rem;
+            margin-bottom: 4px;
+        }
+        
+        .nav-label {
+            font-size: 0.6rem;
+            font-weight: 500;
+        }
+        
+        /* FAB */
+        .fab {
+            position: fixed;
+            bottom: 85px;
+            right: 16px;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(102,126,234,0.4);
+            transition: all 0.2s;
+            z-index: 99;
+        }
+        
+        .fab:hover {
+            transform: scale(1.05);
+        }
+        
+        @media (max-width: 768px) {
+            .stand-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .hero-title {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">🍜</div>
+                <div class="logo-text">CaFood</div>
+            </div>
+            <div class="cart-icon" onclick="window.location.href='keranjang.html'">
+                <i class="fas fa-shopping-bag"></i>
+                <span class="cart-count" id="cartCount">0</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Hero -->
+    <div class="hero">
+        <div class="hero-badge">
+            <i class="fas fa-fire"></i> 20+ Active Stands
+        </div>
+        <h1 class="hero-title" id="heroTitle">Good Morning! 🥰<br>What's for breakfast?</h1>
+        <p class="hero-subtitle">Explore various delicious foods from the best stands</p>
+        <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Search food or stand...">
+        </div>
+    </div>
+    
+    <!-- Categories -->
+    <div class="categories-section">
+        <div class="section-header">
+            <h2 class="section-title">Categories</h2>
+            <a href="#" class="section-link" style="color:#667eea; font-size:0.75rem;">See All →</a>
+        </div>
+        <div class="category-list" id="categoryList">
+            <div class="category-item active" data-category="all">
+                <div class="category-circle"><span>🍽️</span></div>
+                <div class="category-name">All</div>
+            </div>
+            <div class="category-item" data-category="noodles">
+                <div class="category-circle"><span>🍜</span></div>
+                <div class="category-name">Noodles</div>
+            </div>
+            <div class="category-item" data-category="rice">
+                <div class="category-circle"><span>🍚</span></div>
+                <div class="category-name">Rice</div>
+            </div>
+            <div class="category-item" data-category="drinks">
+                <div class="category-circle"><span>🥤</span></div>
+                <div class="category-name">Drinks</div>
+            </div>
+            <div class="category-item" data-category="dessert">
+                <div class="category-circle"><span>🍰</span></div>
+                <div class="category-name">Dessert</div>
+            </div>
+            <div class="category-item" data-category="fastfood">
+                <div class="category-circle"><span>🍕</span></div>
+                <div class="category-name">Fast Food</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Stands Grid -->
+    <div class="stands-section">
+        <div class="section-header">
+            <h2 class="section-title">Popular Stands</h2>
+            <span style="color:#667eea; font-size:0.75rem;">🔥 Recommended</span>
+        </div>
+        <div id="standsGrid" class="stand-grid">
+            <div class="loading">
+                <div class="spinner"></div>
+                <div>Loading delicious food...</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- FAB -->
+    <div class="fab" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+    
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="nav-item active">
+            <div class="nav-icon"><i class="fas fa-home"></i></div>
+            <div class="nav-label">Home</div>
+        </div>
+        <div class="nav-item" onclick="window.location.href='status-pesanan.html'">
+            <div class="nav-icon"><i class="fas fa-clipboard-list"></i></div>
+            <div class="nav-label">Orders</div>
+        </div>
+        <div class="nav-item" onclick="window.location.href='keranjang.html'">
+            <div class="nav-icon"><i class="fas fa-shopping-bag"></i></div>
+            <div class="nav-label">Cart</div>
+        </div>
+        <div class="nav-item" onclick="window.location.href='status-pesanan.html'">
+            <div class="nav-icon"><i class="fas fa-clock"></i></div>
+            <div class="nav-label">Queue</div>
+        </div>
+        <div class="nav-item" onclick="window.location.href='profile.html'">
+            <div class="nav-icon"><i class="fas fa-user"></i></div>
+            <div class="nav-label">Profile</div>
+        </div>
+    </div>
+    
+    <script type="module">
+        import { db, collection, getDocs, query, where } from './js/firebase-config.js';
+        
+        // ============ DATA ============
+        let allStands = [];
+        let currentCategory = "all";
+        let searchQuery = "";
+        
+        // ============ DOM ELEMENTS ============
+        const standsGrid = document.getElementById('standsGrid');
+        const searchInput = document.getElementById('searchInput');
+        
+        // ============ SET GREETING ============
+        function setGreeting() {
+            const hour = new Date().getHours();
+            const heroTitle = document.getElementById('heroTitle');
+            if (hour >= 5 && hour < 11) {
+                heroTitle.innerHTML = "Good Morning! 🥰<br>What's for breakfast?";
+            } else if (hour >= 11 && hour < 15) {
+                heroTitle.innerHTML = "Good Afternoon! 🌤️<br>Lunch time?";
+            } else if (hour >= 15 && hour < 19) {
+                heroTitle.innerHTML = "Good Evening! 🌙<br>Snack time?";
+            } else {
+                heroTitle.innerHTML = "Good Night! 🌟<br>Late night craving?";
+            }
+        }
+        
+        // ============ LOAD STANDS FROM FIREBASE ============
+        async function loadStands() {
+            try {
+                showsLoading(true);
+                
+                const standsRef = collection(db, "stands");
+                const snapshot = await getDocs(standsRef);
+                
+                allStands = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                
+                console.log("Stands loaded from Firebase:", allStands);
+                
+                // If no data, insert sample
+                if (allStands.length === 0) {
+                    await insertSampleStands();
+                    await loadStands(); // reload
+                    return;
+                }
+                
+                renderStands();
+                showsLoading(false);
+                
+            } catch (error) {
+                console.error("Error loading stands:", error);
+                standsGrid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">⚠️</div>
+                        <div>Failed to load data</div>
+                        <div style="font-size:0.75rem; margin-top:8px;">${error.message}</div>
+                    </div>
+                `;
+            }
+        }
+        
+        // ============ INSERT SAMPLE STANDS (First Time) ============
+        async function insertSampleStands() {
+            try {
+                const standsRef = collection(db, "stands");
+                
+                const sampleStands = [
+                    {
+                        name: "Ramen House",
+                        description: "Authentic Japanese Ramen with rich Tonkotsu broth",
+                        rating: 4.8,
+                        estimatedTime: "15-20 min",
+                        deliveryFee: "Free",
+                        status: "Open",
+                        category: "noodles",
+                        imageUrl: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400",
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        name: "Nusantara Rice Bowl",
+                        description: "Indonesian heritage rice bowls with sambal matah",
+                        rating: 4.7,
+                        estimatedTime: "20-25 min",
+                        deliveryFee: "Free",
+                        status: "Open",
+                        category: "rice",
+                        imageUrl: "https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=400",
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        name: "Coffee & Co",
+                        description: "Specialty coffee, cold brews, and artisanal drinks",
+                        rating: 4.9,
+                        estimatedTime: "10-15 min",
+                        deliveryFee: "Free",
+                        status: "Open",
+                        category: "drinks",
+                        imageUrl: "https://images.unsplash.com/photo-1507133750040-4a8f57021571?w=400",
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        name: "Sweet Tooth Lab",
+                        description: "Decadent cakes, traditional desserts, and sweet treats",
+                        rating: 4.6,
+                        estimatedTime: "12-18 min",
+                        deliveryFee: "Free",
+                        status: "Open",
+                        category: "dessert",
+                        imageUrl: "https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400",
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        name: "Burger District",
+                        description: "Juicy smashed burgers and crispy chicken sandwiches",
+                        rating: 4.5,
+                        estimatedTime: "15-20 min",
+                        deliveryFee: "Free",
+                        status: "Closed",
+                        category: "fastfood",
+                        imageUrl: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400",
+                        createdAt: new Date().toISOString()
+                    }
+                ];
+                
+                for (const stand of sampleStands) {
+                    await addDoc(standsRef, stand);
+                }
+                
+                console.log("Sample stands inserted!");
+            } catch (error) {
+                console.error("Error inserting sample:", error);
+            }
+        }
+        
+        // ============ FILTER STANDS ============
+        function getFilteredStands() {
+            let filtered = [...allStands];
+            
+            // Filter by category
+            if (currentCategory !== "all") {
+                filtered = filtered.filter(stand => stand.category === currentCategory);
+            }
+            
+            // Filter by search
+            if (searchQuery.trim() !== "") {
+                const queryLower = searchQuery.toLowerCase();
+                filtered = filtered.filter(stand => 
+                    stand.name.toLowerCase().includes(queryLower) ||
+                    (stand.description && stand.description.toLowerCase().includes(queryLower))
+                );
+            }
+            
+            return filtered;
+        }
+        
+        // ============ RENDER STANDS ============
+        function renderStands() {
+            const filtered = getFilteredStands();
+            
+            if (filtered.length === 0) {
+                standsGrid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🔍</div>
+                        <div>No stands found</div>
+                        <div style="font-size:0.75rem; margin-top:8px;">Try different keyword</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            standsGrid.innerHTML = filtered.map(stand => `
+                <div class="stand-card" onclick="goToStand('${stand.id}')">
+                    <div class="stand-image">
+                        <img src="${stand.imageUrl || 'https://via.placeholder.com/400x160?text=Food'}" 
+                             alt="${stand.name}"
+                             onerror="this.src='https://via.placeholder.com/400x160?text=No+Image'">
+                    </div>
+                    <div class="stand-info">
+                        <div class="stand-name">${stand.name}</div>
+                        <div class="stand-desc">${stand.description || 'Delicious food available'}</div>
+                        <div class="stand-meta">
+                            <span class="meta-item rating"><i class="fas fa-star"></i> ${stand.rating || 4.5}</span>
+                            <span class="meta-item"><i class="fas fa-clock"></i> ${stand.estimatedTime || '15-20 min'}</span>
+                            <span class="meta-item"><i class="fas fa-truck"></i> ${stand.deliveryFee || 'Free'}</span>
+                            <span class="meta-item ${stand.status === 'Open' ? 'status-open' : 'status-closed'}">
+                                <i class="fas fa-circle"></i> ${stand.status || 'Open'}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // ============ SHOW/HIDE LOADING ============
+        function showsLoading(show) {
+            if (show) {
+                standsGrid.innerHTML = `
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <div>Loading delicious food...</div>
+                    </div>
+                `;
+            }
+        }
+        
+        // ============ NAVIGATION ============
+        window.goToStand = function(standId) {
+            window.location.href = `menu-stand.html?id=${standId}`;
+        };
+        
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // ============ UPDATE CART COUNT ============
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const cartCount = document.getElementById('cartCount');
+            if (cartCount) {
+                cartCount.textContent = totalItems;
+            }
+        }
+        
+        // ============ CATEGORY CLICK ============
+        document.querySelectorAll('.category-item').forEach(cat => {
+            cat.addEventListener('click', function() {
+                document.querySelectorAll('.category-item').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                currentCategory = this.dataset.category;
+                renderStands();
+            });
+        });
+        
+        // ============ SEARCH ============
+        searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderStands();
+        });
+        
+        // ============ CHECK LOGIN STATUS ============
+        function checkLogin() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                console.log("No user logged in");
+                // Optional: redirect to login
+                // window.location.href = 'login.html';
+            }
+        }
+        
+        // ============ INITIALIZE ============
+        async function init() {
+            setGreeting();
+            checkLogin();
+            await loadStands();
+            updateCartCount();
+        }
+        
+        init();
+    </script>
+</body>
+</html>

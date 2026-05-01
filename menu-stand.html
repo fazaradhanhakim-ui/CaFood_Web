@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>CaFood Marketplace | Purple • Food Stalls</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>CaFood • Menu Stand</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <style>
         * {
@@ -12,525 +12,635 @@
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
             font-family: 'Inter', sans-serif;
-            background: #f5f0ff;
-            color: #1e1a3a;
-            overflow-x: auto;
+            background: #f8f9fa;
+            padding-bottom: 100px;
         }
-
-        .marketplace-full {
+        
+        /* Header Stand */
+        .stand-header {
+            position: relative;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            overflow: hidden;
+        }
+        
+        .stand-cover {
             width: 100%;
-            min-height: 100vh;
-            padding: 28px 40px 60px 40px;
-            background: #f5f0ff;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
         }
-
-        .hero-full {
-            background: linear-gradient(125deg, #6d28d9 0%, #a855f7 100%);
-            border-radius: 36px;
-            padding: 48px 56px;
-            margin-bottom: 48px;
+        
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
-            box-shadow: 0 20px 35px -10px rgba(109, 40, 217, 0.3);
-            width: 100%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.2s;
         }
-
-        .brand-chip {
-            font-size: 14px;
+        
+        .cart-icon-header {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 10;
+            position: relative;
+        }
+        
+        .cart-count-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Stand Info */
+        .stand-info-card {
+            background: white;
+            border-radius: 30px 30px 0 0;
+            margin-top: -30px;
+            position: relative;
+            z-index: 5;
+            padding: 20px;
+        }
+        
+        .stand-name {
+            font-size: 1.5rem;
             font-weight: 700;
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(4px);
-            display: inline-flex;
+            color: #1a1a2e;
+            margin-bottom: 6px;
+        }
+        
+        .stand-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .stand-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: #f1f5f9;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #f59e0b;
+        }
+        
+        .stand-desc {
+            color: #64748b;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+        
+        /* Menu Section */
+        .menu-section {
+            background: white;
+            padding: 0 16px 24px;
+        }
+        
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 16px;
+            display: flex;
             align-items: center;
             gap: 8px;
-            padding: 6px 18px;
-            border-radius: 60px;
-            margin-bottom: 24px;
         }
-
-        .hero-full h1 {
-            font-size: 52px;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 16px;
-        }
-
-        .hero-full p {
-            font-size: 18px;
-            opacity: 0.92;
-            max-width: 580px;
-            margin-bottom: 32px;
-        }
-
-        .search-row {
-            max-width: 620px;
+        
+        .menu-list {
             display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .menu-item {
+            display: flex;
+            gap: 14px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 16px;
+            transition: all 0.2s;
+            border: 1px solid #e9ecef;
+        }
+        
+        .menu-item:hover {
+            border-color: #667eea;
             background: white;
-            border-radius: 100px;
-            align-items: center;
-            justify-content: space-between;
-            padding: 6px 6px 6px 28px;
-            box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
-
-        .search-row i {
-            color: #a855f7;
-            font-size: 20px;
+        
+        .menu-image {
+            width: 70px;
+            height: 70px;
+            border-radius: 12px;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: #e2e8f0;
         }
-
-        .search-row input {
+        
+        .menu-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .menu-info {
             flex: 1;
-            border: none;
-            padding: 16px 14px;
-            font-size: 16px;
-            font-weight: 500;
-            background: transparent;
-            outline: none;
-            font-family: 'Inter', sans-serif;
         }
-
-        .search-purple-btn {
-            background: #7c3aed;
-            border: none;
-            padding: 10px 32px;
-            border-radius: 60px;
-            color: white;
+        
+        .menu-name {
+            font-size: 1rem;
             font-weight: 700;
-            font-size: 15px;
-            cursor: pointer;
-            transition: 0.2s;
+            color: #1a1a2e;
+            margin-bottom: 4px;
         }
-
-        .category-section {
-            margin-bottom: 48px;
+        
+        .menu-desc {
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-bottom: 8px;
         }
-
-        .section-head {
-            display: flex;
-            align-items: baseline;
-            justify-content: space-between;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
+        
+        .menu-price {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #667eea;
         }
-
-        .section-head h2 {
-            font-size: 26px;
-            font-weight: 800;
-            color: #2d1b69;
+        
+        .menu-actions {
             display: flex;
             align-items: center;
             gap: 12px;
         }
-
-        .category-pills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 14px;
-        }
-
-        .cat-item {
-            background: white;
-            border-radius: 60px;
-            padding: 10px 30px;
-            font-weight: 700;
-            font-size: 15px;
-            color: #4c3b7c;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 1px solid #e2d9ff;
-        }
-
-        .cat-item.active {
-            background: #7c3aed;
-            color: white;
-            border-color: #7c3aed;
-            box-shadow: 0 8px 18px rgba(124, 58, 237, 0.2);
-        }
-
-        .stands-landscape-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-            gap: 32px;
-            margin-top: 12px;
-            width: 100%;
-        }
-
-        .stand-card {
-            background: #ffffff;
-            border-radius: 32px;
-            overflow: hidden;
-            transition: all 0.25s ease;
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.05);
-            border: 1px solid #ede9fe;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .stand-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 25px 35px -14px rgba(109, 40, 217, 0.25);
-            border-color: #c4b5fd;
-        }
-
-        .stand-img {
-            width: 100%;
-            height: 210px;
-            object-fit: cover;
-            background: #ddd6fe;
-            display: block;
-        }
-
-        .stand-content {
-            padding: 20px 22px 24px 22px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .stand-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 8px;
-        }
-
-        .stand-name {
-            font-size: 22px;
-            font-weight: 800;
-            color: #211752;
-            letter-spacing: -0.2px;
-        }
-
-        .rating {
-            background: #f5f3ff;
-            padding: 5px 12px;
-            border-radius: 40px;
-            font-weight: 700;
-            font-size: 13px;
-            color: #6d28d9;
-        }
-
-        .desc {
-            color: #52525b;
-            font-size: 14px;
-            line-height: 1.45;
-            margin: 10px 0 12px 0;
-        }
-
-        .info-strip {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 18px;
-            font-size: 13px;
-            color: #5b4b8c;
-            margin-bottom: 16px;
-        }
-
-        .menu-preview {
-            margin: 18px 0 20px 0;
-            border-top: 1px solid #f0eaff;
-            padding-top: 16px;
-        }
-
-        .menu-label {
-            font-weight: 800;
-            font-size: 14px;
-            color: #3b2b6b;
-            margin-bottom: 12px;
+        
+        .qty-selector {
             display: flex;
             align-items: center;
             gap: 8px;
+            background: white;
+            padding: 4px 8px;
+            border-radius: 30px;
+            border: 1px solid #e2e8f0;
         }
-
-        .menu-list-compact {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+        
+        .qty-btn {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: none;
+            background: #f1f5f9;
+            cursor: pointer;
+            font-weight: bold;
         }
-
-        .menu-item-row {
+        
+        .qty-value {
+            font-size: 0.85rem;
+            font-weight: 600;
+            min-width: 24px;
+            text-align: center;
+        }
+        
+        .add-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .add-btn:hover {
+            transform: scale(1.02);
+        }
+        
+        /* Cart Summary */
+        .cart-summary {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e9ecef;
+            padding: 12px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            padding: 8px 12px;
-            border-radius: 12px;
-            transition: all 0.2s;
+            z-index: 100;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
         }
-
-        .menu-item-row:hover {
-            background: #f3efff;
-            transform: translateX(5px);
-        }
-
-        .menu-name {
-            color: #1f1a3a;
-        }
-
-        .menu-price {
-            font-weight: 800;
-            color: #7c3aed;
-        }
-
-        .btn-order {
-            background: #f3efff;
-            border: none;
-            padding: 12px 0;
-            border-radius: 60px;
-            font-weight: 800;
-            font-size: 15px;
-            color: #6d28d9;
-            cursor: pointer;
-            transition: 0.2s;
-            margin-top: 8px;
+        
+        .cart-total {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
+            align-items: baseline;
+            gap: 8px;
         }
-
-        .btn-order:hover {
-            background: #7c3aed;
+        
+        .cart-total-label {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+        
+        .cart-total-value {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #667eea;
+        }
+        
+        .cart-items-count {
+            background: #f1f5f9;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .view-cart-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
         }
-
-        .empty-state {
-            grid-column: 1 / -1;
+        
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a1a2e;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            animation: slideUp 0.3s ease;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+        
+        .loading {
             text-align: center;
-            padding: 70px 20px;
-            background: #faf8ff;
-            border-radius: 48px;
-            color: #6b5b9e;
+            padding: 40px;
+            color: #64748b;
         }
-
-        .footer {
-            margin-top: 70px;
-            text-align: center;
-            color: #7b6cb0;
-            border-top: 1px solid #e2d9ff;
-            padding-top: 32px;
-            font-weight: 500;
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e2e8f0;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 12px;
         }
-
-        @media (max-width: 1100px) {
-            .marketplace-full { padding: 20px 24px 50px 24px; }
-            .hero-full { padding: 36px 32px; }
-            .hero-full h1 { font-size: 42px; }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
-
-        @media (max-width: 780px) {
-            .stands-landscape-grid { grid-template-columns: 1fr; }
-            .hero-full h1 { font-size: 34px; }
+        
+        @media (max-width: 768px) {
+            .stand-header { height: 160px; }
+            .stand-name { font-size: 1.2rem; }
         }
     </style>
 </head>
 <body>
-<div class="marketplace-full">
-    <div class="hero-full">
-        <div class="brand-chip"><i class="fas fa-crown"></i> CaFood Marketplace</div>
-        <h1>Good Afternoon! 🌤️<br>Where do you want to eat?</h1>
-        <p>Explore authentic food stalls, local favorites, and trending stands — free delivery across all vendors.</p>
-        <div class="search-row">
-            <i class="fas fa-search"></i>
-            <input type="text" id="globalSearch" placeholder="Search stand or menu...">
-            <button class="search-purple-btn" id="searchBtn">Discover</button>
+    <div class="stand-header">
+        <div class="back-btn" onclick="history.back()">←</div>
+        <div class="cart-icon-header" onclick="window.location.href='keranjang.html'">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-count-badge" id="cartCountHeader">0</span>
+        </div>
+        <img class="stand-cover" id="standCover" src="" alt="Stand Cover">
+    </div>
+    
+    <div class="stand-info-card" id="standInfo">
+        <div class="loading"><div class="spinner"></div>Loading...</div>
+    </div>
+    
+    <div class="menu-section">
+        <div class="section-title">
+            <i class="fas fa-utensils" style="color:#667eea;"></i> Menu List
+        </div>
+        <div class="menu-list" id="menuList">
+            <div class="loading"><div class="spinner"></div>Loading menus...</div>
         </div>
     </div>
-
-    <div class="category-section">
-        <div class="section-head">
-            <h2><i class="fas fa-tag" style="color:#a855f7;"></i> Categories</h2>
-        </div>
-        <div class="category-pills" id="categoryList"></div>
-    </div>
-
-    <div class="section-head">
-        <h2><i class="fas fa-store"></i> Popular Stands · Recommended for you</h2>
-    </div>
-    <div class="stands-landscape-grid" id="standsContainer"></div>
-
-    <div class="footer">
-        <i class="fas fa-motorcycle"></i> Free delivery on all stands · Real-time order · Purple marketplace
-    </div>
-</div>
-
-<script>
-    const standsData = [
-    {
-        id: 1, name: "Warung Makan PW", description: "Menu nasi rames, ayam bakar, ayam goreng, aneka lauk & sayur, aneka sate, dan gorengan.",
-        rating: 4.7, deliveryTime: "15-20 min", deliveryFee: "Free", category: "Indonesian", isOpen: true,
-        imageUrl: "https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=800&auto=format",
-        menu: [
-            { id: 101, name: "Nasi Rames Komplit", price: 18000, desc: "Nasi + ayam + tempe + tahu + sayur" },
-            { id: 102, name: "Ayam Bakar", price: 20000, desc: "Ayam bakar bumbu kecap" },
-            { id: 103, name: "Ayam Goreng", price: 18000, desc: "Ayam goreng tepung kriuk" },
-            { id: 104, name: "Sate Ayam (10 tusuk)", price: 25000, desc: "Sate ayam dengan bumbu kacang" },
-            { id: 105, name: "Gorengan (5 pcs)", price: 10000, desc: "Tahu, tempe, bakwan, pisang, ubi" },
-            { id: 106, name: "Telur Dadar", price: 5000, desc: "Telur dadar tipis" },
-            { id: 107, name: "Perkedel", price: 5000, desc: "Perkedel kentang" }
-        ]
-    },
-    {
-        id: 2, name: "Kantin Dinasty Kitchen", description: "Bakso, ayam geprek, nasi goreng, takoyaki, kupat, gorengan, aneka jajanan.",
-        rating: 4.8, deliveryTime: "10-20 min", deliveryFee: "Free", category: "Mixed", isOpen: true,
-        imageUrl: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&auto=format",
-        menu: [
-            { id: 201, name: "Bakso Urat", price: 15000, desc: "Bakso sapi + mie + pangsit" },
-            { id: 202, name: "Ayam Geprek", price: 18000, desc: "Ayam geprek sambal bawang + nasi" },
-            { id: 203, name: "Nasi Goreng Spesial", price: 20000, desc: "Nasi goreng + telur + ayam" },
-            { id: 204, name: "Takoyaki (6 pcs)", price: 15000, desc: "Takoyaki saus khas" },
-            { id: 205, name: "Kupat Tahu", price: 12000, desc: "Kupat + tahu + taoge + bumbu kacang" },
-            { id: 206, name: "Gorengan (6 pcs)", price: 12000, desc: "Campuran tahu, tempe, bakwan, risol" },
-            { id: 207, name: "Jajanan Pasar (3 pcs)", price: 10000, desc: "Lupis, klepon, mendut" }
-        ]
-    },
-    {
-        id: 3, name: "Warmindo Syailendra 168", description: "Indomie goreng, rebus, telur, pecel, gado-gado, ketoprak, pentol kuah, aneka jajanan.",
-        rating: 4.6, deliveryTime: "10-15 min", deliveryFee: "Free", category: "Street Food", isOpen: true,
-        imageUrl: "https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=800&auto=format",
-        menu: [
-            { id: 301, name: "Indomie Goreng", price: 10000, desc: "Indomie goreng + bawang goreng" },
-            { id: 302, name: "Indomie Rebus", price: 10000, desc: "Indomie kuah + sayur" },
-            { id: 303, name: "Indomie Telur", price: 15000, desc: "Indomie goreng/rebus + telur" },
-            { id: 304, name: "Pecel", price: 12000, desc: "Sayur pecel + bumbu kacang" },
-            { id: 305, name: "Gado-Gado", price: 14000, desc: "Sayur + lontong + bumbu kacang" },
-            { id: 306, name: "Ketoprak", price: 13000, desc: "Ketoprak Jakarta" },
-            { id: 307, name: "Pentol Kuah (10 pcs)", price: 10000, desc: "Pentol bakso kuah hangat" },
-            { id: 308, name: "Aneka Jajanan (3 pcs)", price: 8000, desc: "Cireng, cilok, cilor" }
-        ]
-    }
-];
-
-    const allCategories = ["All", ...new Set(standsData.map(s => s.category))];
-    let activeCategory = "All";
-    let searchQuery = "";
-
-    function formatRupiah(price) {
-        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price);
-    }
-
-    function getFilteredStands() {
-        let filtered = [...standsData];
-        if (activeCategory !== "All") {
-            filtered = filtered.filter(stand => stand.category === activeCategory);
+    
+    <div class="cart-summary" id="cartSummary"></div>
+    
+    <script type="module">
+        import { db, collection, doc, getDoc, getDocs, query, where, addDoc, updateDoc, deleteDoc } from './js/firebase-config.js';
+        
+        // Get stand ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const standId = urlParams.get('id');
+        
+        let currentStand = null;
+        let menus = [];
+        let cart = [];
+        
+        // Format Rupiah
+        function formatRupiah(price) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price);
         }
-        if (searchQuery.trim() !== "") {
-            const lowerQuery = searchQuery.toLowerCase();
-            filtered = filtered.filter(stand => {
-                const matchStand = stand.name.toLowerCase().includes(lowerQuery);
-                const matchMenu = stand.menu.some(menuItem => menuItem.name.toLowerCase().includes(lowerQuery));
-                return matchStand || matchMenu;
-            });
+        
+        // Load stand data
+        async function loadStand() {
+            try {
+                const standRef = doc(db, "stands", standId);
+                const standSnap = await getDoc(standRef);
+                
+                if (standSnap.exists()) {
+                    currentStand = { id: standSnap.id, ...standSnap.data() };
+                    renderStandInfo();
+                } else {
+                    document.getElementById('standInfo').innerHTML = '<div style="padding:20px; text-align:center;">Stand not found</div>';
+                }
+            } catch (error) {
+                console.error("Error loading stand:", error);
+            }
         }
-        return filtered;
-    }
-
-    function renderCategories() {
-        const container = document.getElementById("categoryList");
-        if (!container) return;
-        container.innerHTML = allCategories.map(cat => `
-            <div class="cat-item ${activeCategory === cat ? 'active' : ''}" data-category="${cat}">${cat}</div>
-        `).join("");
-        document.querySelectorAll(".cat-item").forEach(el => {
-            el.addEventListener("click", () => {
-                activeCategory = el.getAttribute("data-category");
-                const searchInputDom = document.getElementById("globalSearch");
-                if (searchInputDom) searchInputDom.value = "";
-                searchQuery = "";
-                renderCategories();
-                renderStands();
-            });
-        });
-    }
-
-    function renderStands() {
-        const container = document.getElementById("standsContainer");
-        if (!container) return;
-        const filtered = getFilteredStands();
-
-        if (filtered.length === 0) {
-            container.innerHTML = `<div class="empty-state"><i class="fas fa-utensils" style="font-size: 52px;"></i><h3>No food stands found</h3></div>`;
-            return;
+        
+        // Load menus
+        async function loadMenus() {
+            try {
+                const menusRef = collection(db, "menus");
+                const q = query(menusRef, where("standId", "==", standId));
+                const snapshot = await getDocs(q);
+                menus = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                renderMenus();
+            } catch (error) {
+                console.error("Error loading menus:", error);
+                document.getElementById('menuList').innerHTML = '<div style="padding:20px; text-align:center;">Failed to load menus</div>';
+            }
         }
-
-        container.innerHTML = filtered.map(stand => {
-            const menuHtml = stand.menu.map(item => `
-                <div class="menu-item-row" onclick="goToDetailMenu(${stand.id}, ${item.id})">
-                <span class="menu-name">${item.name}</span>
-                <span class="menu-price">${formatRupiah(item.price)}</span>
-            </div>
-            `).join('');
-
-            return `
-                <div class="stand-card">
-                    <img class="stand-img" src="${stand.imageUrl}" alt="${stand.name}" loading="lazy">
-                    <div class="stand-content">
-                        <div class="stand-header">
-                            <h3 class="stand-name">${stand.name}</h3>
-                            <div class="rating"><i class="fas fa-star" style="color: #fbbf24;"></i> ${stand.rating}</div>
-                        </div>
-                        <div class="desc">${stand.description}</div>
-                        <div class="info-strip">
-                            <span><i class="far fa-clock"></i> ${stand.deliveryTime}</span>
-                            <span><i class="fas fa-motorcycle"></i> ${stand.deliveryFee}</span>
-                            <span class="free-tag"><i class="fas fa-gem"></i> Free delivery</span>
-                        </div>
-                        <div class="menu-preview">
-                            <div class="menu-label"><i class="fas fa-fire" style="color:#f97316;"></i> Popular Menu</div>
-                            <div class="menu-list-compact">${menuHtml}</div>
-                        </div>
-                        <button class="btn-order" onclick="goToStand(${stand.id})">
-                            <i class="fas fa-shopping-bag"></i> Order from ${stand.name.split(' ')[0]}
-                        </button>
-                    </div>
+        
+        // Render stand info
+        function renderStandInfo() {
+            const coverImg = document.getElementById('standCover');
+            if (coverImg && currentStand.imageUrl) {
+                coverImg.src = currentStand.imageUrl;
+            }
+            
+            const container = document.getElementById('standInfo');
+            container.innerHTML = `
+                <h1 class="stand-name">${currentStand.name || 'Restaurant'}</h1>
+                <div class="stand-meta">
+                    <span class="stand-rating"><i class="fas fa-star"></i> ${currentStand.rating || 4.5}</span>
+                    <span><i class="far fa-clock"></i> ${currentStand.estimatedTime || '15-20 min'}</span>
+                    <span><i class="fas fa-motorcycle"></i> ${currentStand.deliveryFee || 'Free'}</span>
+                    <span class="${currentStand.status === 'Open' ? 'status-open' : 'status-closed'}" style="color:${currentStand.status === 'Open' ? '#10b981' : '#ef4444'}">
+                        <i class="fas fa-circle"></i> ${currentStand.status || 'Open'}
+                    </span>
                 </div>
+                <p class="stand-desc">${currentStand.description || 'Delicious food available here!'}</p>
             `;
-        }).join('');
-    }
-
-    // Navigasi ke halaman detail menu dengan parameter standId dan menuId
-    function goToDetailMenu(standId, menuId) {
-        window.location.href = `detail-menu.html?standId=${standId}&menuId=${menuId}`;
-    }
-
-
-    function goToStand(standId) {
-        // Arahkan ke menu pertama dari stand tersebut
-        const stand = standsData.find(s => s.id === standId);
-        if (stand && stand.menu.length > 0) {
-            window.location.href = `detail-menu.html?standId=${standId}&menuId=${stand.menu[0].id}`;
         }
-    }
-
-    function performSearch() {
-        const inputSearch = document.getElementById("globalSearch");
-        if (inputSearch) {
-            searchQuery = inputSearch.value.trim();
-            activeCategory = "All";
-            renderCategories();
-            renderStands();
+        
+        // Render menus
+        function renderMenus() {
+            const container = document.getElementById('menuList');
+            
+            if (menus.length === 0) {
+                container.innerHTML = '<div style="padding:20px; text-align:center;">No menus available</div>';
+                return;
+            }
+            
+            container.innerHTML = menus.map(menu => {
+                const cartItem = cart.find(c => c.id === menu.id);
+                const qty = cartItem ? cartItem.quantity : 0;
+                
+                return `
+                    <div class="menu-item">
+                        <div class="menu-image">
+                            <img src="${menu.imageUrl || 'https://via.placeholder.com/70'}" 
+                                 alt="${menu.name}"
+                                 onerror="this.src='https://via.placeholder.com/70'">
+                        </div>
+                        <div class="menu-info">
+                            <div class="menu-name">${menu.name}</div>
+                            <div class="menu-desc">${menu.description || 'Delicious food'}</div>
+                            <div class="menu-price">${formatRupiah(menu.price)}</div>
+                        </div>
+                        <div class="menu-actions">
+                            <div class="qty-selector">
+                                <button class="qty-btn" onclick="updateQuantity('${menu.id}', -1)">-</button>
+                                <span class="qty-value" id="qty-${menu.id}">${qty}</span>
+                                <button class="qty-btn" onclick="updateQuantity('${menu.id}', 1)">+</button>
+                            </div>
+                            <button class="add-btn" onclick="addToCart('${menu.id}')">Add</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
-    }
-
-    function bindSearchEvents() {
-        const searchBtn = document.getElementById("searchBtn");
-        const searchField = document.getElementById("globalSearch");
-        if (searchBtn) searchBtn.addEventListener("click", performSearch);
-        if (searchField) searchField.addEventListener("keypress", (e) => { if (e.key === "Enter") performSearch(); });
-    }
-
-    function init() {
-        renderCategories();
-        renderStands();
-        bindSearchEvents();
-    }
-    init();
-</script>
+        
+        // Load cart from localStorage
+        function loadCart() {
+            const savedCart = localStorage.getItem('cart');
+            const savedStand = localStorage.getItem('currentStand');
+            
+            if (savedCart && savedStand) {
+                const savedStandData = JSON.parse(savedStand);
+                if (savedStandData.id === standId) {
+                    cart = JSON.parse(savedCart);
+                } else {
+                    cart = [];
+                }
+            }
+            updateCartDisplay();
+            updateQuantityDisplays();
+        }
+        
+        // Save cart
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            localStorage.setItem('currentStand', JSON.stringify({
+                id: standId,
+                name: currentStand?.name
+            }));
+            updateCartDisplay();
+        }
+        
+        // Update quantity displays
+        function updateQuantityDisplays() {
+            menus.forEach(menu => {
+                const cartItem = cart.find(c => c.id === menu.id);
+                const qtySpan = document.getElementById(`qty-${menu.id}`);
+                if (qtySpan) {
+                    qtySpan.textContent = cartItem ? cartItem.quantity : 0;
+                }
+            });
+        }
+        
+        // Update cart display
+        function updateCartDisplay() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            const headerBadge = document.getElementById('cartCountHeader');
+            if (headerBadge) headerBadge.textContent = totalItems;
+            
+            const summaryContainer = document.getElementById('cartSummary');
+            if (summaryContainer) {
+                if (cart.length === 0) {
+                    summaryContainer.innerHTML = `
+                        <div class="cart-total">
+                            <span class="cart-total-label">Total:</span>
+                            <span class="cart-total-value">Rp 0</span>
+                        </div>
+                        <button class="view-cart-btn" onclick="window.location.href='keranjang.html'">View Cart</button>
+                    `;
+                } else {
+                    summaryContainer.innerHTML = `
+                        <div class="cart-total">
+                            <span class="cart-total-label">Total:</span>
+                            <span class="cart-total-value">${formatRupiah(totalPrice)}</span>
+                            <span class="cart-items-count">${totalItems} item${totalItems > 1 ? 's' : ''}</span>
+                        </div>
+                        <button class="view-cart-btn" onclick="window.location.href='keranjang.html'">Checkout</button>
+                    `;
+                }
+            }
+        }
+        
+        // Update quantity
+        window.updateQuantity = function(menuId, change) {
+            const menu = menus.find(m => m.id === menuId);
+            if (!menu) return;
+            
+            const existingItem = cart.find(item => item.id === menuId);
+            
+            if (existingItem) {
+                const newQty = existingItem.quantity + change;
+                if (newQty <= 0) {
+                    cart = cart.filter(item => item.id !== menuId);
+                } else {
+                    existingItem.quantity = newQty;
+                }
+            } else if (change > 0) {
+                cart.push({
+                    id: menu.id,
+                    name: menu.name,
+                    price: menu.price,
+                    quantity: 1,
+                    image: menu.imageUrl,
+                    standId: standId,
+                    standName: currentStand?.name
+                });
+            }
+            
+            saveCart();
+            updateQuantityDisplays();
+        };
+        
+        // Add to cart
+        window.addToCart = function(menuId) {
+            const menu = menus.find(m => m.id === menuId);
+            if (!menu) return;
+            
+            const existingItem = cart.find(item => item.id === menuId);
+            
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({
+                    id: menu.id,
+                    name: menu.name,
+                    price: menu.price,
+                    quantity: 1,
+                    image: menu.imageUrl,
+                    standId: standId,
+                    standName: currentStand?.name
+                });
+            }
+            
+            saveCart();
+            updateQuantityDisplays();
+            showToast(`${menu.name} added to cart!`);
+        };
+        
+        // Show toast
+        function showToast(message) {
+            const existingToast = document.querySelector('.toast');
+            if (existingToast) existingToast.remove();
+            
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2000);
+        }
+        
+        // Initialize
+        async function init() {
+            await loadStand();
+            await loadMenus();
+            loadCart();
+        }
+        
+        if (standId) {
+            init();
+        } else {
+            document.getElementById('standInfo').innerHTML = '<div style="padding:20px; text-align:center;">No stand selected</div>';
+        }
+    </script>
 </body>
 </html>
