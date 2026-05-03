@@ -21,7 +21,9 @@ import {
     createUserWithEmailAndPassword,
     sendPasswordResetEmail,
     signOut,
-    onAuthStateChanged 
+    onAuthStateChanged,
+    GoogleAuthProvider,      // 🔥 TAMBAHKAN INI
+    signInWithPopup          // 🔥 TAMBAHKAN INI
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 // 🔥 KONFIGURASI FIREBASE ANDA (dari Firebase Console) 🔥
@@ -40,10 +42,14 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
+// 🔥 Buat instance Google Provider (bisa dipakai ulang)
+const googleProvider = new GoogleAuthProvider();
+
 // EXPORT SEMUA FUNGSI YANG DIBUTUHKAN
 export { 
     db, 
     auth,
+    googleProvider,          // 🔥 TAMBAHKAN INI
     // Firestore functions
     collection, 
     doc, 
@@ -62,5 +68,7 @@ export {
     createUserWithEmailAndPassword,
     sendPasswordResetEmail,
     signOut,
-    onAuthStateChanged
+    onAuthStateChanged,
+    GoogleAuthProvider,      // 🔥 TAMBAHKAN INI
+    signInWithPopup          // 🔥 TAMBAHKAN INI
 };

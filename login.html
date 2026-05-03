@@ -150,7 +150,6 @@
             border-color: #EF4444;
         }
         
-        /* Toggle Password - Modern Icon */
         .input-icon {
             position: relative;
         }
@@ -292,7 +291,6 @@
             text-decoration: underline;
         }
         
-        /* Toast */
         .toast {
             position: fixed;
             top: 20px;
@@ -362,7 +360,6 @@
             </div>
             
             <form id="loginForm">
-                <!-- Email -->
                 <div class="form-group">
                     <label class="input-label">Email</label>
                     <div class="input-wrapper">
@@ -372,7 +369,6 @@
                     <div class="error-message" id="emailError">Email tidak valid</div>
                 </div>
                 
-                <!-- Password dengan Toggle Modern -->
                 <div class="form-group">
                     <label class="input-label">Password</label>
                     <div class="input-icon">
@@ -408,17 +404,19 @@
     <script type="module">
         import { 
             db, auth,
-            doc, getDoc,
+            doc, getDoc, setDoc,
             signInWithEmailAndPassword, 
-            sendPasswordResetEmail
+            sendPasswordResetEmail,
+            GoogleAuthProvider,
+            signInWithPopup
         } from './js/firebase-config.js';
         
         const emailInput = document.getElementById('email');
         const passwordInput = document.getElementById('password');
         const loginBtn = document.getElementById('loginBtn');
         const forgotBtn = document.getElementById('forgotPasswordBtn');
+        const googleBtn = document.getElementById('googleLoginBtn');
         
-        // ============ TOGGLE PASSWORD ============
         function togglePassword(fieldId, element) {
             const field = document.getElementById(fieldId);
             const icon = element.querySelector('i');
@@ -435,7 +433,6 @@
         }
         window.togglePassword = togglePassword;
         
-        // ============ KOSONGKAN FIELD SAAT LOAD ============
         emailInput.value = '';
         passwordInput.value = '';
         
@@ -481,10 +478,67 @@
             return isValid;
         }
         
-        // ============ FORGOT PASSWORD (LENGKAP) ============
+        // Fungsi untuk menyimpan atau update user ke Firestore setelah login
+        async function handleUserAfterLogin(user, isGoogleLogin = false) {
+            let userName = user.displayName || user.email.split('@')[0];
+            let userRole = 'customer';
+            let standId = null;
+            let standName = null;
+            
+            try {
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    userName = userData.name || userData.full_name || userName;
+                    userRole = userData.role || 'customer';
+                    standId = userData.standId || null;
+                    standName = userData.standName || null;
+                } else if (isGoogleLogin) {
+                    // Jika user baru login dengan Google, buat dokumen di Firestore
+                    await setDoc(doc(db, "users", user.uid), {
+                        uid: user.uid,
+                        name: userName,
+                        email: user.email,
+                        phone: user.phoneNumber || '',
+                        role: 'customer',
+                        photoURL: user.photoURL || '',
+                        createdAt: new Date().toISOString(),
+                        isActive: true
+                    });
+                    userRole = 'customer';
+                }
+            } catch (err) {
+                console.log("Firestore error:", err);
+            }
+            
+            const userSession = {
+                uid: user.uid,
+                name: userName,
+                email: user.email,
+                role: userRole,
+                standId: standId,
+                standName: standName,
+                photoURL: user.photoURL || null
+            };
+            localStorage.setItem('currentUser', JSON.stringify(userSession));
+            
+            showToast(`✅ Selamat datang, ${userName}!`, 'success');
+            
+            setTimeout(() => {
+                if (userRole === 'customer') {
+                    window.location.href = 'home.html';
+                } else if (userRole === 'stand' || userRole === 'operator') {
+                    window.location.href = 'dashboard-stand.html';
+                } else if (userRole === 'admin') {
+                    window.location.href = 'dashboard-admin.html';
+                } else {
+                    window.location.href = 'home.html';
+                }
+            }, 1500);
+        }
+        
         forgotBtn.addEventListener('click', async (e) => {
             e.preventDefault();
-            
             const email = emailInput.value.trim();
             
             if (!email) {
@@ -498,7 +552,6 @@
                 return;
             }
             
-            // Loading state
             const originalText = forgotBtn.innerHTML;
             forgotBtn.innerHTML = '<span class="spinner"></span> Mengirim...';
             forgotBtn.style.opacity = '0.7';
@@ -508,14 +561,9 @@
                 await sendPasswordResetEmail(auth, email);
                 showToast(`✅ Email reset password telah dikirim ke ${email}`, 'success');
                 showToast('📧 Cek inbox atau folder spam Anda!', 'success');
-                
-                // Optional: reset form
                 emailInput.value = '';
                 passwordInput.value = '';
-                
             } catch (error) {
-                console.error("Forgot password error:", error.code, error.message);
-                
                 if (error.code === 'auth/user-not-found') {
                     showToast('❌ Email tidak terdaftar! Silakan daftar terlebih dahulu.', 'error');
                 } else if (error.code === 'auth/invalid-email') {
@@ -530,12 +578,34 @@
             }
         });
         
-        // ============ GOOGLE LOGIN (DEMO) ============
-        document.getElementById('googleLoginBtn').addEventListener('click', () => {
-            showToast('Fitur Google Login akan segera hadir!', 'error');
+        // ============ GOOGLE LOGIN ============
+        googleBtn.addEventListener('click', async () => {
+            googleBtn.disabled = true;
+            googleBtn.innerHTML = '<span class="spinner"></span> Memproses...';
+            
+            try {
+                const provider = new GoogleAuthProvider();
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+                console.log("Google login success:", user);
+                
+                await handleUserAfterLogin(user, true);
+                
+            } catch (error) {
+                console.error("Google login error:", error.code, error.message);
+                if (error.code === 'auth/popup-closed-by-user') {
+                    showToast('Login dibatalkan', 'error');
+                } else if (error.code === 'auth/account-exists-with-different-credential') {
+                    showToast('Akun sudah terdaftar dengan metode lain. Silakan login dengan email dan password.', 'error');
+                } else {
+                    showToast('❌ Gagal login dengan Google', 'error');
+                }
+                googleBtn.disabled = false;
+                googleBtn.innerHTML = '<i class="fab fa-google"></i> Lanjutkan dengan Google';
+            }
         });
         
-        // ============ MAIN LOGIN HANDLER ============
+        // ============ EMAIL/PASSWORD LOGIN ============
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -554,48 +624,7 @@
                 const user = userCredential.user;
                 console.log("✅ Auth success:", user.uid);
                 
-                // Ambil data dari Firestore
-                let userName = email.split('@')[0];
-                let userRole = 'customer';
-                let standId = null;
-                let standName = null;
-                
-                try {
-                    const userDoc = await getDoc(doc(db, "users", user.uid));
-                    if (userDoc.exists()) {
-                        const userData = userDoc.data();
-                        userName = userData.name || userData.full_name || userName;
-                        userRole = userData.role || 'customer';
-                        standId = userData.standId || null;
-                        standName = userData.standName || null;
-                    }
-                } catch (err) {
-                    console.log("Firestore error:", err);
-                }
-                
-                const userSession = {
-                    uid: user.uid,
-                    name: userName,
-                    email: user.email,
-                    role: userRole,
-                    standId: standId,
-                    standName: standName
-                };
-                localStorage.setItem('currentUser', JSON.stringify(userSession));
-                
-                showToast(`✅ Selamat datang, ${userName}!`, 'success');
-                
-                setTimeout(() => {
-                    if (userRole === 'customer') {
-                        window.location.href = 'home.html';
-                    } else if (userRole === 'stand') {
-                        window.location.href = 'dashboard-stand.html';
-                    } else if (userRole === 'admin') {
-                        window.location.href = 'dashboard-admin.html';
-                    } else {
-                        window.location.href = 'home.html';
-                    }
-                }, 1500);
+                await handleUserAfterLogin(user, false);
                 
             } catch (error) {
                 console.error("❌ Login error:", error.code, error.message);
@@ -615,7 +644,6 @@
             }
         });
         
-        // ============ REAL-TIME VALIDATION ============
         emailInput.addEventListener('input', () => {
             if (emailInput.value.trim()) {
                 document.getElementById('emailError').style.display = 'none';
@@ -630,7 +658,6 @@
             }
         });
         
-        // Debug: cek session yang sudah ada
         const savedUser = localStorage.getItem('currentUser');
         if (savedUser) {
             console.log("Already logged in as:", JSON.parse(savedUser));
