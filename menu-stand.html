@@ -23,7 +23,7 @@
         .stand-header {
             position: relative;
             height: 200px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #6C4CF1, #8B5CF6);
             overflow: hidden;
         }
         
@@ -165,9 +165,9 @@
         }
         
         .menu-item:hover {
-            border-color: #667eea;
+            border-color: #6C4CF1;
             background: white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(108,76,241,0.1);
         }
         
         .menu-image {
@@ -205,7 +205,7 @@
         .menu-price {
             font-size: 0.9rem;
             font-weight: 700;
-            color: #667eea;
+            color: #6C4CF1;
         }
         
         .menu-actions {
@@ -242,7 +242,7 @@
         }
         
         .add-btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #6C4CF1, #8B5CF6);
             color: white;
             border: none;
             padding: 6px 16px;
@@ -287,7 +287,7 @@
         .cart-total-value {
             font-size: 1.2rem;
             font-weight: 800;
-            color: #667eea;
+            color: #6C4CF1;
         }
         
         .cart-items-count {
@@ -299,7 +299,7 @@
         }
         
         .view-cart-btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #6C4CF1, #8B5CF6);
             color: white;
             border: none;
             padding: 8px 20px;
@@ -344,7 +344,7 @@
             width: 40px;
             height: 40px;
             border: 3px solid #e2e8f0;
-            border-top-color: #667eea;
+            border-top-color: #6C4CF1;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin: 0 auto 12px;
@@ -371,22 +371,22 @@
     </div>
     
     <div class="stand-info-card" id="standInfo">
-        <div class="loading"><div class="spinner"></div>Loading...</div>
+        <div class="loading"><div class="spinner"></div>Memuat stand...</div>
     </div>
     
     <div class="menu-section">
         <div class="section-title">
-            <i class="fas fa-utensils" style="color:#667eea;"></i> Menu List
+            <i class="fas fa-utensils" style="color:#6C4CF1;"></i> Daftar Menu
         </div>
         <div class="menu-list" id="menuList">
-            <div class="loading"><div class="spinner"></div>Loading menus...</div>
+            <div class="loading"><div class="spinner"></div>Memuat menu...</div>
         </div>
     </div>
     
     <div class="cart-summary" id="cartSummary"></div>
     
     <script type="module">
-        import { db, collection, doc, getDoc, getDocs, query, where, addDoc, updateDoc, deleteDoc } from './js/firebase-config.js';
+        import { db, collection, doc, getDoc, getDocs, query, where } from './js/firebase-config.js';
         
         // Get stand ID from URL
         const urlParams = new URLSearchParams(window.location.search);
@@ -401,34 +401,61 @@
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price);
         }
         
-        // Load stand data
+        // Load stand data from Firebase
         async function loadStand() {
             try {
                 const standRef = doc(db, "stands", standId);
                 const standSnap = await getDoc(standRef);
                 
                 if (standSnap.exists()) {
-                    currentStand = { id: standSnap.id, ...standSnap.data() };
+                    const data = standSnap.data();
+                    currentStand = { 
+                        id: standSnap.id, 
+                        ...data,
+                        // Handle different field names from Firebase
+                        name: data.nama || data.name || 'Restaurant',
+                        description: data.deskripsi || data.description || 'Delicious food available here!',
+                        estimatedTime: data.estimasiWaktu || data.estimatedTime || '15-20 min',
+                        deliveryFee: data.biayaPengiriman || data.deliveryFee || 'Free',
+                        imageUrl: data.gambarUrl || data.imageUrl || null,
+                        rating: data.rating || 4.5,
+                        status: data.status || 'Open'
+                    };
                     renderStandInfo();
                 } else {
-                    document.getElementById('standInfo').innerHTML = '<div style="padding:20px; text-align:center;">Stand not found</div>';
+                    document.getElementById('standInfo').innerHTML = '<div style="padding:20px; text-align:center;">Stand tidak ditemukan</div>';
                 }
             } catch (error) {
                 console.error("Error loading stand:", error);
+                document.getElementById('standInfo').innerHTML = '<div style="padding:20px; text-align:center;">Gagal memuat data stand</div>';
             }
         }
         
-        // Load menus
+        // Load menus from Firebase
         async function loadMenus() {
             try {
                 const menusRef = collection(db, "menus");
                 const q = query(menusRef, where("standId", "==", standId));
                 const snapshot = await getDocs(q);
-                menus = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                menus = snapshot.docs.map(doc => ({ 
+                    id: doc.id, 
+                    ...doc.data(),
+                    // Handle different field names
+                    name: doc.data().name || doc.data().nama || 'Menu Item',
+                    price: doc.data().price || doc.data().harga || 0,
+                    description: doc.data().description || doc.data().deskripsi || 'Delicious food',
+                    imageUrl: doc.data().image || doc.data().imageUrl || doc.data().gambarUrl || null,
+                    available: doc.data().available || doc.data().status || 'Tersedia'
+                }));
+                
+                // Filter only available menus
+                menus = menus.filter(menu => menu.available === 'Tersedia');
+                
                 renderMenus();
             } catch (error) {
                 console.error("Error loading menus:", error);
-                document.getElementById('menuList').innerHTML = '<div style="padding:20px; text-align:center;">Failed to load menus</div>';
+                document.getElementById('menuList').innerHTML = '<div style="padding:20px; text-align:center;">Gagal memuat menu</div>';
             }
         }
         
@@ -437,20 +464,24 @@
             const coverImg = document.getElementById('standCover');
             if (coverImg && currentStand.imageUrl) {
                 coverImg.src = currentStand.imageUrl;
+                coverImg.onerror = function() {
+                    this.style.display = 'none';
+                    this.parentElement.style.background = 'linear-gradient(135deg, #6C4CF1, #8B5CF6)';
+                };
             }
             
             const container = document.getElementById('standInfo');
             container.innerHTML = `
-                <h1 class="stand-name">${currentStand.name || 'Restaurant'}</h1>
+                <h1 class="stand-name">${currentStand.name}</h1>
                 <div class="stand-meta">
-                    <span class="stand-rating"><i class="fas fa-star"></i> ${currentStand.rating || 4.5}</span>
-                    <span><i class="far fa-clock"></i> ${currentStand.estimatedTime || '15-20 min'}</span>
-                    <span><i class="fas fa-motorcycle"></i> ${currentStand.deliveryFee || 'Free'}</span>
-                    <span class="${currentStand.status === 'Open' ? 'status-open' : 'status-closed'}" style="color:${currentStand.status === 'Open' ? '#10b981' : '#ef4444'}">
-                        <i class="fas fa-circle"></i> ${currentStand.status || 'Open'}
+                    <span class="stand-rating"><i class="fas fa-star"></i> ${currentStand.rating}</span>
+                    <span><i class="far fa-clock"></i> ${currentStand.estimatedTime}</span>
+                    <span><i class="fas fa-motorcycle"></i> ${currentStand.deliveryFee}</span>
+                    <span style="color:${currentStand.status === 'Open' ? '#10b981' : '#ef4444'}">
+                        <i class="fas fa-circle"></i> ${currentStand.status}
                     </span>
                 </div>
-                <p class="stand-desc">${currentStand.description || 'Delicious food available here!'}</p>
+                <p class="stand-desc">${currentStand.description}</p>
             `;
         }
         
@@ -459,7 +490,7 @@
             const container = document.getElementById('menuList');
             
             if (menus.length === 0) {
-                container.innerHTML = '<div style="padding:20px; text-align:center;">No menus available</div>';
+                container.innerHTML = '<div style="padding:20px; text-align:center;">Belum ada menu tersedia</div>';
                 return;
             }
             
@@ -470,13 +501,13 @@
                 return `
                     <div class="menu-item">
                         <div class="menu-image">
-                            <img src="${menu.imageUrl || 'https://via.placeholder.com/70'}" 
+                            <img src="${menu.imageUrl || 'https://via.placeholder.com/70?text=Food'}" 
                                  alt="${menu.name}"
-                                 onerror="this.src='https://via.placeholder.com/70'">
+                                 onerror="this.src='https://via.placeholder.com/70?text=Food'">
                         </div>
                         <div class="menu-info">
                             <div class="menu-name">${menu.name}</div>
-                            <div class="menu-desc">${menu.description || 'Delicious food'}</div>
+                            <div class="menu-desc">${menu.description || 'Menu lezat'}</div>
                             <div class="menu-price">${formatRupiah(menu.price)}</div>
                         </div>
                         <div class="menu-actions">
@@ -485,7 +516,7 @@
                                 <span class="qty-value" id="qty-${menu.id}">${qty}</span>
                                 <button class="qty-btn" onclick="updateQuantity('${menu.id}', 1)">+</button>
                             </div>
-                            <button class="add-btn" onclick="addToCart('${menu.id}')">Add</button>
+                            <button class="add-btn" onclick="addToCart('${menu.id}')">Tambah</button>
                         </div>
                     </div>
                 `;
@@ -546,7 +577,7 @@
                             <span class="cart-total-label">Total:</span>
                             <span class="cart-total-value">Rp 0</span>
                         </div>
-                        <button class="view-cart-btn" onclick="window.location.href='keranjang.html'">View Cart</button>
+                        <button class="view-cart-btn" onclick="window.location.href='keranjang.html'">Lihat Keranjang</button>
                     `;
                 } else {
                     summaryContainer.innerHTML = `
@@ -614,7 +645,7 @@
             
             saveCart();
             updateQuantityDisplays();
-            showToast(`${menu.name} added to cart!`);
+            showToast(`${menu.name} ditambahkan ke keranjang!`);
         };
         
         // Show toast
@@ -631,16 +662,17 @@
         
         // Initialize
         async function init() {
-            await loadStand();
-            await loadMenus();
-            loadCart();
+            if (standId) {
+                await loadStand();
+                await loadMenus();
+                loadCart();
+            } else {
+                document.getElementById('standInfo').innerHTML = '<div style="padding:20px; text-align:center;">Stand tidak dipilih</div>';
+                document.getElementById('menuList').innerHTML = '<div style="padding:20px; text-align:center;">Silakan pilih stand dari halaman utama</div>';
+            }
         }
         
-        if (standId) {
-            init();
-        } else {
-            document.getElementById('standInfo').innerHTML = '<div style="padding:20px; text-align:center;">No stand selected</div>';
-        }
+        init();
     </script>
 </body>
 </html>
