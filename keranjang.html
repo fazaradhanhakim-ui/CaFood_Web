@@ -275,8 +275,8 @@
             }
             
             const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const deliveryFee = 5000;
-            const tax = Math.round(subtotal * 0.05);
+            const deliveryFee = 0;
+            const tax = Math.round(subtotal * 0);
             const total = subtotal + deliveryFee + tax;
             
             container.innerHTML = `
@@ -318,7 +318,7 @@
                         <span>${formatRupiah(deliveryFee)}</span>
                     </div>
                     <div class="summary-row">
-                        <span>Tax (5%)</span>
+                        <span>Tax (0%)</span>
                         <span>${formatRupiah(tax)}</span>
                     </div>
                     <div class="summary-row total">

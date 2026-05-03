@@ -297,10 +297,10 @@
             </div>
             <div class="summary-row">
                 <span>Delivery Fee</span>
-                <span id="deliveryFeeValue">Rp 5.000</span>
+                <span id="deliveryFeeValue">Rp 0</span>
             </div>
             <div class="summary-row">
-                <span>Tax (5%)</span>
+                <span>Tax (0%)</span>
                 <span id="taxValue">Rp 0</span>
             </div>
             <div class="summary-row total">
@@ -342,8 +342,8 @@
         
         function renderOrderSummary() {
             const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const deliveryFee = 5000;
-            const tax = Math.round(subtotal * 0.05);
+            const deliveryFee = 0;
+            const tax = Math.round(subtotal * 0);
             const total = subtotal + deliveryFee + tax;
             
             const orderItemsDiv = document.getElementById('orderItems');
@@ -405,8 +405,8 @@
             confirmBtn.disabled = true;
             
             const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const deliveryFee = 5000;
-            const tax = Math.round(subtotal * 0.05);
+            const deliveryFee = 0;
+            const tax = Math.round(subtotal * 0);
             const total = subtotal + deliveryFee + tax;
             const estimatedTime = Math.floor(Math.random() * 20) + 15;
             const queueNumber = generateQueueNumber();
