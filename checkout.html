@@ -7,11 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: 'Inter', sans-serif;
@@ -45,6 +41,7 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            color: #6C4CF1;
         }
         
         .header-title {
@@ -73,6 +70,7 @@
             align-items: center;
             gap: 8px;
             font-size: 1rem;
+            color: #1a1a2e;
         }
         
         .form-group {
@@ -98,7 +96,7 @@
         
         .form-control:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #6C4CF1;
         }
         
         .payment-methods {
@@ -119,12 +117,12 @@
         }
         
         .payment-option:hover {
-            border-color: #667eea;
+            border-color: #6C4CF1;
             background: #f8f9fa;
         }
         
         .payment-option.selected {
-            border-color: #667eea;
+            border-color: #6C4CF1;
             background: #f0f4ff;
         }
         
@@ -149,6 +147,78 @@
             color: #64748b;
         }
         
+        .qris-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .qris-modal-content {
+            background: white;
+            border-radius: 28px;
+            padding: 28px;
+            width: 90%;
+            max-width: 380px;
+            text-align: center;
+        }
+        
+        .qris-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #1a1a2e;
+        }
+        
+        .qris-qr-code {
+            width: 220px;
+            height: 220px;
+            margin: 0 auto 20px;
+            background: #f1f5f9;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .qris-qr-code img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .qris-amount {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #6C4CF1;
+            margin-bottom: 8px;
+        }
+        
+        .qris-instruction {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+        
+        .qris-close-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #6C4CF1, #8B5CF6);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
         .order-summary {
             background: white;
             border-radius: 20px;
@@ -169,17 +239,12 @@
             border-bottom: 1px solid #e9ecef;
         }
         
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            font-size: 0.85rem;
-        }
-        
         .summary-row.total {
             border-top: 1px solid #e9ecef;
             padding-top: 12px;
             margin-top: 8px;
+            display: flex;
+            justify-content: space-between;
             font-weight: 700;
             font-size: 1rem;
         }
@@ -187,7 +252,7 @@
         .confirm-btn {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #6C4CF1, #8B5CF6);
             color: white;
             border: none;
             border-radius: 30px;
@@ -239,127 +304,151 @@
     <div class="checkout-container" id="checkoutContainer">
         <div class="form-section">
             <div class="section-title">
-                <i class="fas fa-user" style="color:#667eea;"></i> Delivery Information
+                <i class="fas fa-user" style="color:#6C4CF1;"></i> Informasi Pemesan
             </div>
             <div class="form-group">
-                <label>Full Name</label>
-                <input type="text" class="form-control" id="customerName" placeholder="Enter your name">
+                <label>Nama Lengkap</label>
+                <input type="text" class="form-control" id="customerName" placeholder="Masukkan nama Anda">
             </div>
             <div class="form-group">
-                <label>Phone Number</label>
-                <input type="tel" class="form-control" id="customerPhone" placeholder="Enter phone number">
+                <label>Nomor Telepon</label>
+                <input type="tel" class="form-control" id="customerPhone" placeholder="Masukkan nomor telepon">
             </div>
             <div class="form-group">
-                <label>Table Number (Optional)</label>
-                <input type="text" class="form-control" id="tableNumber" placeholder="Enter table number">
+                <label>Nomor Meja (Opsional)</label>
+                <input type="text" class="form-control" id="tableNumber" placeholder="Nomor meja">
             </div>
             <div class="form-group">
-                <label>Notes (Optional)</label>
-                <textarea class="form-control" id="orderNotes" rows="2" placeholder="Any special requests?"></textarea>
+                <label>Catatan (Opsional)</label>
+                <textarea class="form-control" id="orderNotes" rows="2" placeholder="Catatan khusus untuk pesanan"></textarea>
             </div>
         </div>
         
         <div class="form-section">
             <div class="section-title">
-                <i class="fas fa-credit-card" style="color:#667eea;"></i> Payment Method
+                <i class="fas fa-credit-card" style="color:#6C4CF1;"></i> Metode Pembayaran
             </div>
             <div class="payment-methods" id="paymentMethods">
                 <div class="payment-option selected" data-method="cash">
                     <div class="payment-icon"><i class="fas fa-money-bill"></i></div>
                     <div>
-                        <div class="payment-name">Cash</div>
-                        <div class="payment-desc">Pay at counter</div>
+                        <div class="payment-name">Tunai</div>
+                        <div class="payment-desc">Bayar di kasir</div>
                     </div>
                 </div>
                 <div class="payment-option" data-method="qris">
                     <div class="payment-icon"><i class="fas fa-qrcode"></i></div>
                     <div>
                         <div class="payment-name">QRIS</div>
-                        <div class="payment-desc">Scan with any e-wallet</div>
-                    </div>
-                </div>
-                <div class="payment-option" data-method="card">
-                    <div class="payment-icon"><i class="fas fa-credit-card"></i></div>
-                    <div>
-                        <div class="payment-name">Credit / Debit Card</div>
-                        <div class="payment-desc">Visa, Mastercard</div>
+                        <div class="payment-desc">Scan QR code dengan e-wallet</div>
                     </div>
                 </div>
             </div>
         </div>
         
         <div class="order-summary" id="orderSummary">
-            <div class="section-title">Order Summary</div>
+            <div class="section-title">Ringkasan Pesanan</div>
             <div class="order-items" id="orderItems"></div>
-            <div class="summary-row" id="subtotalRow">
-                <span>Subtotal</span>
-                <span id="subtotalValue">Rp 0</span>
-            </div>
-            <div class="summary-row">
-                <span>Delivery Fee</span>
-                <span id="deliveryFeeValue">Rp 0</span>
-            </div>
-            <div class="summary-row">
-                <span>Tax (0%)</span>
-                <span id="taxValue">Rp 0</span>
-            </div>
             <div class="summary-row total">
                 <span>Total</span>
                 <span id="totalValue">Rp 0</span>
             </div>
-            <button class="confirm-btn" id="confirmBtn">Confirm Order</button>
+            <button class="confirm-btn" id="confirmBtn">Konfirmasi Pesanan</button>
+        </div>
+    </div>
+    
+    <!-- QRIS Modal -->
+    <div id="qrisModal" class="qris-modal">
+        <div class="qris-modal-content">
+            <div class="qris-title">Scan QRIS untuk Membayar</div>
+            <div class="qris-qr-code">
+                <img id="qrisImage" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=QRIS_CaFood" alt="QR Code">
+            </div>
+            <div class="qris-amount" id="qrisAmount">Rp 0</div>
+            <div class="qris-instruction">
+                <i class="fas fa-mobile-alt"></i> Buka aplikasi e-wallet atau mobile banking<br>
+                Scan QR code di atas untuk melakukan pembayaran
+            </div>
+            <button class="qris-close-btn" id="qrisConfirmBtn">Saya Sudah Bayar</button>
+            <button class="qris-close-btn" id="qrisCancelBtn" style="background:#6B7280; margin-top:8px;">Batal</button>
         </div>
     </div>
     
     <script type="module">
-        import { db, collection, addDoc } from './js/firebase-config.js';
+        import { db, auth, collection, getDocs, query, where, addDoc, deleteDoc, onAuthStateChanged } from './js/firebase-config.js';
         
-        let cart = [];
-        let currentStand = null;
+        let currentUser = null;
+        let cartItems = [];
         let selectedPayment = 'cash';
+        let isProcessing = false;
         
         function formatRupiah(price) {
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price);
         }
         
-        function loadData() {
-            cart = JSON.parse(localStorage.getItem('cart') || '[]');
-            currentStand = JSON.parse(localStorage.getItem('currentStand') || 'null');
-            
-            if (cart.length === 0) {
-                window.location.href = 'index.html';
+        async function loadCart() {
+            if (!currentUser) {
+                window.location.href = 'login.html';
+                return;
             }
             
-            renderOrderSummary();
-            
-            // Load current user data if available
-            const currentUser = localStorage.getItem('currentUser');
-            if (currentUser) {
-                const user = JSON.parse(currentUser);
-                document.getElementById('customerName').value = user.name || '';
+            try {
+                const cartsRef = collection(db, "carts");
+                const q = query(cartsRef, where("userId", "==", currentUser.uid));
+                const snapshot = await getDocs(q);
+                
+                if (snapshot.empty) {
+                    window.location.href = 'keranjang.html';
+                    return;
+                }
+                
+                const itemsMap = new Map();
+                snapshot.docs.forEach(doc => {
+                    const data = doc.data();
+                    const menuId = data.menuId;
+                    if (itemsMap.has(menuId)) {
+                        itemsMap.get(menuId).quantity += data.quantity;
+                    } else {
+                        itemsMap.set(menuId, {
+                            id: menuId,
+                            name: data.menuName,
+                            price: data.menuPrice,
+                            image: data.menuImage,
+                            quantity: data.quantity,
+                            standId: data.standId,
+                            standName: data.standName
+                        });
+                    }
+                });
+                
+                cartItems = Array.from(itemsMap.values());
+                renderCheckout();
+            } catch (error) {
+                console.error("Error loading cart:", error);
             }
         }
         
-        function renderOrderSummary() {
-            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const deliveryFee = 0;
-            const tax = Math.round(subtotal * 0);
-            const total = subtotal + deliveryFee + tax;
+        function renderCheckout() {
+            const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             
             const orderItemsDiv = document.getElementById('orderItems');
-            orderItemsDiv.innerHTML = cart.map(item => `
+            orderItemsDiv.innerHTML = cartItems.map(item => `
                 <div class="order-item">
                     <span>${item.quantity}x ${item.name}</span>
                     <span>${formatRupiah(item.price * item.quantity)}</span>
                 </div>
             `).join('');
             
-            document.getElementById('subtotalValue').textContent = formatRupiah(subtotal);
-            document.getElementById('taxValue').textContent = formatRupiah(tax);
             document.getElementById('totalValue').textContent = formatRupiah(total);
+            document.getElementById('qrisAmount').textContent = formatRupiah(total);
+            
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                const user = JSON.parse(savedUser);
+                document.getElementById('customerName').value = user.name || '';
+            }
         }
         
-        // Payment method selection
         document.querySelectorAll('.payment-option').forEach(opt => {
             opt.addEventListener('click', function() {
                 document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
@@ -376,41 +465,50 @@
             return Math.floor(Math.random() * 50) + 1;
         }
         
-        async function saveOrderToFirebase(orderData) {
-            try {
-                const ordersRef = collection(db, "orders");
-                const docRef = await addDoc(ordersRef, {
-                    ...orderData,
-                    createdAt: new Date().toISOString(),
-                    status: 'pending'
-                });
-                return docRef.id;
-            } catch (error) {
-                console.error("Error saving order:", error);
-                return null;
-            }
+        async function clearCart() {
+            const cartsRef = collection(db, "carts");
+            const q = query(cartsRef, where("userId", "==", currentUser.uid));
+            const snapshot = await getDocs(q);
+            const deletePromises = snapshot.docs.map(doc => deleteDoc(doc.ref));
+            await Promise.all(deletePromises);
         }
         
-        async function confirmOrder() {
-            const customerName = document.getElementById('customerName').value;
-            const customerPhone = document.getElementById('customerPhone').value;
+        function openQrisModal() {
+            document.getElementById('qrisModal').style.display = 'flex';
+        }
+        
+        function closeQrisModal() {
+            document.getElementById('qrisModal').style.display = 'none';
+        }
+        
+        async function saveOrder() {
+            if (isProcessing) return;
+            isProcessing = true;
+            
+            const confirmBtn = document.getElementById('confirmBtn');
+            confirmBtn.innerHTML = '<span class="spinner"></span> Memproses...';
+            confirmBtn.disabled = true;
+            
+            const customerName = document.getElementById('customerName').value.trim();
+            const customerPhone = document.getElementById('customerPhone').value.trim();
             
             if (!customerName || !customerPhone) {
-                alert('Please fill in your name and phone number');
+                alert('Mohon isi nama dan nomor telepon Anda!');
+                confirmBtn.innerHTML = 'Konfirmasi Pesanan';
+                confirmBtn.disabled = false;
+                isProcessing = false;
                 return;
             }
             
-            const confirmBtn = document.getElementById('confirmBtn');
-            confirmBtn.innerHTML = '<span class="spinner"></span> Processing...';
-            confirmBtn.disabled = true;
-            
-            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const deliveryFee = 0;
-            const tax = Math.round(subtotal * 0);
-            const total = subtotal + deliveryFee + tax;
-            const estimatedTime = Math.floor(Math.random() * 20) + 15;
+            const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const estimatedTime = 15;
             const queueNumber = generateQueueNumber();
             const orderNumber = generateOrderNumber();
+            
+            const paymentNames = {
+                'cash': 'Tunai',
+                'qris': 'QRIS'
+            };
             
             const orderData = {
                 orderNumber: orderNumber,
@@ -419,60 +517,85 @@
                 customerPhone: customerPhone,
                 tableNumber: document.getElementById('tableNumber').value || '-',
                 notes: document.getElementById('orderNotes').value,
-                standId: currentStand?.id || null,
-                standName: currentStand?.name || 'Unknown',
-                items: cart.map(item => ({
+                standId: cartItems[0]?.standId,
+                standName: cartItems[0]?.standName,
+                items: cartItems.map(item => ({
                     id: item.id,
                     name: item.name,
                     price: item.price,
                     quantity: item.quantity,
                     subtotal: item.price * item.quantity
                 })),
-                subtotal: subtotal,
-                deliveryFee: deliveryFee,
-                tax: tax,
                 total: total,
-                paymentMethod: selectedPayment,
-                estimatedTime: estimatedTime
+                paymentMethod: paymentNames[selectedPayment] || 'Tunai',
+                estimatedTime: estimatedTime,
+                userId: currentUser?.uid,
+                status: 'pending',
+                createdAt: new Date().toISOString()
             };
             
-            // Save to Firebase
-            const orderId = await saveOrderToFirebase(orderData);
-            
-            if (orderId) {
-                // Save to localStorage as well
-                let orders = JSON.parse(localStorage.getItem('orders') || '[]');
-                orders.push({ ...orderData, id: orderId });
-                localStorage.setItem('orders', JSON.stringify(orders));
-                localStorage.setItem('currentOrder', JSON.stringify({ ...orderData, id: orderId }));
+            try {
+                const ordersRef = collection(db, "orders");
+                await addDoc(ordersRef, orderData);
+                await clearCart();
+                localStorage.setItem('currentOrder', JSON.stringify(orderData));
                 
-                // Clear cart
-                localStorage.removeItem('cart');
-                localStorage.removeItem('currentStand');
-                
-                showToast('Order placed successfully!');
+                showToast('✅ Pesanan berhasil dibuat!');
                 
                 setTimeout(() => {
                     window.location.href = 'status-pesanan.html';
                 }, 1500);
-            } else {
-                alert('Failed to place order. Please try again.');
-                confirmBtn.innerHTML = 'Confirm Order';
+            } catch (error) {
+                console.error("Error saving order:", error);
+                alert('Gagal membuat pesanan. Silakan coba lagi.');
+                confirmBtn.innerHTML = 'Konfirmasi Pesanan';
                 confirmBtn.disabled = false;
+                isProcessing = false;
             }
+        }
+        
+        async function confirmOrder() {
+            const customerName = document.getElementById('customerName').value.trim();
+            const customerPhone = document.getElementById('customerPhone').value.trim();
+            
+            if (!customerName || !customerPhone) {
+                alert('Mohon isi nama dan nomor telepon Anda!');
+                return;
+            }
+            
+            if (selectedPayment === 'qris') {
+                openQrisModal();
+                return;
+            }
+            
+            await saveOrder();
         }
         
         function showToast(message) {
             const toast = document.createElement('div');
             toast.className = 'toast';
+            toast.style.background = '#10B981';
             toast.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
             document.body.appendChild(toast);
             setTimeout(() => toast.remove(), 2000);
         }
         
+        // Event listeners
         document.getElementById('confirmBtn').addEventListener('click', confirmOrder);
+        document.getElementById('qrisConfirmBtn').addEventListener('click', async () => {
+            closeQrisModal();
+            await saveOrder();
+        });
+        document.getElementById('qrisCancelBtn').addEventListener('click', closeQrisModal);
         
-        loadData();
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                await loadCart();
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
     </script>
 </body>
 </html>
