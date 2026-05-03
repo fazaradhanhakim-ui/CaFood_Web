@@ -46,18 +46,22 @@
         .logo-icon {
             width: 40px;
             height: 40px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #6C4CF1, #8B5CF6);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.3rem;
+            color: white;
         }
         
         .logo-text {
             font-size: 1.3rem;
-            font-weight: 700;
-            color: #1a1a2e;
+            font-weight: 800;
+            background: linear-gradient(135deg, #6C4CF1, #8B5CF6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
         
         .cart-icon {
@@ -71,6 +75,7 @@
             align-items: center;
             justify-content: center;
             transition: all 0.2s;
+            color: #6C4CF1;
         }
         
         .cart-icon:hover {
@@ -422,7 +427,9 @@
     <div class="header">
         <div class="header-content">
             <div class="logo">
-                <div class="logo-icon">🍜</div>
+                <div class="logo-icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
                 <div class="logo-text">CaFood</div>
             </div>
             <div class="cart-icon" onclick="window.location.href='keranjang.html'">
@@ -435,60 +442,27 @@
     <!-- Hero -->
     <div class="hero">
         <div class="hero-badge">
-            <i class="fas fa-fire"></i> 20+ Active Stands
+            <i class="fas fa-fire"></i> 5+ Stand Aktif
         </div>
-        <h1 class="hero-title" id="heroTitle">Good Morning! 🥰<br>What's for breakfast?</h1>
-        <p class="hero-subtitle">Explore various delicious foods from the best stands</p>
+        <h1 class="hero-title" id="heroTitle">Selamat Pagi! ☀️<br>Apa sarapanmu hari ini?</h1>
+        <p class="hero-subtitle">Jelajahi berbagai makanan lezat dari stand terbaik</p>
         <div class="search-bar">
             <i class="fas fa-search"></i>
-            <input type="text" id="searchInput" placeholder="Search food or stand...">
+            <input type="text" id="searchInput" placeholder="Cari makanan atau stand">
         </div>
     </div>
-    
-    <!-- Categories -->
-    <div class="categories-section">
-        <div class="section-header">
-            <h2 class="section-title">Categories</h2>
-            <a href="#" class="section-link" style="color:#667eea; font-size:0.75rem;">See All →</a>
-        </div>
-        <div class="category-list" id="categoryList">
-            <div class="category-item active" data-category="all">
-                <div class="category-circle"><span>🍽️</span></div>
-                <div class="category-name">All</div>
-            </div>
-            <div class="category-item" data-category="noodles">
-                <div class="category-circle"><span>🍜</span></div>
-                <div class="category-name">Noodles</div>
-            </div>
-            <div class="category-item" data-category="rice">
-                <div class="category-circle"><span>🍚</span></div>
-                <div class="category-name">Rice</div>
-            </div>
-            <div class="category-item" data-category="drinks">
-                <div class="category-circle"><span>🥤</span></div>
-                <div class="category-name">Drinks</div>
-            </div>
-            <div class="category-item" data-category="dessert">
-                <div class="category-circle"><span>🍰</span></div>
-                <div class="category-name">Dessert</div>
-            </div>
-            <div class="category-item" data-category="fastfood">
-                <div class="category-circle"><span>🍕</span></div>
-                <div class="category-name">Fast Food</div>
-            </div>
-        </div>
-    </div>
+
     
     <!-- Stands Grid -->
     <div class="stands-section">
         <div class="section-header">
-            <h2 class="section-title">Popular Stands</h2>
-            <span style="color:#667eea; font-size:0.75rem;">🔥 Recommended</span>
+            <h2 class="section-title">Stand</h2>
+            <span style="color:#667eea; font-size:0.75rem;">Lihat Semua</span>
         </div>
         <div id="standsGrid" class="stand-grid">
             <div class="loading">
                 <div class="spinner"></div>
-                <div>Loading delicious food...</div>
+                <div>Memuat...</div>
             </div>
         </div>
     </div>
@@ -500,30 +474,26 @@
     
     <!-- Bottom Navigation -->
     <div class="bottom-nav">
-        <div class="nav-item active">
+        <div class="nav-item active" onclick="window.location.href='home.html'">
             <div class="nav-icon"><i class="fas fa-home"></i></div>
             <div class="nav-label">Home</div>
         </div>
         <div class="nav-item" onclick="window.location.href='status-pesanan.html'">
             <div class="nav-icon"><i class="fas fa-clipboard-list"></i></div>
-            <div class="nav-label">Orders</div>
+            <div class="nav-label">Pesanan</div>
         </div>
         <div class="nav-item" onclick="window.location.href='keranjang.html'">
-            <div class="nav-icon"><i class="fas fa-shopping-bag"></i></div>
-            <div class="nav-label">Cart</div>
-        </div>
-        <div class="nav-item" onclick="window.location.href='status-pesanan.html'">
-            <div class="nav-icon"><i class="fas fa-clock"></i></div>
-            <div class="nav-label">Queue</div>
+            <div class="nav-icon"><i class="fas fa-shopping-cart"></i></div>
+            <div class="nav-label">Keranjang</div>
         </div>
         <div class="nav-item" onclick="window.location.href='profile.html'">
             <div class="nav-icon"><i class="fas fa-user"></i></div>
-            <div class="nav-label">Profile</div>
+            <div class="nav-label">Profil</div>
         </div>
     </div>
     
     <script type="module">
-        import { db, collection, getDocs, query, where } from './js/firebase-config.js';
+        import { db, collection, getDocs, query, where, addDoc } from './js/firebase-config.js';
         
         // ============ DATA ============
         let allStands = [];
@@ -535,17 +505,17 @@
         const searchInput = document.getElementById('searchInput');
         
         // ============ SET GREETING ============
-        function setGreeting() {
+         function setGreeting() {
             const hour = new Date().getHours();
             const heroTitle = document.getElementById('heroTitle');
             if (hour >= 5 && hour < 11) {
-                heroTitle.innerHTML = "Good Morning! 🥰<br>What's for breakfast?";
+                heroTitle.innerHTML = "Selamat Pagi! ☀️<br>Apa sarapanmu hari ini?";
             } else if (hour >= 11 && hour < 15) {
-                heroTitle.innerHTML = "Good Afternoon! 🌤️<br>Lunch time?";
+                heroTitle.innerHTML = "Selamat Siang! 🌤️<br>Waktunya makan siang?";
             } else if (hour >= 15 && hour < 19) {
-                heroTitle.innerHTML = "Good Evening! 🌙<br>Snack time?";
+                heroTitle.innerHTML = "Selamat Sore! 🌙<br>Camilan sore?";
             } else {
-                heroTitle.innerHTML = "Good Night! 🌟<br>Late night craving?";
+                heroTitle.innerHTML = "Selamat Malam! 🌟<br>Ngidam larut malam?";
             }
         }
         
@@ -579,7 +549,7 @@
                 standsGrid.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-icon">⚠️</div>
-                        <div>Failed to load data</div>
+                        <div>Gagal memuat data</div>
                         <div style="font-size:0.75rem; margin-top:8px;">${error.message}</div>
                     </div>
                 `;
@@ -688,8 +658,8 @@
                 standsGrid.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-icon">🔍</div>
-                        <div>No stands found</div>
-                        <div style="font-size:0.75rem; margin-top:8px;">Try different keyword</div>
+                        <div>Stand tidak ditemukan</div>
+                        <div style="font-size:0.75rem; margin-top:8px;">Coba kata kunci lain</div>
                     </div>
                 `;
                 return;
